@@ -21,7 +21,7 @@ func NewWsPublicTiny(url string) *WsPublicTiny {
 }
 
 func (this *WsPublicTiny) Shutdown() {
-	this.log.Info("shutdown")
+	this.log.Debug("shutdown")
 	this.ws.Shutdown()
 }
 
@@ -39,7 +39,7 @@ func (this *WsPublicTiny) Connected() bool {
 }
 
 func (this *WsPublicTiny) Run() {
-	this.log.Info("run")
+	this.log.Debug("run")
 	this.ws.SetOnMessage(this.processMessage)
 	this.ws.Run()
 }
@@ -82,7 +82,7 @@ func (this *WsPublicTiny) processMessage(name string, msg []byte) {
 			Code        string `json:"code"`
 			Description string `json:"desc"`
 		}](msg)
-		this.log.Infof("code[%s]: %s", v.Code, v.Description)
+		this.log.Warningf("code[%s]: %s", v.Code, v.Description)
 	case "topic":
 		v := jsonUnmarshal[TopicSubscribtion](msg)
 		if v.HasCode() {
@@ -118,5 +118,5 @@ func (this *WsPublicTiny) processTopic(msg []byte) {
 	default:
 		panic(fmt.Sprintf("unknown topic name: %s", v.Topic))
 	}
-	this.log.Infof("topic %s (%s) push: %+v", v.Topic, v.Params.Symbol, data)
+	this.log.Infof("topic %s (%s) notify: %+v", v.Topic, v.Params.Symbol, data)
 }

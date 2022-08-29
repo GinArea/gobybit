@@ -38,14 +38,14 @@ func NewWsConn(url string) *WsConn {
 }
 
 func (this *WsConn) Shutdown() {
-	this.log.Info("shutdown...")
+	this.log.Debug("shutdown...")
 	this.do.Cancel()
 	if this.Connected() {
 		this.ws.Close()
 	}
-	this.log.Info("stop")
+	this.log.Debug("stop")
 	this.do.Stop()
-	this.log.Info("shutdown completed")
+	this.log.Debug("shutdown completed")
 }
 
 func (this *WsConn) Connected() bool {
@@ -112,9 +112,9 @@ func (this *WsConn) run() {
 	defer moon.Recover(func(err string) {
 		this.log.Errorf(err)
 	})
-	defer this.log.Info("completed")
+	defer this.log.Debug("completed")
 	defer this.do.Notify()
-	this.log.Info("run")
+	this.log.Debug("run")
 	for this.do.Do() {
 		this.connectAndRun()
 	}
@@ -126,7 +126,7 @@ func (this *WsConn) connectAndRun() {
 		HandshakeTimeout: this.conf.HandshakeTimeout,
 	}
 	if this.conf.Proxy != nil {
-		this.log.Info("proxy:", this.conf.Proxy)
+		this.log.Debug("proxy:", this.conf.Proxy)
 		dialer.Proxy = http.ProxyURL(this.conf.Proxy)
 	}
 	c, _, err := dialer.Dial(this.url, nil)

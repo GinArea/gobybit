@@ -30,7 +30,7 @@ func NewWsPrivate(url string, key string, secret string) *WsPrivate {
 }
 
 func (this *WsPrivate) Shutdown() {
-	this.log.Info("shutdown")
+	this.log.Debug("shutdown")
 	this.ws.Shutdown()
 }
 
@@ -44,7 +44,7 @@ func (this *WsPrivate) WithProxy(proxy string) *WsPrivate {
 }
 
 func (this *WsPrivate) Run() {
-	this.log.Info("run")
+	this.log.Debug("run")
 	this.ws.SetOnConnected(func() {
 		this.auth()
 	})
@@ -102,7 +102,7 @@ func (this *WsPrivate) processMessage(name string, msg []byte) {
 			Code        string `json:"code"`
 			Description string `json:"desc"`
 		}](msg)
-		this.log.Infof("code[%s]: %s", v.Code, v.Description)
+		this.log.Warningf("code[%s]: %s", v.Code, v.Description)
 	default:
 		panic("unknown message type")
 	}
