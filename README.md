@@ -1,1 +1,1 @@
-# bybit
+# bybit API
