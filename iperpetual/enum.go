@@ -1,4 +1,4 @@
-package ifutures
+package iperpetual
 
 //
 type Coin string
@@ -8,6 +8,6 @@ const (
 	CoinETH       = "ETH"
 	CoinEOS       = "EOS"
 	CoinXRP       = "XRP"
-	CoinUSDT      = "DOT"
+	CoinDOT       = "DOT"
 	CoinUSDT      = "USDT"
 )
