@@ -33,7 +33,7 @@ func NewWsConn(url string) *WsConn {
 		url:  url,
 		conf: NewWsConf(),
 	}
-	conn.log = ulog.NewLog(fmt.Sprintf("ws-conn[%s]", conn.ID()))
+	conn.log = ulog.New(fmt.Sprintf("ws-conn[%s]", conn.ID()))
 	return conn
 }
 

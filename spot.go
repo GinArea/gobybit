@@ -41,10 +41,10 @@ func (this *Spot) ServerTime() (uint64, bool) {
 	return resp.Result.Time, err == nil
 }
 
-func (this *Spot) url(method string) string {
-	return fmt.Sprintf("%s/v%d/%s", this.name, this.version, method)
+func (this *Spot) url(uri string) string {
+	return fmt.Sprintf("%s/v%d/%s", this.name, this.version, uri)
 }
 
-func (this *Spot) urlQuote(method string) string {
-	return fmt.Sprintf("%s/quote/v%d/%s", this.name, this.version, method)
+func (this *Spot) urlQuote(uri string) string {
+	return fmt.Sprintf("%s/quote/v%d/%s", this.name, this.version, uri)
 }

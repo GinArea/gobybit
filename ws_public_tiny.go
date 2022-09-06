@@ -15,7 +15,7 @@ type WsPublicTiny struct {
 func NewWsPublicTiny(url string) *WsPublicTiny {
 	ws := NewWsClient(url)
 	return &WsPublicTiny{
-		log: ulog.NewLog(fmt.Sprintf("ws-public[%s]", ws.ID())),
+		log: ulog.New(fmt.Sprintf("ws-public[%s]", ws.ID())),
 		ws:  ws,
 	}
 }

@@ -28,7 +28,7 @@ type Client struct {
 
 func NewClient(url, key, secret string) *Client {
 	c := Client{
-		log:    ulog.NewLog("client"),
+		log:    ulog.New("client"),
 		url:    url,
 		key:    key,
 		secret: secret,
