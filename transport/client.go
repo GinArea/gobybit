@@ -67,6 +67,7 @@ func (this *Client) Request(method string, path string, param any, ret any) (err
 	p = this.signQuery(p)
 	u.RawQuery = p.Encode()
 	u.RawQuery = strings.Replace(u.RawQuery, "%2C", ",", -1)
+	//ulog.Debug("query:", u.String())
 	req, err := http.NewRequest(method, u.String(), nil)
 	if err != nil {
 		logf("init request fail: %v", err)
