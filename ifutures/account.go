@@ -8,3 +8,10 @@ const (
 	BuySide  PositionIdx = 1
 	SellSide PositionIdx = 1
 )
+
+type Direction string
+
+const (
+	Prev Direction = "prev"
+	Next Direction = "next"
+)

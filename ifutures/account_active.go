@@ -43,13 +43,13 @@ type PlaceActiveOrder struct {
 	TimeInForce    TimeInForce       `param:"time_in_force"`
 	PositionIdx    *PositionIdx      `param:"position_idx"`
 	Price          *float64          `param:"price"`
-	ReduceOnly     *bool             `param:"reduce_only"`
 	CloseOnTrigger *bool             `param:"close_on_trigger"`
 	OrderLinkID    *string           `param:"order_link_id"`
 	TakeProfit     *float64          `param:"take_profit"`
 	StopLoss       *float64          `param:"stop_loss"`
 	TpTrigger      *TriggerPrice     `param:"tp_trigger_by"`
 	SlTrigger      *TriggerPrice     `param:"sl_trigger_by"`
+	ReduceOnly     *bool             `param:"reduce_only"`
 }
 
 type OrderCreated struct {
@@ -80,13 +80,6 @@ type OrderList struct {
 	Limit       *int              `param:"limit"`
 	Cursor      *string           `param:"cursor"`
 }
-
-type Direction string
-
-const (
-	Prev Direction = "prev"
-	Next Direction = "next"
-)
 
 func (this OrderList) Do(client *Client) (OrderListResult, bool) {
 	return Get[OrderListResult](client, "order/list", this)
@@ -186,19 +179,6 @@ type QueryOrder struct {
 	OrderLinkId *string           `param:"order_link_id"`
 }
 
-type Order struct {
-	OrderCancelled
-	LeavesValue string         `json:"leaves_value"`
-	PositionIdx PositionIdx    `json:"position_idx"`
-	CancelType  CancelType     `json:"cancel_type"`
-	ExtFields   OrderExtFields `json:"ext_fields"`
-}
-
-type OrderExtFields struct {
-	oreqNum  int64  `json:"o_req_num"`
-	XreqType string `json:"xreq_type"`
-}
-
 func (this QueryOrder) OnlySymbol() bool {
 	return this.OrderId == nil && this.OrderLinkId == nil
 }
@@ -210,6 +190,19 @@ func (this QueryOrder) Do(client *Client) ([]Order, bool) {
 	}
 	r, ok := Get[Order](client, "order", this)
 	return []Order{r}, ok
+}
+
+type Order struct {
+	OrderCancelled
+	LeavesValue string         `json:"leaves_value"`
+	PositionIdx PositionIdx    `json:"position_idx"`
+	CancelType  CancelType     `json:"cancel_type"`
+	ExtFields   OrderExtFields `json:"ext_fields"`
+}
+
+type OrderExtFields struct {
+	oreqNum  int64  `json:"o_req_num"`
+	XreqType string `json:"xreq_type"`
 }
 
 func (this *Client) QueryOrder(v QueryOrder) ([]Order, bool) {
