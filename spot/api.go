@@ -1,4 +1,5 @@
 // [API Data Endpoints] https://bybit-exchange.github.io/docs/spot/v1/#t-api
+// The following API data endpoints do not require authentication.
 package spot
 
 // [Server Time] https://bybit-exchange.github.io/docs/spot/v1/#t-servertime
