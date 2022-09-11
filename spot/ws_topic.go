@@ -4,17 +4,17 @@ type TopicName string
 
 const (
 	TopicDepth      TopicName = "depth"
-	TopicKline                = "kline"
-	TopicTrade                = "trade"
-	TopicBookTicker           = "bookTicker"
-	TopicRealtimes            = "realtimes"
+	TopicKline      TopicName = "kline"
+	TopicTrade      TopicName = "trade"
+	TopicBookTicker TopicName = "bookTicker"
+	TopicRealtimes  TopicName = "realtimes"
 )
 
 type TopicEvent string
 
 const (
 	TopicEventSub    TopicEvent = "sub"
-	TopicEventCancel            = "cancel"
+	TopicEventCancel TopicEvent = "cancel"
 )
 
 type Topic struct {
