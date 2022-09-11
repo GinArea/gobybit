@@ -4,53 +4,41 @@ package iperpetual
 import (
 	"fmt"
 
-	"github.com/tranquiil/bybit"
+	"github.com/tranquiil/bybit/transport"
 )
 
 type Client struct {
-	client  *bybit.Client
+	c       *transport.Client
 	version int
 }
 
-func NewClient(client *bybit.Client) *Client {
+func NewClient(client *transport.Client) *Client {
 	return &Client{
-		client:  client,
+		c:       client,
 		version: 2,
 	}
 }
 
-type Balance struct {
-	Equity           float32 `json:"equity"`
-	AvailableBalance float32 `json:"available_balance"`
-	UsedMargin       float32 `json:"used_margin"`
-	OrderMargin      float32 `json:"order_margin"`
-	PositionMargin   float32 `json:"position_margin"`
-	OccClosingFee    float32 `json:"occ_closing_fee"`
-	OccFundingFee    float32 `json:"occ_funding_fee"`
-	WalletBalance    float32 `json:"wallet_balance"`
-	RealisedPnl      float32 `json:"realised_pnl"`
-	UnrealisedPnl    float32 `json:"unrealised_pnl"`
-	CumRealisedPnl   float32 `json:"cum_realised_pnl"`
-	GivenCash        float32 `json:"given_cash"`
-	ServiceCash      float32 `json:"service_cash"`
+func (this *Client) GetPublic(path string, param any, ret any) error {
+	return this.c.Get(this.urlPublic(path), param, ret)
 }
 
-/*
-func (this *Client) WalletBalance() (any, bool) {
-	// coin string Currency alias. Returns all wallet balances if not passed
-	resp := Response[map[Coin]Balance]{}
-	err := this.client.Get(this.urlPrivate("wallet/balance"), bybit.UrlParam{
-		//"coin": coin,
-	}, &resp)
+func (this *Client) GetPrivate(path string, param any, ret any) error {
+	return this.c.Get(this.urlPrivate(path), param, ret)
+}
+
+func GetPublic[T any](c *Client, path string, param any) (T, bool) {
+	resp := &Response[T]{}
+	err := c.GetPublic(path, param, resp)
 	return resp.Result, err == nil
 }
 
-func (this *Client) ServerTime() (string, bool) {
-	resp := Response[any]{}
-	err := this.client.Get(this.urlPublic("time"), bybit.UrlParam{}, &resp)
-	return resp.TimeNow, err == nil
+func GetPrivate[T any](c *Client, path string, param any) (T, bool) {
+	resp := &Response[T]{}
+	err := c.GetPrivate(path, param, resp)
+	return resp.Result, err == nil
 }
-*/
+
 func (this *Client) url(access, path string) string {
 	return fmt.Sprintf("v%d/%s/%s", this.version, access, path)
 }
