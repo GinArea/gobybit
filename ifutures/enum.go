@@ -6,21 +6,21 @@ type Side string
 
 const (
 	Buy  Side = "Buy"
-	Sell      = "Sell"
+	Sell Side = "Sell"
 )
 
 // [Symbol (symbol)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#symbol-symbol
-// Symbol
+// using iperpetual.Symbol
 
 // [Currency (currency/coin)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#currency-currency-coin
 type Currency string
 
 const (
 	BTC  Currency = "BTC"
-	ETH           = "ETH"
-	EOS           = "EOS"
-	XRP           = "XRP"
-	USDT          = "USDT"
+	ETH  Currency = "ETH"
+	EOS  Currency = "EOS"
+	XRP  Currency = "XRP"
+	USDT Currency = "USDT"
 )
 
 // [Contract Type (contract_type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#contract-type-contract_type
@@ -28,8 +28,8 @@ type ContractType string
 
 const (
 	InversePerpetual ContractType = "InversePerpetual"
-	LinearPerpetual               = "LinearPerpetual"
-	InverseFutures                = "InverseFutures"
+	LinearPerpetual  ContractType = "LinearPerpetual"
+	InverseFutures   ContractType = "InverseFutures"
 )
 
 // [Contract Status (status)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#contract-status-status
@@ -37,35 +37,35 @@ type ContractStatus string
 
 const (
 	Trading  ContractStatus = "Trading"
-	Settling                = "Settling"
-	Closed                  = "Closed"
+	Settling ContractStatus = "Settling"
+	Closed   ContractStatus = "Closed"
 )
 
 // [Wallet fund type (wallet_fund_type/type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#wallet-fund-type-wallet_fund_type-type
 type WalletFund string
 
 const (
-	Deposit               WalletFund = "Deposit"
-	Withdraw                         = "Withdraw"
-	RealisedPNL                      = "RealisedPNL"
-	Commission                       = "Commission"
-	Refund                           = "Refund"
-	Prize                            = "Prize"
-	ExchangeOrderWithdraw            = "ExchangeOrderWithdraw"
-	ExchangeOrderDeposit             = "ExchangeOrderDeposit"
+	FundDeposit               WalletFund = "Deposit"
+	FundWithdraw              WalletFund = "Withdraw"
+	FundRealisedPNL           WalletFund = "RealisedPNL"
+	FundCommission            WalletFund = "Commission"
+	FundRefund                WalletFund = "Refund"
+	FundPrize                 WalletFund = "Prize"
+	FundExchangeOrderWithdraw WalletFund = "ExchangeOrderWithdraw"
+	FundExchangeOrderDeposit  WalletFund = "ExchangeOrderDeposit"
 )
 
 // [Withdraw status (status)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#withdraw-status-status
 type Withdraw string
 
 const (
-	ToBeConfirmed Withdraw = "ToBeConfirmed"
-	UnderReview            = "UnderReview"
-	Pending                = "Pending"
-	Success                = "Success"
-	CancelByUser           = "CancelByUser"
-	Reject                 = "Reject"
-	Expire                 = "Expire"
+	WithdrawToBeConfirmed Withdraw = "ToBeConfirmed"
+	WithdrawUnderReview   Withdraw = "UnderReview"
+	WithdrawPending       Withdraw = "Pending"
+	WithdrawSuccess       Withdraw = "Success"
+	WithdrawCancelByUser  Withdraw = "CancelByUser"
+	WithdrawReject        Withdraw = "Reject"
+	WithdrawExpire        Withdraw = "Expire"
 )
 
 // [Order type (order_type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#order-type-order_type
@@ -73,7 +73,7 @@ type OrderType string
 
 const (
 	Limit  OrderType = "Limit"
-	Market           = "Market"
+	Market OrderType = "Market"
 )
 
 // [Quantity (qty)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#quantity-qty
@@ -87,9 +87,9 @@ type TimeInForce string
 
 const (
 	GoodTillCancel    TimeInForce = "GoodTillCancel"
-	ImmediateOrCancel             = "ImmediateOrCancel"
-	FillOrKill                    = "FillOrKill"
-	PostOnly                      = "FillOrKill"
+	ImmediateOrCancel TimeInForce = "ImmediateOrCancel"
+	FillOrKill        TimeInForce = "FillOrKill"
+	PostOnly          TimeInForce = "FillOrKill"
 )
 
 // [Trigger price type (trigger_by)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#trigger-price-type-trigger_by
@@ -97,17 +97,17 @@ type TriggerPrice string
 
 const (
 	LastPrice  TriggerPrice = "LastPrice"
-	IndexPrice              = "IndexPrice"
-	MarkPrice               = "MarkPrice"
+	IndexPrice TriggerPrice = "IndexPrice"
+	MarkPrice  TriggerPrice = "MarkPrice"
 )
 
 // [Order (order)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#order-order
 // This is used for sorting orders/trades in a specified direction.
-type Order string
+type SortOrder string
 
 const (
-	Desc Order = "Desc"
-	Asc        = "Asc"
+	Desc SortOrder = "Desc"
+	Asc  SortOrder = "Asc"
 )
 
 // [Order status (order_status/stop_order_status)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#order-status-order_status-stop_order_status
@@ -123,16 +123,16 @@ type OrderStatus string
 
 const (
 	Created         OrderStatus = "Created"
-	New                         = "New"
-	Rejected                    = "Rejected"
-	PartiallyFilled             = "PartiallyFilled"
-	Filled                      = "Filled"
-	PendingCancel               = "PendingCancel"
-	Cancelled                   = "Cancelled"
-	Untriggered                 = "Untriggered"
-	Deactivated                 = "Deactivated"
-	Triggered                   = "Triggered"
-	Active                      = "Active"
+	New             OrderStatus = "New"
+	Rejected        OrderStatus = "Rejected"
+	PartiallyFilled OrderStatus = "PartiallyFilled"
+	Filled          OrderStatus = "Filled"
+	PendingCancel   OrderStatus = "PendingCancel"
+	Cancelled       OrderStatus = "Cancelled"
+	Untriggered     OrderStatus = "Untriggered"
+	Deactivated     OrderStatus = "Deactivated"
+	Triggered       OrderStatus = "Triggered"
+	Active          OrderStatus = "Active"
 )
 
 // [Cancel type (cancel_type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#cancel-type-cancel_type
@@ -144,14 +144,14 @@ type CancelType string
 
 const (
 	CancelByUser        CancelType = "CancelByUser"
-	CancelByReduceOnly             = "CancelByReduceOnly"
-	CancelByPrepareLiq             = "CancelByPrepareLiq"
-	CancelAllBeforeLiq             = "CancelAllBeforeLiq"
-	CancelByPrepareAdl             = "CancelByPrepareAdl"
-	CancelAllBeforeAdl             = "CancelAllBeforeAdl"
-	CancelByAdmin                  = "CancelByAdmin"
-	CancelByTpSlTsClear            = "CancelByTpSlTsClear"
-	CancelByPzSideCh               = "CancelByPzSideCh"
+	CancelByReduceOnly  CancelType = "CancelByReduceOnly"
+	CancelByPrepareLiq  CancelType = "CancelByPrepareLiq"
+	CancelAllBeforeLiq  CancelType = "CancelAllBeforeLiq"
+	CancelByPrepareAdl  CancelType = "CancelByPrepareAdl"
+	CancelAllBeforeAdl  CancelType = "CancelAllBeforeAdl"
+	CancelByAdmin       CancelType = "CancelByAdmin"
+	CancelByTpSlTsClear CancelType = "CancelByTpSlTsClear"
+	CancelByPzSideCh    CancelType = "CancelByPzSideCh"
 )
 
 // [Create type (create_type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#create-type-create_type
@@ -162,17 +162,17 @@ type CreateType string
 
 const (
 	CreateByUser                CreateType = "CreateByUser"
-	CreateByClosing                        = "CreateByClosing"
-	CreateByAdminClosing                   = "CreateByAdminClosing"
-	CreateByStopOrder                      = "CreateByStopOrder"
-	CreateByTakeProfit                     = "CreateByTakeProfit"
-	CreateByStopLoss                       = "CreateByStopLoss"
-	CreateByPartialTakeProfit              = "CreateByPartialTakeProfit"
-	CreateByPartialStopLoss                = "CreateByPartialStopLoss"
-	CreateByTrailingStop                   = "CreateByTrailingStop"
-	CreateByLiq                            = "CreateByLiq"
-	CreateByAdlPassThrough                 = "CreateByAdl_PassThrough"
-	CreateByTakeOverPassThrough            = "CreateByTakeOver_PassThrough"
+	CreateByClosing             CreateType = "CreateByClosing"
+	CreateByAdminClosing        CreateType = "CreateByAdminClosing"
+	CreateByStopOrder           CreateType = "CreateByStopOrder"
+	CreateByTakeProfit          CreateType = "CreateByTakeProfit"
+	CreateByStopLoss            CreateType = "CreateByStopLoss"
+	CreateByPartialTakeProfit   CreateType = "CreateByPartialTakeProfit"
+	CreateByPartialStopLoss     CreateType = "CreateByPartialStopLoss"
+	CreateByTrailingStop        CreateType = "CreateByTrailingStop"
+	CreateByLiq                 CreateType = "CreateByLiq"
+	CreateByAdlPassThrough      CreateType = "CreateByAdl_PassThrough"
+	CreateByTakeOverPassThrough CreateType = "CreateByTakeOver_PassThrough"
 )
 
 // [Exec type (exec_type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#exec-type-exec_type
@@ -180,10 +180,10 @@ type ExecType string
 
 const (
 	Trade     ExecType = "Trade"
-	AdlTrade           = "AdlTrade"
-	Funding            = "Funding"
-	BustTrade          = "BustTrade"
-	Settle             = "Settle"
+	AdlTrade  ExecType = "AdlTrade"
+	Funding   ExecType = "Funding"
+	BustTrade ExecType = "BustTrade"
+	Settle    ExecType = "Settle"
 )
 
 // [Liquidity type (last_liquidity_ind)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#liquidity-type-last_liquidity_ind
@@ -193,7 +193,7 @@ type Liquidity string
 
 const (
 	LiquidityAdded   Liquidity = "AddedLiquidity"
-	LiquidityRemoved           = "RemovedLiquidity"
+	LiquidityRemoved Liquidity = "RemovedLiquidity"
 )
 
 // [Tick direction type (tick_direction)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#tick-direction-type-tick_direction
@@ -206,9 +206,9 @@ type TickDirection string
 
 const (
 	TickPlus      TickDirection = "TickPlus"
-	TickZeroPlus                = "TickZeroPlus"
-	TickMinus                   = "TickMinus"
-	TickZeroMinus               = "TickZeroMinus"
+	TickZeroPlus  TickDirection = "TickZeroPlus"
+	TickMinus     TickDirection = "TickMinus"
+	TickZeroMinus TickDirection = "TickZeroMinus"
 )
 
 // [TP/SL mode (tp_sl_mode)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#tp-sl-mode-tp_sl_mode
@@ -219,7 +219,7 @@ type TpSlMode string
 
 const (
 	TpSlFull    TpSlMode = "Full"
-	TpSlPartial          = "Partial"
+	TpSlPartial TpSlMode = "Partial"
 )
 
 // [Kline interval (interval)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#kline-interval-interval
@@ -243,7 +243,7 @@ type StopOrder string
 
 const (
 	TakeProfit   StopOrder = "TakeProfit"
-	StopLoss               = "StopLoss"
-	TrailingStop           = "TrailingStop"
-	Stop                   = "Stop"
+	StopLoss     StopOrder = "StopLoss"
+	TrailingStop StopOrder = "TrailingStop"
+	Stop         StopOrder = "Stop"
 )
