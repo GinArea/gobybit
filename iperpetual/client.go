@@ -1,3 +1,4 @@
+// [Inverse Perpetual] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-introduction
 package iperpetual
 
 import (
@@ -11,7 +12,7 @@ type Client struct {
 	version int
 }
 
-func New(client *bybit.Client) *Client {
+func NewClient(client *bybit.Client) *Client {
 	return &Client{
 		client:  client,
 		version: 2,
@@ -34,6 +35,7 @@ type Balance struct {
 	ServiceCash      float32 `json:"service_cash"`
 }
 
+/*
 func (this *Client) WalletBalance() (any, bool) {
 	// coin string Currency alias. Returns all wallet balances if not passed
 	resp := Response[map[Coin]Balance]{}
@@ -48,15 +50,15 @@ func (this *Client) ServerTime() (string, bool) {
 	err := this.client.Get(this.urlPublic("time"), bybit.UrlParam{}, &resp)
 	return resp.TimeNow, err == nil
 }
-
-func (this *Client) url(access, uri string) string {
-	return fmt.Sprintf("v%d/%s/%s", this.version, access, uri)
+*/
+func (this *Client) url(access, path string) string {
+	return fmt.Sprintf("v%d/%s/%s", this.version, access, path)
 }
 
-func (this *Client) urlPublic(uri string) string {
-	return this.url("public", uri)
+func (this *Client) urlPublic(path string) string {
+	return this.url("public", path)
 }
 
-func (this *Client) urlPrivate(uri string) string {
-	return this.url("private", uri)
+func (this *Client) urlPrivate(path string) string {
+	return this.url("private", path)
 }

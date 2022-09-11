@@ -1,9 +1,7 @@
-package bybit
+package transport
 
 import (
 	"bytes"
-	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -89,11 +87,6 @@ func (this *WsClient) processMessage(msg []byte) {
 		i := bytes.IndexByte(m, '"')
 		if i > -1 {
 			name := string(m[:i])
-			/*
-				defer moon.Recover(func(err string) {
-					panic(fmt.Sprintf("%s: %s", name, err))
-				})
-			*/
 			if this.onMessage != nil {
 				this.onMessage(name, msg)
 			}
@@ -101,13 +94,4 @@ func (this *WsClient) processMessage(msg []byte) {
 		}
 	}
 	panic("message type not detected")
-}
-
-func jsonUnmarshal[V any](jsonBlob []byte) V {
-	var v V
-	err := json.Unmarshal(jsonBlob, &v)
-	if err != nil {
-		panic(fmt.Sprint("json unmarshal: ", err))
-	}
-	return v
 }

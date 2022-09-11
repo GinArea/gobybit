@@ -1,4 +1,6 @@
-package bybit
+package spot
+
+import "github.com/tranquiil/bybit/transport"
 
 type WsPublic struct {
 	ws            *WsPublicTiny
@@ -16,7 +18,7 @@ func (this *WsPublic) Shutdown() {
 	this.ws.Shutdown()
 }
 
-func (this *WsPublic) Conf() *WsConf {
+func (this *WsPublic) Conf() *transport.WsConf {
 	return this.ws.Conf()
 }
 
@@ -36,7 +38,7 @@ func (this *WsPublic) Run() {
 	this.ws.Run()
 }
 
-func (this *WsPublic) Subscribe(topic TopicName, symbol string) {
+func (this *WsPublic) Subscribe(topic TopicName, symbol Symbol) {
 	sub, ok := this.subscriptions[topic]
 	if !ok {
 		sub = make(topicSymbolsSet)
@@ -48,7 +50,7 @@ func (this *WsPublic) Subscribe(topic TopicName, symbol string) {
 	}
 }
 
-func (this *WsPublic) Unsubscribe(topic TopicName, symbol string) {
+func (this *WsPublic) Unsubscribe(topic TopicName, symbol Symbol) {
 	sub, ok := this.subscriptions[topic]
 	if ok {
 		delete(sub, symbol)
@@ -58,4 +60,4 @@ func (this *WsPublic) Unsubscribe(topic TopicName, symbol string) {
 	}
 }
 
-type topicSymbolsSet map[string]bool
+type topicSymbolsSet map[Symbol]bool

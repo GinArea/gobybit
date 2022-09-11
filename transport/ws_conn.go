@@ -1,4 +1,4 @@
-package bybit
+package transport
 
 import (
 	"encoding/json"

@@ -1,4 +1,4 @@
-package bybit
+package spot
 
 import (
 	"crypto/hmac"
@@ -8,11 +8,12 @@ import (
 	"time"
 
 	"github.com/msw-x/moon/ulog"
+	"github.com/tranquiil/bybit/transport"
 )
 
 type WsPrivate struct {
 	log    *ulog.Log
-	ws     *WsClient
+	ws     *transport.WsClient
 	key    string
 	secret string
 	userID string
@@ -20,7 +21,7 @@ type WsPrivate struct {
 }
 
 func NewWsPrivate(url string, key string, secret string) *WsPrivate {
-	ws := NewWsClient(url)
+	ws := transport.NewWsClient(url)
 	return &WsPrivate{
 		log:    ulog.New(fmt.Sprintf("ws-private[%s]", ws.ID())),
 		ws:     ws,
@@ -34,7 +35,7 @@ func (this *WsPrivate) Shutdown() {
 	this.ws.Shutdown()
 }
 
-func (this *WsPrivate) Conf() *WsConf {
+func (this *WsPrivate) Conf() *transport.WsConf {
 	return this.ws.Conf()
 }
 
@@ -82,12 +83,12 @@ func (this *WsPrivate) auth() {
 func (this *WsPrivate) processMessage(name string, msg []byte) {
 	switch name {
 	case "pong":
-		v := jsonUnmarshal[struct {
+		v := transport.JsonUnmarshal[struct {
 			Pong string `json:"pong"`
 		}](msg)
 		this.log.Debug("pong:", v.Pong)
 	case "auth":
-		v := jsonUnmarshal[struct {
+		v := transport.JsonUnmarshal[struct {
 			Auth   string `json:"auth"`
 			UserId string `json:"userId"`
 		}](msg)
@@ -98,7 +99,7 @@ func (this *WsPrivate) processMessage(name string, msg []byte) {
 			this.onAuth(success)
 		}
 	case "code":
-		v := jsonUnmarshal[struct {
+		v := transport.JsonUnmarshal[struct {
 			Code        string `json:"code"`
 			Description string `json:"desc"`
 		}](msg)

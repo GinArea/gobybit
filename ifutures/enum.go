@@ -13,14 +13,14 @@ const (
 // Symbol
 
 // [Currency (currency/coin)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#currency-currency-coin
-type Coin string
+type Currency string
 
 const (
-	BTC  Coin = "Buy"
-	ETH       = "ETH"
-	EOS       = "EOS"
-	XRP       = "XRP"
-	USDT      = "USDT"
+	BTC  Currency = "BTC"
+	ETH           = "ETH"
+	EOS           = "EOS"
+	XRP           = "XRP"
+	USDT          = "USDT"
 )
 
 // [Contract Type (contract_type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#contract-type-contract_type

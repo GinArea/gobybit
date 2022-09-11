@@ -1,4 +1,21 @@
-package bybit
+package spot
+
+type TopicName string
+
+const (
+	TopicDepth      TopicName = "depth"
+	TopicKline                = "kline"
+	TopicTrade                = "trade"
+	TopicBookTicker           = "bookTicker"
+	TopicRealtimes            = "realtimes"
+)
+
+type TopicEvent string
+
+const (
+	TopicEventSub    TopicEvent = "sub"
+	TopicEventCancel            = "cancel"
+)
 
 type Topic struct {
 	Name   TopicName   `json:"topic"`
@@ -7,10 +24,10 @@ type Topic struct {
 }
 
 type TopicParams struct {
-	Symbol     string       `json:"symbol"`
-	Binary     string       `json:"binary"`
-	SymbolName string       `json:"symbolName"`
-	KlineType  SpotInterval `json:"klineType"`
+	Symbol     Symbol        `json:"symbol"`
+	Binary     string        `json:"binary"`
+	SymbolName string        `json:"symbolName"`
+	KlineType  KlineInterval `json:"klineType"`
 }
 
 type TopicNotification[T any] struct {
