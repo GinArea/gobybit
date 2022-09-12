@@ -119,7 +119,7 @@ func (this *Client) QueryKline(v QueryKline) ([][]any, bool) {
 
 // [Latest Information for Symbol] https://bybit-exchange.github.io/docs/spot/v1/#t-spot_latestsymbolinfo
 type SymbolLatestInformation struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol *Symbol `param:"symbol"`
 }
 
 func (this SymbolLatestInformation) Do(client *Client) (LatestInformation, bool) {
@@ -139,7 +139,7 @@ type LatestInformation struct {
 	OpenPrice    string `json:"openPrice"`
 }
 
-func (this *Client) SymbolLatestInformation(symbol Symbol) (LatestInformation, bool) {
+func (this *Client) SymbolLatestInformation(symbol *Symbol) (LatestInformation, bool) {
 	return SymbolLatestInformation{Symbol: symbol}.Do(this)
 }
 

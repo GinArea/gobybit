@@ -238,6 +238,22 @@ const (
 // M - 1 month
 type KlineInterval string
 
+const (
+	Interval1m  KlineInterval = "1"
+	Interval3m  KlineInterval = "3"
+	Interval5m  KlineInterval = "5"
+	Interval15m KlineInterval = "15"
+	Interval30m KlineInterval = "30"
+	Interval1h  KlineInterval = "60"
+	Interval2h  KlineInterval = "120"
+	Interval4h  KlineInterval = "240"
+	Interval6h  KlineInterval = "360"
+	Interval12h KlineInterval = "720"
+	Interval1d  KlineInterval = "D"
+	Interval1w  KlineInterval = "W"
+	Interval1M  KlineInterval = "M"
+)
+
 // [Stop order type (stop_order_type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#stop-order-type-stop_order_type
 type StopOrder string
 
