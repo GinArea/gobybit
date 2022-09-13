@@ -122,8 +122,13 @@ type SymbolLatestInformation struct {
 	Symbol *Symbol `param:"symbol"`
 }
 
-func (this SymbolLatestInformation) Do(client *Client) (LatestInformation, bool) {
-	return GetQuote[LatestInformation](client, "ticker/24hr", this)
+func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, bool) {
+	path := "ticker/24hr"
+	if this.Symbol == nil {
+		return GetQuote[[]LatestInformation](client, path, this)
+	}
+	r, ok := GetQuote[LatestInformation](client, path, this)
+	return []LatestInformation{r}, ok
 }
 
 type LatestInformation struct {
@@ -139,7 +144,7 @@ type LatestInformation struct {
 	OpenPrice    string `json:"openPrice"`
 }
 
-func (this *Client) SymbolLatestInformation(symbol *Symbol) (LatestInformation, bool) {
+func (this *Client) SymbolLatestInformation(symbol *Symbol) ([]LatestInformation, bool) {
 	return SymbolLatestInformation{Symbol: symbol}.Do(this)
 }
 
