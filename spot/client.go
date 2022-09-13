@@ -21,12 +21,16 @@ func NewClient(client *transport.Client) *Client {
 	}
 }
 
-func (this *Client) Get(path string, param any, ret any) error {
-	return this.c.Get(this.url(path), param, ret)
+func (this *Client) GetPublic(path string, param any, ret any) error {
+	return this.c.GetPublic(this.url(path), param, ret)
 }
 
 func (this *Client) GetQuote(path string, param any, ret any) error {
-	return this.c.Get(this.urlQuote(path), param, ret)
+	return this.c.GetPublic(this.urlQuote(path), param, ret)
+}
+
+func (this *Client) Get(path string, param any, ret any) error {
+	return this.c.Get(this.url(path), param, ret)
 }
 
 func (this *Client) Post(path string, param any, ret any) error {
@@ -37,15 +41,21 @@ func (this *Client) Delete(path string, param any, ret any) error {
 	return this.c.Delete(this.url(path), param, ret)
 }
 
-func Get[T any](c *Client, path string, param any) (T, bool) {
+func GetPublic[T any](c *Client, path string, param any) (T, bool) {
 	resp := &Response[T]{}
-	err := c.Get(path, param, resp)
+	err := c.GetPublic(path, param, resp)
 	return resp.Result, err == nil
 }
 
 func GetQuote[T any](c *Client, path string, param any) (T, bool) {
 	resp := &Response[T]{}
 	err := c.GetQuote(path, param, resp)
+	return resp.Result, err == nil
+}
+
+func Get[T any](c *Client, path string, param any) (T, bool) {
+	resp := &Response[T]{}
+	err := c.Get(path, param, resp)
 	return resp.Result, err == nil
 }
 

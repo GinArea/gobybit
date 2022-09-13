@@ -20,7 +20,7 @@ type SymbolInfo struct {
 }
 
 func (this *Client) QuerySymbol() ([]SymbolInfo, bool) {
-	return Get[[]SymbolInfo](this, "symbols", nil)
+	return GetPublic[[]SymbolInfo](this, "symbols", nil)
 }
 
 func (this *Client) QuerySymbolNames() ([]string, bool) {

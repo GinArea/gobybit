@@ -7,6 +7,6 @@ func (this *Client) ServerTime() (uint64, bool) {
 	type result struct {
 		Time uint64 `json:"serverTime"`
 	}
-	r, ok := Get[result](this, "time", nil)
+	r, ok := GetPublic[result](this, "time", nil)
 	return r.Time, ok
 }

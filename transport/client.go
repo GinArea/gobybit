@@ -52,7 +52,7 @@ func (this *Client) WithLogUri(logUri bool) *Client {
 	return this
 }
 
-func (this *Client) Request(method string, path string, param any, ret any) (err error) {
+func (this *Client) Request(method string, path string, param any, ret any, sign bool) (err error) {
 	logf := func(format string, a ...any) {
 		m := fmt.Sprintf(format, a...)
 		if err == nil {
@@ -70,11 +70,13 @@ func (this *Client) Request(method string, path string, param any, ret any) (err
 	}
 	u.Path = path
 	p := NewUrlParam().From(param).Make()
-	p = this.signQuery(p)
+	if sign {
+		p = this.signQuery(p)
+	}
 	u.RawQuery = p.Encode()
 	u.RawQuery = strings.Replace(u.RawQuery, "%2C", ",", -1)
 	if this.logUri {
-		ulog.Debug("uri:", u.String())
+		this.log.Debug("uri:", u.String())
 	}
 	req, err := http.NewRequest(method, u.String(), nil)
 	if err != nil {
@@ -131,16 +133,28 @@ func (this *Client) Request(method string, path string, param any, ret any) (err
 	return
 }
 
+func (this *Client) RequestPublic(method string, path string, param any, ret any) error {
+	return this.Request(method, path, param, ret, false)
+}
+
+func (this *Client) RequestPrivate(method string, path string, param any, ret any) error {
+	return this.Request(method, path, param, ret, true)
+}
+
+func (this *Client) GetPublic(path string, param any, ret any) error {
+	return this.RequestPublic(http.MethodGet, path, param, ret)
+}
+
 func (this *Client) Get(path string, param any, ret any) error {
-	return this.Request(http.MethodGet, path, param, ret)
+	return this.RequestPrivate(http.MethodGet, path, param, ret)
 }
 
 func (this *Client) Post(path string, param any, ret any) error {
-	return this.Request(http.MethodPost, path, param, ret)
+	return this.RequestPrivate(http.MethodPost, path, param, ret)
 }
 
 func (this *Client) Delete(path string, param any, ret any) error {
-	return this.Request(http.MethodDelete, path, param, ret)
+	return this.RequestPrivate(http.MethodDelete, path, param, ret)
 }
 
 func (this *Client) signQuery(src url.Values) url.Values {

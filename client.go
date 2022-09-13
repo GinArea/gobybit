@@ -22,6 +22,11 @@ func (this *Client) WithProxy(proxy string) *Client {
 	return this
 }
 
+func (this *Client) WithLogUri(logUri bool) *Client {
+	this.c.WithLogUri(logUri)
+	return this
+}
+
 func (this *Client) InversePerpetual() *iperpetual.Client {
 	return iperpetual.NewClient(this.c)
 }
