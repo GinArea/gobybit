@@ -15,16 +15,18 @@ import (
 	"strings"
 	"time"
 
+	"github.com/msw-x/moon/ufmt"
 	"github.com/msw-x/moon/ulog"
 )
 
 type Client struct {
-	log    *ulog.Log
-	url    string
-	key    string
-	secret string
-	proxy  *url.URL
-	logUri bool
+	log         *ulog.Log
+	url         string
+	key         string
+	secret      string
+	proxy       *url.URL
+	logUri      bool
+	logResponse bool
 }
 
 func NewClient(url, key, secret string) *Client {
@@ -49,6 +51,11 @@ func (this *Client) WithProxy(proxy string) *Client {
 
 func (this *Client) WithLogUri(logUri bool) *Client {
 	this.logUri = logUri
+	return this
+}
+
+func (this *Client) WithLogResponse(logResponse bool) *Client {
+	this.logResponse = logResponse
 	return this
 }
 
@@ -100,14 +107,23 @@ func (this *Client) Request(method string, path string, param any, ret any, sign
 		return
 	}
 	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
 	m := fmt.Sprintf("%s %s", resp.Status, elapsedTime.String())
-	if resp.ContentLength >= 0 {
-		//m = fmt.Sprintf("%s %s", m, ufmt.ByteSizeDense(resp.ContentLength))
+	if len(body) >= 0 {
+		m = fmt.Sprintf("%s %s", m, ufmt.ByteSizeDense(len(body)))
+		if this.logResponse {
+			this.log.Debug("response:", string(body))
+		}
 	}
 	ok := resp.StatusCode == http.StatusOK
 	if ok {
+		if len(body) == 0 {
+			err = errors.New("response body is empty")
+			logf("%v", err)
+			return
+		}
 		timestamp := time.Now()
-		err = json.NewDecoder(resp.Body).Decode(ret)
+		err = json.Unmarshal(body, ret)
 		if err == nil {
 			elapsedTime := time.Since(timestamp).Truncate(time.Millisecond)
 			if elapsedTime > time.Millisecond {

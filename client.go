@@ -27,6 +27,11 @@ func (this *Client) WithLogUri(logUri bool) *Client {
 	return this
 }
 
+func (this *Client) WithLogResponse(logResponse bool) *Client {
+	this.c.WithLogResponse(logResponse)
+	return this
+}
+
 func (this *Client) InversePerpetual() *iperpetual.Client {
 	return iperpetual.NewClient(this.c)
 }
