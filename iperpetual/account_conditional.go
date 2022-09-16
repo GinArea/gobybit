@@ -62,7 +62,7 @@ func (this *Client) PlaceConditionalOrder(v PlaceConditionalOrder) (ConditionalO
 
 // [Get Conditional Order] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getcond
 func (this OrderList) DoConditional(client *Client) (ConditionalOrderListResult, bool) {
-	return GetPrivate[ConditionalOrderListResult](client, "stop-order/list", this)
+	return Get[ConditionalOrderListResult](client, "stop-order/list", this)
 }
 
 type ConditionalOrderListResult struct {
@@ -149,9 +149,9 @@ func (this *Client) ReplaceConditionalOrder(v ReplaceConditionalOrder) (string, 
 // When only symbol is passed, the response uses a different structure.
 func (this QueryOrder) DoConditional(client *Client) ([]ConditionalOrder, bool) {
 	if this.OnlySymbol() {
-		return GetPrivate[[]ConditionalOrder](client, "stop-order", this)
+		return Get[[]ConditionalOrder](client, "stop-order", this)
 	}
-	r, ok := GetPrivate[ConditionalOrder](client, "stop-order", this)
+	r, ok := Get[ConditionalOrder](client, "stop-order", this)
 	return []ConditionalOrder{r}, ok
 }
 

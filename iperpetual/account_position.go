@@ -8,9 +8,9 @@ type GetPosition struct {
 
 func (this GetPosition) Do(client *Client) ([]PositionItem, bool) {
 	if this.Symbol == nil {
-		return GetPrivate[[]PositionItem](client, "position/list", this)
+		return Get[[]PositionItem](client, "position/list", this)
 	}
-	r, ok := GetPrivate[PositionItem](client, "position/list", this)
+	r, ok := Get[PositionItem](client, "position/list", this)
 	return []PositionItem{r}, ok
 }
 
@@ -178,7 +178,7 @@ type GetTradeRecords struct {
 }
 
 func (this GetTradeRecords) Do(client *Client) (TradeRecords, bool) {
-	return GetPrivate[TradeRecords](client, "execution/list", this)
+	return Get[TradeRecords](client, "execution/list", this)
 }
 
 type TradeRecord struct {
@@ -226,7 +226,7 @@ type ClosedProfitLoss struct {
 }
 
 func (this ClosedProfitLoss) Do(client *Client) (ClosedProfitLossResult, bool) {
-	return GetPrivate[ClosedProfitLossResult](client, "trade/closed-pnl/list", this)
+	return Get[ClosedProfitLossResult](client, "trade/closed-pnl/list", this)
 }
 
 type ClosedData struct {

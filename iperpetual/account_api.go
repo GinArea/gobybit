@@ -5,7 +5,7 @@ type GetKeyInfo struct {
 }
 
 func (this GetKeyInfo) Do(client *Client) ([]KeyInfo, bool) {
-	return GetPrivate[[]KeyInfo](client, "account/api-key", this)
+	return Get[[]KeyInfo](client, "account/api-key", this)
 }
 
 type KeyInfo struct {

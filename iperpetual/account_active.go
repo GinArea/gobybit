@@ -73,7 +73,7 @@ type OrderList struct {
 }
 
 func (this OrderList) Do(client *Client) (OrderListResult, bool) {
-	return GetPrivate[OrderListResult](client, "order/list", this)
+	return Get[OrderListResult](client, "order/list", this)
 }
 
 type OrderListResult struct {
@@ -176,9 +176,9 @@ func (this QueryOrder) OnlySymbol() bool {
 // When only symbol is passed, the response uses a different structure.
 func (this QueryOrder) Do(client *Client) ([]Order, bool) {
 	if this.OnlySymbol() {
-		return GetPrivate[[]Order](client, "order", this)
+		return Get[[]Order](client, "order", this)
 	}
-	r, ok := GetPrivate[Order](client, "order", this)
+	r, ok := Get[Order](client, "order", this)
 	return []Order{r}, ok
 }
 

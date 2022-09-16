@@ -23,7 +23,7 @@ func (this *Client) GetPublic(path string, param any, ret any) error {
 	return this.c.Get(this.urlPublic(path), param, ret)
 }
 
-func (this *Client) GetPrivate(path string, param any, ret any) error {
+func (this *Client) Get(path string, param any, ret any) error {
 	return this.c.Get(this.urlPrivate(path), param, ret)
 }
 
@@ -37,9 +37,9 @@ func GetPublic[T any](c *Client, path string, param any) (T, bool) {
 	return resp.Result, err == nil
 }
 
-func GetPrivate[T any](c *Client, path string, param any) (T, bool) {
+func Get[T any](c *Client, path string, param any) (T, bool) {
 	resp := &Response[T]{}
-	err := c.GetPrivate(path, param, resp)
+	err := c.Get(path, param, resp)
 	return resp.Result, err == nil
 }
 

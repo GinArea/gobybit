@@ -7,7 +7,7 @@ type WalletBalance struct {
 }
 
 func (this WalletBalance) Do(client *Client) (map[Currency]Balance, bool) {
-	return GetPrivate[map[Currency]Balance](client, "wallet/balance", this)
+	return Get[map[Currency]Balance](client, "wallet/balance", this)
 }
 
 type Balance struct {
