@@ -158,8 +158,8 @@ func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, bool
 type PublicTradingRecord struct {
 	ID     int     `json:"id"`
 	Symbol Symbol  `json:"symbol"`
-	price  float64 `json:"price"`
-	qty    int     `json:"qty"`
+	Price  float64 `json:"price"`
+	Qty    int     `json:"qty"`
 	Side   Side    `json:"side"`
 	Time   string  `json:"time"`
 }
