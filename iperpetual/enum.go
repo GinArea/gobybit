@@ -119,8 +119,8 @@ const (
 type SortOrder string
 
 const (
-	Desc SortOrder = "Desc"
-	Asc  SortOrder = "Asc"
+	Desc SortOrder = "desc"
+	Asc  SortOrder = "asc"
 )
 
 // [Order status (order_status/stop_order_status)] https://bybit-exchange.github.io/docs/futuresV2/inverse/#order-status-order_status-stop_order_status
