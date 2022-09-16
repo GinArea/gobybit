@@ -26,6 +26,6 @@ type Balance struct {
 	ServiceCash      float32 `json:"service_cash"`
 }
 
-func (this *Client) WalletBalance(v WalletBalance) (map[Currency]Balance, bool) {
-	return v.Do(this)
+func (this *Client) WalletBalance(currency *Currency) (map[Currency]Balance, bool) {
+	return WalletBalance{Currency: currency}.Do(this)
 }
