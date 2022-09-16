@@ -59,8 +59,8 @@ type PositionItem struct {
 	IsValid bool         `json:"is_valid"`
 }
 
-func (this *Client) GetPosition(v GetPosition) ([]PositionItem, bool) {
-	return v.Do(this)
+func (this *Client) GetPosition(symbol *iperpetual.Symbol) ([]PositionItem, bool) {
+	return GetPosition{Symbol: symbol}.Do(this)
 }
 
 // [Change Margin] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-changemargin
