@@ -5,6 +5,7 @@ import (
 	"github.com/tranquiil/bybit/iperpetual"
 	"github.com/tranquiil/bybit/spot"
 	"github.com/tranquiil/bybit/transport"
+	"github.com/tranquiil/bybit/uperpetual"
 )
 
 type Client struct {
@@ -34,6 +35,10 @@ func (this *Client) WithLogResponse(logResponse bool) *Client {
 
 func (this *Client) InversePerpetual() *iperpetual.Client {
 	return iperpetual.NewClient(this.c)
+}
+
+func (this *Client) UsdtPerpetual() *uperpetual.Client {
+	return uperpetual.NewClient(this.c)
 }
 
 func (this *Client) InverseFutures() *ifutures.Client {
