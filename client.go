@@ -1,6 +1,7 @@
 package bybit
 
 import (
+	"github.com/tranquiil/bybit/account"
 	"github.com/tranquiil/bybit/ifutures"
 	"github.com/tranquiil/bybit/iperpetual"
 	"github.com/tranquiil/bybit/spot"
@@ -47,4 +48,8 @@ func (this *Client) InverseFutures() *ifutures.Client {
 
 func (this *Client) Spot() *spot.Client {
 	return spot.NewClient(this.c)
+}
+
+func (this *Client) AccountAsset() *account.Client {
+	return account.NewClient(this.c)
 }
