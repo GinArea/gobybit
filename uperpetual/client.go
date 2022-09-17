@@ -4,6 +4,7 @@ package uperpetual
 import (
 	"fmt"
 
+	"github.com/tranquiil/bybit/iperpetual"
 	"github.com/tranquiil/bybit/transport"
 )
 
@@ -57,4 +58,8 @@ func (this *Client) urlPublic(path string) string {
 
 func (this *Client) urlPrivate(path string) string {
 	return this.url("private", path)
+}
+
+func (this *Client) iperpetual() *iperpetual.Client {
+	return iperpetual.NewClient(this.c)
 }
