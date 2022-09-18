@@ -3,11 +3,12 @@ package account
 
 // [Create Internal Transfer] https://bybit-exchange.github.io/docs/account_asset/#t-createinternaltransfer
 type CreateInternalTransfer struct {
-	TransferID      string   `param:"transfer_id"`
-	Coin            Currency `param:"coin"`
-	Amount          string   `param:"amount"`
-	FromAccountType string   `param:"from_account_type"`
-	ToAccountType   string   `param:"to_account_type"`
+	// param as json on body
+	TransferID      string   `json:"transfer_id"`
+	Coin            Currency `json:"coin"`
+	Amount          string   `json:"amount"`
+	FromAccountType string   `json:"from_account_type"`
+	ToAccountType   string   `json:"to_account_type"`
 }
 
 func (this CreateInternalTransfer) Do(client *Client) (string, bool) {

@@ -1,6 +1,7 @@
 package transport
 
 import (
+	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/json"
@@ -76,16 +77,28 @@ func (this *Client) Request(method string, path string, param any, ret any, sign
 		return
 	}
 	u.Path = path
-	p := NewUrlParam().From(param).Make()
+	p := NewParam().From(param)
+	vals := p.Make()
 	if sign {
-		p = this.signQuery(p)
+		vals = this.signQuery(vals)
 	}
-	u.RawQuery = p.Encode()
-	u.RawQuery = strings.Replace(u.RawQuery, "%2C", ",", -1)
+	var reqbody []byte
+	if p.IsJson {
+		m := make(map[string]any)
+		for name, list := range vals {
+			if len(list) > 0 {
+				m[name] = list[0]
+			}
+		}
+		reqbody, _ = json.Marshal(m)
+	} else {
+		u.RawQuery = vals.Encode()
+		u.RawQuery = strings.Replace(u.RawQuery, "%2C", ",", -1)
+	}
 	if this.logUri {
 		this.log.Debug("uri:", u.String())
 	}
-	req, err := http.NewRequest(method, u.String(), nil)
+	req, err := http.NewRequest(method, u.String(), bytes.NewReader(reqbody))
 	if err != nil {
 		logf("init request fail: %v", err)
 		return

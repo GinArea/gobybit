@@ -8,24 +8,32 @@ import (
 )
 
 type ParamTag struct {
-	Name  string
-	IsPtr bool
-	Ok    bool
+	Name   string
+	IsPtr  bool
+	IsJson bool
+	Ok     bool
 }
 
 func GetParamTag(f reflect.StructField) (tag ParamTag) {
 	tag.IsPtr = f.Type.Kind() == reflect.Ptr
 	tag.Name, tag.Ok = f.Tag.Lookup("param")
+	if !tag.Ok {
+		tag.Name, tag.Ok = f.Tag.Lookup("json")
+		tag.IsJson = tag.Ok
+	}
 	return
 }
 
-type UrlParam map[string]any
-
-func NewUrlParam() UrlParam {
-	return make(map[string]any)
+type Param struct {
+	IsJson bool
+	m      map[string]any
 }
 
-func (this UrlParam) From(v any) UrlParam {
+func NewParam() Param {
+	return Param{m: make(map[string]any)}
+}
+
+func (this Param) From(v any) Param {
 	if v == nil {
 		return this
 	}
@@ -36,7 +44,7 @@ func (this UrlParam) From(v any) UrlParam {
 	for i := 0; i < rv.NumField(); i++ {
 		f := rv.Type().Field(i)
 		if f.Anonymous && f.Type.Kind() == reflect.Struct {
-			for k, v := range NewUrlParam().From(rv.Field(i).Interface()) {
+			for k, v := range NewParam().From(rv.Field(i).Interface()).m {
 				this.Add(k, v)
 			}
 			continue
@@ -51,14 +59,19 @@ func (this UrlParam) From(v any) UrlParam {
 				vl = rv.Field(i).Elem()
 			}
 			this.Add(tag.Name, vl.Interface())
+			this.IsJson = tag.IsJson
 		}
 	}
 	return this
 }
 
-func (this UrlParam) Make() url.Values {
+func (this *Param) Add(name string, val any) {
+	this.m[name] = val
+}
+
+func (this Param) Make() url.Values {
 	v := url.Values{}
-	for name, val := range this {
+	for name, val := range this.m {
 		if reflect.TypeOf(val).Kind() == reflect.Slice {
 			l := []string{}
 			s := reflect.ValueOf(val)
@@ -71,8 +84,4 @@ func (this UrlParam) Make() url.Values {
 		}
 	}
 	return v
-}
-
-func (this *UrlParam) Add(name string, val any) {
-	(*this)[name] = val
 }
