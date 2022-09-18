@@ -25,8 +25,9 @@ func GetParamTag(f reflect.StructField) (tag ParamTag) {
 }
 
 type Param struct {
-	IsJson bool
-	m      map[string]any
+	IsJson     bool
+	HeaderSign bool
+	m          map[string]any
 }
 
 func NewParam() Param {
@@ -44,8 +45,12 @@ func (this Param) From(v any) Param {
 	for i := 0; i < rv.NumField(); i++ {
 		f := rv.Type().Field(i)
 		if f.Anonymous && f.Type.Kind() == reflect.Struct {
-			for k, v := range NewParam().From(rv.Field(i).Interface()).m {
-				this.Add(k, v)
+			if f.Type.Name() == reflect.TypeOf(HeaderSign{}).Name() {
+				this.HeaderSign = true
+			} else {
+				for k, v := range NewParam().From(rv.Field(i).Interface()).m {
+					this.Add(k, v)
+				}
 			}
 			continue
 		}
@@ -84,4 +89,7 @@ func (this Param) Make() url.Values {
 		}
 	}
 	return v
+}
+
+type HeaderSign struct {
 }

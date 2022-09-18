@@ -79,8 +79,13 @@ func (this *Client) Request(method string, path string, param any, ret any, sign
 	u.Path = path
 	p := NewParam().From(param)
 	vals := p.Make()
+	var signHeader func(http.Header)
 	if sign {
-		vals = this.signQuery(vals)
+		if p.HeaderSign {
+			signHeader = this.signQueryHeader(vals)
+		} else {
+			vals = this.signQuery(vals)
+		}
 	}
 	var reqbody []byte
 	if p.IsJson {
@@ -107,6 +112,13 @@ func (this *Client) Request(method string, path string, param any, ret any, sign
 		req.Header.Set("Referer", "GinArea")
 		req.Header.Set("x-referer", "GinArea")
 	}
+	if signHeader != nil {
+		ulog.Debug("signHeader")
+		signHeader(req.Header)
+	}
+	//
+	ulog.Debug(req.Header)
+	//
 	client := &http.Client{}
 	if this.proxy != nil {
 		client.Transport = &http.Transport{
@@ -188,14 +200,25 @@ func (this *Client) Delete(path string, param any, ret any) error {
 
 func (this *Client) signQuery(src url.Values) url.Values {
 	i := int(time.Now().UTC().UnixNano() / int64(time.Millisecond))
-	now := strconv.Itoa(i)
+	ts := strconv.Itoa(i)
 	if src == nil {
 		src = url.Values{}
 	}
 	src.Add("api_key", this.key)
-	src.Add("timestamp", now)
+	src.Add("timestamp", ts)
 	src.Add("sign", makeSignature(src, this.secret))
 	return src
+}
+
+func (this *Client) signQueryHeader(src url.Values) func(http.Header) {
+	i := int(time.Now().UTC().UnixNano() / int64(time.Millisecond))
+	ts := strconv.Itoa(i)
+	sign := makeSignature(src, this.secret)
+	return func(h http.Header) {
+		h.Set("X-BAPI-API-KEY", this.key)
+		h.Set("X-BAPI-TIMESTAMP", ts)
+		h.Set("X-BAPI-SIGN", sign)
+	}
 }
 
 func makeSignature(src url.Values, key string) string {
