@@ -5,6 +5,7 @@ import (
 	"github.com/tranquiil/bybit/ifutures"
 	"github.com/tranquiil/bybit/iperpetual"
 	"github.com/tranquiil/bybit/spot"
+	"github.com/tranquiil/bybit/spotv3"
 	"github.com/tranquiil/bybit/transport"
 	"github.com/tranquiil/bybit/uperpetual"
 )
@@ -48,6 +49,10 @@ func (this *Client) InverseFutures() *ifutures.Client {
 
 func (this *Client) Spot() *spot.Client {
 	return spot.NewClient(this.c)
+}
+
+func (this *Client) Spotv3() *spotv3.Client {
+	return spotv3.NewClient(this.c)
 }
 
 func (this *Client) AccountAsset() *account.Client {
