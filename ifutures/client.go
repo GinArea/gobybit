@@ -39,7 +39,7 @@ func Post[T any](c *Client, path string, param any) (T, bool) {
 }
 
 func (this *Client) url(path string) string {
-	return fmt.Sprintf("/futures/private/%s", path)
+	return fmt.Sprintf("futures/private/%s", path)
 }
 
 func (this *Client) iperpetual() *iperpetual.Client {
