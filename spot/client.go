@@ -8,17 +8,11 @@ import (
 )
 
 type Client struct {
-	c       *transport.Client
-	name    string
-	version int
+	c *transport.Client
 }
 
 func NewClient(client *transport.Client) *Client {
-	return &Client{
-		c:       client,
-		name:    "spot",
-		version: 1,
-	}
+	return &Client{c: client}
 }
 
 func (this *Client) GetPublic(path string, param any, ret any) error {
@@ -72,9 +66,9 @@ func Delete[T any](c *Client, path string, param any) (T, bool) {
 }
 
 func (this *Client) url(uri string) string {
-	return fmt.Sprintf("%s/v%d/%s", this.name, this.version, uri)
+	return fmt.Sprintf("spot/v1/%s", uri)
 }
 
 func (this *Client) urlQuote(uri string) string {
-	return fmt.Sprintf("%s/quote/v%d/%s", this.name, this.version, uri)
+	return fmt.Sprintf("spot/quote/v1/%s", uri)
 }

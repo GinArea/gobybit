@@ -13,9 +13,7 @@ type Client struct {
 }
 
 func NewClient(client *transport.Client) *Client {
-	return &Client{
-		c: client,
-	}
+	return &Client{c: client}
 }
 
 func (this *Client) GetPublic(path string, param any, ret any) error {

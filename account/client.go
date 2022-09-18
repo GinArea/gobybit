@@ -8,15 +8,11 @@ import (
 )
 
 type Client struct {
-	c       *transport.Client
-	version int
+	c *transport.Client
 }
 
 func NewClient(client *transport.Client) *Client {
-	return &Client{
-		c:       client,
-		version: 1,
-	}
+	return &Client{c: client}
 }
 
 func (this *Client) Get(path string, param any, ret any) error {
@@ -40,7 +36,7 @@ func Post[T any](c *Client, path string, param any) (T, bool) {
 }
 
 func (this *Client) url(access, path string) string {
-	return fmt.Sprintf("asset/v%d/%s/%s", this.version, access, path)
+	return fmt.Sprintf("asset/v1/%s/%s", access, path)
 }
 
 func (this *Client) urlPublic(path string) string {
