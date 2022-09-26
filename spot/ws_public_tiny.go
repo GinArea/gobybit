@@ -8,9 +8,8 @@ import (
 )
 
 type WsPublicTiny struct {
-	log         *ulog.Log
-	ws          *transport.WsClient
-	onConnected func()
+	log *ulog.Log
+	ws  *transport.WsClient
 }
 
 func NewWsPublicTiny(url string) *WsPublicTiny {
