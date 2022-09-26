@@ -196,7 +196,7 @@ func (this *WsConn) read() ([]byte, error) {
 	ws.SetReadDeadline(time.Now().Add(this.conf.ReadTimeout))
 	_, msg, err := ws.ReadMessage()
 	if this.conf.LogIO && this.do.Do() {
-		this.log.Debugf("recv: %d B: %s\n", len(msg), string(msg))
+		this.log.Debugf("recv: %d B: %s", len(msg), string(msg))
 	}
 	return msg, err
 }
@@ -211,7 +211,7 @@ func (this *WsConn) write(buf []byte) error {
 	ws.SetWriteDeadline(time.Now().Add(this.conf.WriteTimeout))
 	err := ws.WriteMessage(websocket.TextMessage, buf)
 	if this.conf.LogIO {
-		this.log.Debugf("sent: %d B: %s\n", len(buf), string(buf))
+		this.log.Debugf("sent: %d B: %s", len(buf), string(buf))
 	}
 	return err
 }
