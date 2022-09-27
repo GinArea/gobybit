@@ -14,7 +14,6 @@ type WsPrivate struct {
 	ws     *WsClient
 	key    string
 	secret string
-	userID string
 }
 
 func NewWsPrivate(key string, secret string) *WsPrivate {
@@ -45,9 +44,6 @@ func (this *WsPrivate) Connected() bool {
 func (this *WsPrivate) Run() {
 	this.ws.SetOnConnected(func() {
 		this.auth()
-	})
-	this.ws.SetOnDisconnected(func() {
-		this.userID = ""
 	})
 	this.ws.Run()
 }
