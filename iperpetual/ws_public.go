@@ -1,7 +1,6 @@
 package iperpetual
 
 import (
-	"github.com/gotidy/ptr"
 	"github.com/tranquiil/bybit/transport"
 )
 
@@ -41,17 +40,17 @@ func (this *WsPublic) SetOnConnected(onConnected func()) {
 }
 
 func (this *WsPublic) SubscribeOrderBook25(symbol Symbol) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicOrderBook25, Symbol: ptr.Of(symbol)})
+	return this.ws.Subscribe(Subscription{Topic: TopicOrderBook25, Symbol: &symbol})
 }
 func (this *WsPublic) UnsubscribeOrderBook25(symbol Symbol) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicOrderBook25, Symbol: ptr.Of(symbol)})
+	return this.ws.Unsubscribe(Subscription{Topic: TopicOrderBook25, Symbol: &symbol})
 }
 
 func (this *WsPublic) SubscribeOrderBook200(symbol Symbol) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: ptr.Of(symbol)})
+	return this.ws.Subscribe(Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: &symbol})
 }
 func (this *WsPublic) UnsubscribeOrderBook200(symbol Symbol) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: ptr.Of(symbol)})
+	return this.ws.Unsubscribe(Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: &symbol})
 }
 
 func (this *WsPublic) SubscribeTrade() bool {
@@ -69,17 +68,17 @@ func (this *WsPublic) UnsubscribeInsurance() bool {
 }
 
 func (this *WsPublic) SubscribeInstrument(symbol Symbol) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: ptr.Of(symbol)})
+	return this.ws.Subscribe(Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: &symbol})
 }
 func (this *WsPublic) UnsubscribeInstrument(symbol Symbol) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: ptr.Of(symbol)})
+	return this.ws.Unsubscribe(Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: &symbol})
 }
 
 func (this *WsPublic) SubscribeKline(symbol Symbol, interval KlineInterval) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: ptr.Of(symbol)})
+	return this.ws.Subscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: &symbol})
 }
 func (this *WsPublic) UnsubscribeKline(symbol Symbol, interval KlineInterval) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: ptr.Of(symbol)})
+	return this.ws.Unsubscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: &symbol})
 }
 
 func (this *WsPublic) SubscribeLiquidation() bool {
