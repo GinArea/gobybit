@@ -18,3 +18,19 @@ documentation.
 
     import "github.com/ginarea/gobybit"
 
+### Example
+```
+package main
+
+import "github.com/ginarea/gobybit"
+
+func main() {
+    client := gobybit.NewClient()
+    client.InversePerpetual().ServerTime()
+    client.UsdtPerpetual().ServerTime()
+    client.InverseFutures().ServerTime()
+    client.Spot().ServerTime()
+    client.Spotv3().ServerTime()
+    client.AccountAsset()
+}
+```
