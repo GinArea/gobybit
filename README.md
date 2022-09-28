@@ -1,4 +1,4 @@
-# Bybit
+# gobybit
 
 gobybit is a [Go](http://golang.org/) module for using the [ByBit's](https://www.bybit.com/) Rest & Websocket API
 
