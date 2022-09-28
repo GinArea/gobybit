@@ -1,4 +1,4 @@
-2package spot
+package spot
 
 import "github.com/ginarea/gobybit/transport"
 
