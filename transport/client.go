@@ -125,12 +125,8 @@ func (this *Client) Request(method string, path string, param any, ret any, sign
 		req.Header.Set("x-referer", "GinArea")
 	}
 	if signHeader != nil {
-		ulog.Debug("signHeader")
 		signHeader(req.Header)
 	}
-	//
-	ulog.Debug(req.Header)
-	//
 	client := &http.Client{}
 	if this.proxy != nil {
 		client.Transport = &http.Transport{
