@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/ginarea/gobybit/iperpetual"
+	"github.com/ginarea/gobybit/transport"
 	"github.com/msw-x/moon"
 	"github.com/msw-x/moon/ufmt"
 	"github.com/msw-x/moon/ulog"
-	"github.com/ginarea/gobybit/iperpetual"
-	"github.com/ginarea/gobybit/transport"
 )
 
 type WsClient struct {

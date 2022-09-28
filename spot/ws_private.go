@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/msw-x/moon/ulog"
 	"github.com/ginarea/gobybit/transport"
+	"github.com/msw-x/moon/ulog"
 )
 
 type WsPrivate struct {
