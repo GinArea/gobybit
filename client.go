@@ -1,13 +1,13 @@
-package bybit
+package gobybit
 
 import (
-	"github.com/tranquiil/bybit/account"
-	"github.com/tranquiil/bybit/ifutures"
-	"github.com/tranquiil/bybit/iperpetual"
-	"github.com/tranquiil/bybit/spot"
-	"github.com/tranquiil/bybit/spotv3"
-	"github.com/tranquiil/bybit/transport"
-	"github.com/tranquiil/bybit/uperpetual"
+	"github.com/ginarea/gobybit/account"
+	"github.com/ginarea/gobybit/ifutures"
+	"github.com/ginarea/gobybit/iperpetual"
+	"github.com/ginarea/gobybit/spot"
+	"github.com/ginarea/gobybit/spotv3"
+	"github.com/ginarea/gobybit/transport"
+	"github.com/ginarea/gobybit/uperpetual"
 )
 
 type Client struct {

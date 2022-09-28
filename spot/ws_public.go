@@ -1,6 +1,6 @@
-package spot
+2package spot
 
-import "github.com/tranquiil/bybit/transport"
+import "github.com/ginarea/gobybit/transport"
 
 type WsPublic struct {
 	ws            *WsPublicTiny

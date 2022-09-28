@@ -1,4 +1,4 @@
-module github.com/tranquiil/bybit
+module github.com/ginarea/gobybit
 
 go 1.18
 

@@ -4,8 +4,8 @@ package uperpetual
 import (
 	"fmt"
 
-	"github.com/tranquiil/bybit/iperpetual"
-	"github.com/tranquiil/bybit/transport"
+	"github.com/ginarea/gobybit/iperpetual"
+	"github.com/ginarea/gobybit/transport"
 )
 
 type Client struct {

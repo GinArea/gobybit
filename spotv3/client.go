@@ -4,7 +4,7 @@ package spotv3
 import (
 	"fmt"
 
-	"github.com/tranquiil/bybit/transport"
+	"github.com/ginarea/gobybit/transport"
 )
 
 type Client struct {

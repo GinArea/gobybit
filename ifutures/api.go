@@ -2,7 +2,7 @@
 // The following API data endpoints do not require authentication.
 package ifutures
 
-import "github.com/tranquiil/bybit/iperpetual"
+import "github.com/ginarea/gobybit/iperpetual"
 
 // [Server Time] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-servertime
 func (this *Client) ServerTime() (string, bool) {

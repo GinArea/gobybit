@@ -1,7 +1,7 @@
 // [Active Orders] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-activeorders
 package ifutures
 
-import "github.com/tranquiil/bybit/iperpetual"
+import "github.com/ginarea/gobybit/iperpetual"
 
 type OrderMain struct {
 	UserID      int               `json:"user_id"`

@@ -1,7 +1,7 @@
 // [Conditional Orders] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-conditionalorders
 package uperpetual
 
-import "github.com/tranquiil/bybit/iperpetual"
+import "github.com/ginarea/gobybit/iperpetual"
 
 // [Place Conditional Order] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-placecond
 type PlaceConditionalOrder struct {

@@ -1,6 +1,6 @@
 package uperpetual
 
-import "github.com/tranquiil/bybit/iperpetual"
+import "github.com/ginarea/gobybit/iperpetual"
 
 type TopicName string
 

@@ -1,8 +1,8 @@
 package spotv3
 
 import (
-	"github.com/tranquiil/bybit/iperpetual"
-	"github.com/tranquiil/bybit/transport"
+	"github.com/ginarea/gobybit/iperpetual"
+	"github.com/ginarea/gobybit/transport"
 )
 
 type WsPublic struct {

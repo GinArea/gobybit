@@ -1,7 +1,7 @@
 // [Risk Limit] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-risklimit
 package ifutures
 
-import "github.com/tranquiil/bybit/iperpetual"
+import "github.com/ginarea/gobybit/iperpetual"
 
 // [Set Risk Limit] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-setrisklimit
 // symbol       Required string  Symbol

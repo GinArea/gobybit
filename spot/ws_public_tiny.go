@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/msw-x/moon/ulog"
-	"github.com/tranquiil/bybit/transport"
+	"github.com/ginarea/gobybit/transport"
 )
 
 type WsPublicTiny struct {

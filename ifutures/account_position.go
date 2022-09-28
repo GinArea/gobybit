@@ -1,7 +1,7 @@
 // [Position] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-position
 package ifutures
 
-import "github.com/tranquiil/bybit/iperpetual"
+import "github.com/ginarea/gobybit/iperpetual"
 
 // [My Position] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-myposition
 type GetPosition struct {

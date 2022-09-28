@@ -1,7 +1,7 @@
 package iperpetual
 
 import (
-	"github.com/tranquiil/bybit/transport"
+	"github.com/ginarea/gobybit/transport"
 )
 
 type WsPublic struct {

@@ -1,7 +1,7 @@
 // [Market Data Endpoints] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-marketdata
 package uperpetual
 
-import "github.com/tranquiil/bybit/iperpetual"
+import "github.com/ginarea/gobybit/iperpetual"
 
 // [Query Symbol] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-querysymbol
 // using iperpetual

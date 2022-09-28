@@ -1,7 +1,7 @@
 // [Active Orders] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-activeorders
 package uperpetual
 
-import "github.com/tranquiil/bybit/iperpetual"
+import "github.com/ginarea/gobybit/iperpetual"
 
 // [Place Active Order] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-placeactive
 type PlaceActiveOrder struct {

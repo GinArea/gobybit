@@ -1,7 +1,7 @@
 // [Risk Limit] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-risklimit
 package uperpetual
 
-import "github.com/tranquiil/bybit/iperpetual"
+import "github.com/ginarea/gobybit/iperpetual"
 
 // [Get Risk Limit] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-getrisklimit
 type GetRiskLimit struct {

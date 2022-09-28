@@ -1,7 +1,7 @@
 // [Conditional Orders] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-conditionalorders
 package ifutures
 
-import "github.com/tranquiil/bybit/iperpetual"
+import "github.com/ginarea/gobybit/iperpetual"
 
 type ConditionalOrderBase struct {
 	UserID      int               `json:"user_id"`
