@@ -30,15 +30,27 @@ type Client struct {
 	logResponse bool
 }
 
-func NewClient(url, key, secret string) *Client {
-	c := Client{
-		log:    ulog.New("client"),
-		url:    url,
-		key:    key,
-		secret: secret,
+func NewClient() *Client {
+	return &Client{
+		log: ulog.New("client"),
+		url: MainBaseUrl,
 	}
-	c.log.Info("url:", c.url)
-	return &c
+}
+
+func (this *Client) WithUrl(url string) *Client {
+	this.url = url
+	return this
+}
+
+func (this *Client) WithByTickUrl() *Client {
+	this.url = MainBaseByTickUrl
+	return this
+}
+
+func (this *Client) WithAuth(key, secret string) *Client {
+	this.key = key
+	this.secret = secret
+	return this
 }
 
 func (this *Client) WithProxy(proxy string) *Client {

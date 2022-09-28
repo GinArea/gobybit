@@ -14,10 +14,25 @@ type Client struct {
 	c *transport.Client
 }
 
-func NewClient(url, key, secret string) *Client {
+func NewClient() *Client {
 	return &Client{
-		c: transport.NewClient(url, key, secret),
+		c: transport.NewClient(),
 	}
+}
+
+func (this *Client) WithUrl(url string) *Client {
+	this.c.WithUrl(url)
+	return this
+}
+
+func (this *Client) WithByTickUrl() *Client {
+	this.c.WithByTickUrl()
+	return this
+}
+
+func (this *Client) WithAuth(key, secret string) *Client {
+	this.c.WithAuth(key, secret)
+	return this
 }
 
 func (this *Client) WithProxy(proxy string) *Client {
