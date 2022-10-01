@@ -2,7 +2,7 @@
 package spotv3
 
 type OrderBase struct {
-	AccountId   string      `json:"accountId"`
+	AccountID   string      `json:"accountId"`
 	OrderID     string      `json:"orderId"`
 	OrderLinkID string      `json:"orderLinkId"`
 	Symbol      Symbol      `json:"symbol"`
@@ -33,7 +33,7 @@ type PlaceOrder struct {
 	Type          OrderType    `json:"orderType"`
 	TimeInForce   *TimeInForce `json:"timeInForce"`
 	Price         *Price       `json:"orderPrice"`
-	OrderLinkId   *string      `json:"orderLinkId"`
+	OrderLinkID   *string      `json:"orderLinkId"`
 	OrderCategory *int         `json:"orderCategory"`
 	TriggerPrice  *string      `json:"triggerPrice"`
 }
@@ -56,8 +56,8 @@ func (this *Client) PlaceOrder(v PlaceOrder) (OrderCreated, bool) {
 // orderId     string Order ID. Required if not passing orderLinkId
 // orderLinkId string Unique user-set order ID. Required if not passing orderId
 type GetOrder struct {
-	OrderId     *string `param:"orderId"`
-	OrderLinkId *string `param:"orderLinkId"`
+	OrderID     *string `param:"orderId"`
+	OrderLinkID *string `param:"orderLinkId"`
 }
 
 func (this GetOrder) Do(client *Client) (Order, bool) {
@@ -77,8 +77,8 @@ func (this *Client) GetOrder(v GetOrder) (Order, bool) {
 // orderId     string Order ID. Required if not passing orderLinkId
 // orderLinkId string Unique user-set order ID. Required if not passing orderId
 type CancelOrder struct {
-	OrderId     *string `param:"orderId"`
-	OrderLinkId *string `param:"orderLinkId"`
+	OrderID     *string `param:"orderId"`
+	OrderLinkID *string `param:"orderLinkId"`
 }
 
 func (this CancelOrder) Do(client *Client) (OrderCancelled, bool) {
@@ -209,8 +209,8 @@ func (this *Client) OrderHistory(v OrderHistory) ([]OpenedOrder, bool) {
 type TradeHistory struct {
 	Symbol       *Symbol `param:"symbol"`
 	Limit        *int    `param:"limit"`
-	FromTicketId *int    `param:"fromTicketId"`
-	ToTicketId   *int    `param:"toTicketId"`
+	FromTicketID *int    `param:"fromTicketId"`
+	ToTicketID   *int    `param:"toTicketId"`
 	OrderID      *string `param:"orderId"`
 	StartTime    *uint64 `param:"startTime"`
 	EndTime      *uint64 `param:"endTime"`

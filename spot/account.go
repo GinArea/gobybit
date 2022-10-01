@@ -2,7 +2,7 @@
 package spot
 
 type OrderBase struct {
-	AccountId   string      `json:"accountId"`
+	AccountID   string      `json:"accountId"`
 	OrderID     string      `json:"orderId"`
 	OrderLinkID string      `json:"orderLinkId"`
 	Symbol      Symbol      `json:"symbol"`
@@ -33,7 +33,7 @@ type PlaceOrder struct {
 	Type        OrderType    `param:"type"`
 	TimeInForce *TimeInForce `param:"timeInForce"`
 	Price       *Price       `param:"price"`
-	OrderLinkId *string      `param:"orderLinkId"`
+	OrderLinkID *string      `param:"orderLinkId"`
 }
 
 func (this PlaceOrder) Do(client *Client) (OrderCreated, bool) {
@@ -53,8 +53,8 @@ func (this *Client) PlaceOrder(v PlaceOrder) (OrderCreated, bool) {
 // orderId     string Order ID. Required if not passing orderLinkId
 // orderLinkId string Unique user-set order ID. Required if not passing orderId
 type GetOrder struct {
-	OrderId     *string `param:"orderId"`
-	OrderLinkId *string `param:"orderLinkId"`
+	OrderID     *string `param:"orderId"`
+	OrderLinkID *string `param:"orderLinkId"`
 }
 
 func (this GetOrder) Do(client *Client) (Order, bool) {
@@ -74,8 +74,8 @@ func (this *Client) GetOrder(v GetOrder) (Order, bool) {
 // orderId     string Order ID. Required if not passing orderLinkId
 // orderLinkId string Unique user-set order ID. Required if not passing orderId
 type CancelOrder struct {
-	OrderId     *string `param:"orderId"`
-	OrderLinkId *string `param:"orderLinkId"`
+	OrderID     *string `param:"orderId"`
+	OrderLinkID *string `param:"orderLinkId"`
 }
 
 func (this CancelOrder) Do(client *Client) (OrderCancelled, bool) {
@@ -97,8 +97,8 @@ func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, bool) {
 // orderLinkId          string Unique user-set order ID. Required if not passing orderId
 type FastCancelOrder struct {
 	Symbol      Symbol  `param:"symbolId"`
-	OrderId     *string `param:"orderId"`
-	OrderLinkId *string `param:"orderLinkId"`
+	OrderID     *string `param:"orderId"`
+	OrderLinkID *string `param:"orderLinkId"`
 }
 
 func (this FastCancelOrder) Do(client *Client) (bool, bool) {
@@ -236,8 +236,8 @@ func (this *Client) OrderHistory(v OrderHistory) ([]OrderHistoryResult, bool) {
 type TradeHistory struct {
 	Symbol       *Symbol `param:"symbol"`
 	Limit        *int    `param:"limit"`
-	FromTicketId *int    `param:"fromTicketId"`
-	ToTicketId   *int    `param:"toTicketId"`
+	FromTicketID *int    `param:"fromTicketId"`
+	ToTicketID   *int    `param:"toTicketId"`
 	OrderID      *string `param:"orderId"`
 	StartTime    *uint64 `param:"startTime"`
 	EndTime      *uint64 `param:"endTime"`
@@ -262,14 +262,14 @@ type Trade struct {
 	IsBuyer         bool     `json:"isBuyer"`
 	IsMaker         bool     `json:"isMaker"`
 	Fee             TradeFee `json:"fee"`
-	FeeTokenId      string   `json:"feeTokenId"`
+	FeeTokenID      string   `json:"feeTokenId"`
 	FeeAmount       string   `json:"feeAmount"`
 	MakerRebate     string   `json:"makerRebate"`
 	ExecutionTime   string   `json:"executionTime"`
 }
 
 type TradeFee struct {
-	TokenId   string `json:"feeTokenId"`
+	TokenID   string `json:"feeTokenId"`
 	TokenName string `json:"feeTokenName"`
 	Fee       string `json:"fee"`
 }

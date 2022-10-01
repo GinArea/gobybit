@@ -138,8 +138,8 @@ func (this *Client) CancelAllOrders(symbol Symbol) ([]CancelOrderItem, bool) {
 // [Replace Active Order] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-replaceactive
 type ReplaceOrder struct {
 	Symbol      Symbol        `param:"symbol"`
-	OrderId     *string       `param:"order_id"`
-	OrderLinkId *string       `param:"order_link_id"`
+	OrderID     *string       `param:"order_id"`
+	OrderLinkID *string       `param:"order_link_id"`
 	Qty         *int          `param:"p_r_qty"`
 	Price       *string       `param:"p_r_price"`
 	TakeProfit  *float64      `param:"take_profit"`
@@ -165,12 +165,12 @@ func (this *Client) ReplaceOrder(v ReplaceOrder) (string, bool) {
 // a single order will be returned; otherwise, returns up to 500 unfilled orders.
 type QueryOrder struct {
 	Symbol      Symbol  `param:"symbol"`
-	OrderId     *string `param:"order_id"`
-	OrderLinkId *string `param:"order_link_id"`
+	OrderID     *string `param:"order_id"`
+	OrderLinkID *string `param:"order_link_id"`
 }
 
 func (this QueryOrder) OnlySymbol() bool {
-	return this.OrderId == nil && this.OrderLinkId == nil
+	return this.OrderID == nil && this.OrderLinkID == nil
 }
 
 // When only symbol is passed, the response uses a different structure.

@@ -61,8 +61,8 @@ func (this *Client) OrderList(v OrderList) (OrderListResult, bool) {
 // [Cancel Active Order] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-cancelactive
 type CancelOrder struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
-	OrderId     *string           `param:"order_id"`
-	OrderLinkId *string           `param:"order_link_id"`
+	OrderID     *string           `param:"order_id"`
+	OrderLinkID *string           `param:"order_link_id"`
 }
 
 func (this CancelOrder) Do(client *Client) (string, bool) {
@@ -93,8 +93,8 @@ func (this *Client) CancelAllOrders(symbol iperpetual.Symbol) ([]string, bool) {
 // [Replace Active Order] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-replaceactive
 type ReplaceOrder struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
-	OrderId     *string           `param:"order_id"`
-	OrderLinkId *string           `param:"order_link_id"`
+	OrderID     *string           `param:"order_id"`
+	OrderLinkID *string           `param:"order_link_id"`
 	Qty         *int              `param:"p_r_qty"`
 	Price       *string           `param:"p_r_price"`
 	TakeProfit  *float64          `param:"take_profit"`
@@ -118,12 +118,12 @@ func (this *Client) ReplaceOrder(v ReplaceOrder) (string, bool) {
 // [Query Active Order (real-time)] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-queryactive
 type QueryOrder struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
-	OrderId     *string           `param:"order_id"`
-	OrderLinkId *string           `param:"order_link_id"`
+	OrderID     *string           `param:"order_id"`
+	OrderLinkID *string           `param:"order_link_id"`
 }
 
 func (this QueryOrder) OnlySymbol() bool {
-	return this.OrderId == nil && this.OrderLinkId == nil
+	return this.OrderID == nil && this.OrderLinkID == nil
 }
 
 // When only symbol is passed, the response uses a different structure.

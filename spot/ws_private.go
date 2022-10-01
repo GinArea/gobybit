@@ -90,11 +90,11 @@ func (this *WsPrivate) processMessage(name string, msg []byte) {
 	case "auth":
 		v := transport.JsonUnmarshal[struct {
 			Auth   string `json:"auth"`
-			UserId string `json:"userId"`
+			UserID string `json:"userId"`
 		}](msg)
-		this.log.Infof("auth[%s] user[%s]", v.Auth, v.UserId)
+		this.log.Infof("auth[%s] user[%s]", v.Auth, v.UserID)
 		success := v.Auth == "success"
-		this.userID = v.UserId
+		this.userID = v.UserID
 		if this.onAuth != nil {
 			this.onAuth(success)
 		}

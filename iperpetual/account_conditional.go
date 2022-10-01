@@ -123,7 +123,7 @@ func (this *Client) CancelAllConditionalOrders(symbol Symbol) ([]ConditionalCanc
 type ReplaceConditionalOrder struct {
 	Symbol       Symbol        `param:"symbol"`
 	OrderID      *string       `param:"stop_order_id"`
-	OrderLinkId  *string       `param:"order_link_id"`
+	OrderLinkID  *string       `param:"order_link_id"`
 	Qty          *int          `param:"p_r_qty"`
 	Price        *string       `param:"p_r_price"`
 	TriggerPrice *string       `param:"p_r_trigger_price"`
