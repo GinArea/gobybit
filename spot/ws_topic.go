@@ -24,7 +24,7 @@ type Topic struct {
 }
 
 type TopicParams struct {
-	Symbol     Symbol        `json:"symbol"`
+	Symbol     string        `json:"symbol"`
 	Binary     string        `json:"binary"`
 	SymbolName string        `json:"symbolName"`
 	KlineType  KlineInterval `json:"klineType"`

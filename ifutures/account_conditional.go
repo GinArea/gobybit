@@ -1,21 +1,19 @@
 // Conditional Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-conditionalorders)
 package ifutures
 
-import "github.com/ginarea/gobybit/iperpetual"
-
 type ConditionalOrderBase struct {
-	UserID      int               `json:"user_id"`
-	Symbol      iperpetual.Symbol `json:"symbol"`
-	Side        Side              `json:"side"`
-	OrderType   OrderType         `json:"order_type"`
-	Price       float64           `json:"price"`
-	Qty         int               `json:"qty"`
-	TimeInForce TimeInForce       `json:"time_in_force"`
-	TriggerBy   TriggerPrice      `json:"trigger_by"`
-	StopPx      string            `json:"stop_px"`
-	BasePrice   string            `json:"base_price"`
-	CreatedAt   string            `json:"created_at"`
-	UpdatedAt   string            `json:"updated_at"`
+	UserID      int          `json:"user_id"`
+	Symbol      string       `json:"symbol"`
+	Side        Side         `json:"side"`
+	OrderType   OrderType    `json:"order_type"`
+	Price       float64      `json:"price"`
+	Qty         int          `json:"qty"`
+	TimeInForce TimeInForce  `json:"time_in_force"`
+	TriggerBy   TriggerPrice `json:"trigger_by"`
+	StopPx      string       `json:"stop_px"`
+	BasePrice   string       `json:"base_price"`
+	CreatedAt   string       `json:"created_at"`
+	UpdatedAt   string       `json:"updated_at"`
 }
 
 type ConditionalOrderProfitLoss struct {
@@ -27,22 +25,22 @@ type ConditionalOrderProfitLoss struct {
 
 // Place Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-placecond)
 type PlaceConditionalOrder struct {
-	Side           Side              `param:"side"`
-	Symbol         iperpetual.Symbol `param:"symbol"`
-	OrderType      OrderType         `param:"order_type"`
-	Qty            int               `param:"qty"`
-	TimeInForce    TimeInForce       `param:"time_in_force"`
-	BasePrice      string            `param:"base_price"`
-	StopPx         string            `param:"stop_px"`
-	PositionIdx    *PositionIdx      `param:"position_idx"`
-	Price          *float64          `param:"price"`
-	CloseOnTrigger *bool             `param:"close_on_trigger"`
-	OrderLinkID    *string           `param:"order_link_id"`
-	TakeProfit     *float64          `param:"take_profit"`
-	StopLoss       *float64          `param:"stop_loss"`
-	TpTrigger      *TriggerPrice     `param:"tp_trigger_by"`
-	SlTrigger      *TriggerPrice     `param:"sl_trigger_by"`
-	TriggerBy      *TriggerPrice     `param:"trigger_by"`
+	Side           Side          `param:"side"`
+	Symbol         string        `param:"symbol"`
+	OrderType      OrderType     `param:"order_type"`
+	Qty            int           `param:"qty"`
+	TimeInForce    TimeInForce   `param:"time_in_force"`
+	BasePrice      string        `param:"base_price"`
+	StopPx         string        `param:"stop_px"`
+	PositionIdx    *PositionIdx  `param:"position_idx"`
+	Price          *float64      `param:"price"`
+	CloseOnTrigger *bool         `param:"close_on_trigger"`
+	OrderLinkID    *string       `param:"order_link_id"`
+	TakeProfit     *float64      `param:"take_profit"`
+	StopLoss       *float64      `param:"stop_loss"`
+	TpTrigger      *TriggerPrice `param:"tp_trigger_by"`
+	SlTrigger      *TriggerPrice `param:"sl_trigger_by"`
+	TriggerBy      *TriggerPrice `param:"trigger_by"`
 }
 
 type ConditionalOrderCreated struct {
@@ -118,22 +116,22 @@ type ConditionalCancelOrderItem struct {
 	StopOrderType     StopOrder   `json:"stop_order_type"`
 }
 
-func (this *Client) CancelAllConditionalOrders(symbol iperpetual.Symbol) ([]ConditionalCancelOrderItem, bool) {
+func (this *Client) CancelAllConditionalOrders(symbol string) ([]ConditionalCancelOrderItem, bool) {
 	return CancelAllOrders{Symbol: symbol}.DoConditional(this)
 }
 
 // Replace Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-replacecond)
 type ReplaceConditionalOrder struct {
-	Symbol       iperpetual.Symbol `param:"symbol"`
-	OrderID      *string           `param:"stop_order_id"`
-	OrderLinkID  *string           `param:"order_link_id"`
-	Qty          *int              `param:"p_r_qty"`
-	Price        *string           `param:"p_r_price"`
-	TriggerPrice *string           `param:"p_r_trigger_price"`
-	TakeProfit   *float64          `param:"take_profit"`
-	StopLoss     *float64          `param:"stop_loss"`
-	TpTrigger    *TriggerPrice     `param:"tp_trigger_by"`
-	SlTrigger    *TriggerPrice     `param:"sl_trigger_by"`
+	Symbol       string        `param:"symbol"`
+	OrderID      *string       `param:"stop_order_id"`
+	OrderLinkID  *string       `param:"order_link_id"`
+	Qty          *int          `param:"p_r_qty"`
+	Price        *string       `param:"p_r_price"`
+	TriggerPrice *string       `param:"p_r_trigger_price"`
+	TakeProfit   *float64      `param:"take_profit"`
+	StopLoss     *float64      `param:"stop_loss"`
+	TpTrigger    *TriggerPrice `param:"tp_trigger_by"`
+	SlTrigger    *TriggerPrice `param:"sl_trigger_by"`
 }
 
 func (this ReplaceConditionalOrder) Do(client *Client) (string, bool) {

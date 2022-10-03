@@ -36,7 +36,7 @@ func (this *Client) QuerySymbolNames() ([]string, bool) {
 //   symbol Required string  Name of the trading pair
 //   limit           integer Default value is 100
 type OrderBook struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 	Limit  *int   `param:"limit"`
 }
 
@@ -59,7 +59,7 @@ func (this *Client) OrderBook(v OrderBook) (OrderBookResult, bool) {
 //   scale           int     Precision of the merged orderbook, 1 means 1 digit
 //   limit           integer Default value is 100
 type MergedOrderBook struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 	Scale  *int   `param:"scale"`
 	Limit  *int   `param:"limit"`
 }
@@ -76,7 +76,7 @@ func (this *Client) MergedOrderBook(v MergedOrderBook) (OrderBookResult, bool) {
 //   symbol Required string  Name of the trading pair
 //   limit           integer Default value is 60, max 60
 type PublicTradingRecords struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 	Limit  *int   `param:"limit"`
 }
 
@@ -102,7 +102,7 @@ func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradin
 //   startTime          number  Start time, unit in millisecond
 //   endTime            number  End time, unit in millisecond
 type QueryKline struct {
-	Symbol    Symbol        `param:"symbol"`
+	Symbol    string        `param:"symbol"`
 	Interval  KlineInterval `param:"interval"`
 	Limit     *int          `param:"limit"`
 	StartTime *int          `param:"startTime"`
@@ -119,7 +119,7 @@ func (this *Client) QueryKline(v QueryKline) ([][]any, bool) {
 
 // Latest Information for Symbol (https://bybit-exchange.github.io/docs/spot/v1/#t-spot_latestsymbolinfo)
 type SymbolLatestInformation struct {
-	Symbol *Symbol `param:"symbol"`
+	Symbol *string `param:"symbol"`
 }
 
 func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, bool) {
@@ -133,7 +133,7 @@ func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, boo
 
 type LatestInformation struct {
 	Time         uint64 `json:"time"`
-	Symbol       Symbol `json:"symbol"`
+	Symbol       string `json:"symbol"`
 	BestBidPrice string `json:"bestBidPrice"`
 	BestAskPrice string `json:"bestAskPrice"`
 	Volume       string `json:"volume"`
@@ -144,13 +144,13 @@ type LatestInformation struct {
 	OpenPrice    string `json:"openPrice"`
 }
 
-func (this *Client) SymbolLatestInformation(symbol *Symbol) ([]LatestInformation, bool) {
+func (this *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation, bool) {
 	return SymbolLatestInformation{Symbol: symbol}.Do(this)
 }
 
 // Last Traded Price (https://bybit-exchange.github.io/docs/spot/v1/#t-lasttradedprice)
 type LastTradedPrice struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 }
 
 func (this LastTradedPrice) Do(client *Client) (SymbolPrice, bool) {
@@ -162,13 +162,13 @@ type SymbolPrice struct {
 	Price  string `json:"price"`
 }
 
-func (this *Client) LastTradedPrice(symbol Symbol) (SymbolPrice, bool) {
+func (this *Client) LastTradedPrice(symbol string) (SymbolPrice, bool) {
 	return LastTradedPrice{Symbol: symbol}.Do(this)
 }
 
 // Best Bid/Ask Price (https://bybit-exchange.github.io/docs/spot/v1/#t-bestbidask)
 type BestBidAskPrice struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 }
 
 func (this BestBidAskPrice) Do(client *Client) (BestBidAskPriceResult, bool) {
@@ -184,6 +184,6 @@ type BestBidAskPriceResult struct {
 	Time     uint64 `json:"time"`
 }
 
-func (this *Client) BestBidAskPrice(symbol Symbol) (BestBidAskPriceResult, bool) {
+func (this *Client) BestBidAskPrice(symbol string) (BestBidAskPriceResult, bool) {
 	return BestBidAskPrice{Symbol: symbol}.Do(this)
 }

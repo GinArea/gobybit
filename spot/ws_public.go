@@ -38,7 +38,7 @@ func (this *WsPublic) Run() {
 	this.ws.Run()
 }
 
-func (this *WsPublic) Subscribe(topic TopicName, symbol Symbol) {
+func (this *WsPublic) Subscribe(topic TopicName, symbol string) {
 	sub, ok := this.subscriptions[topic]
 	if !ok {
 		sub = make(topicSymbolsSet)
@@ -50,7 +50,7 @@ func (this *WsPublic) Subscribe(topic TopicName, symbol Symbol) {
 	}
 }
 
-func (this *WsPublic) Unsubscribe(topic TopicName, symbol Symbol) {
+func (this *WsPublic) Unsubscribe(topic TopicName, symbol string) {
 	sub, ok := this.subscriptions[topic]
 	if ok {
 		delete(sub, symbol)
@@ -60,4 +60,4 @@ func (this *WsPublic) Unsubscribe(topic TopicName, symbol Symbol) {
 	}
 }
 
-type topicSymbolsSet map[Symbol]bool
+type topicSymbolsSet map[string]bool

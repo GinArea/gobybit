@@ -39,17 +39,17 @@ func (this *WsPublic) SetOnConnected(onConnected func()) {
 	this.ws.SetOnConnected(onConnected)
 }
 
-func (this *WsPublic) SubscribeOrderBook25(symbol Symbol) bool {
+func (this *WsPublic) SubscribeOrderBook25(symbol string) bool {
 	return this.ws.Subscribe(Subscription{Topic: TopicOrderBook25, Symbol: &symbol})
 }
-func (this *WsPublic) UnsubscribeOrderBook25(symbol Symbol) bool {
+func (this *WsPublic) UnsubscribeOrderBook25(symbol string) bool {
 	return this.ws.Unsubscribe(Subscription{Topic: TopicOrderBook25, Symbol: &symbol})
 }
 
-func (this *WsPublic) SubscribeOrderBook200(symbol Symbol) bool {
+func (this *WsPublic) SubscribeOrderBook200(symbol string) bool {
 	return this.ws.Subscribe(Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: &symbol})
 }
-func (this *WsPublic) UnsubscribeOrderBook200(symbol Symbol) bool {
+func (this *WsPublic) UnsubscribeOrderBook200(symbol string) bool {
 	return this.ws.Unsubscribe(Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: &symbol})
 }
 
@@ -67,17 +67,17 @@ func (this *WsPublic) UnsubscribeInsurance() bool {
 	return this.ws.Unsubscribe(Subscription{Topic: TopicInsurance})
 }
 
-func (this *WsPublic) SubscribeInstrument(symbol Symbol) bool {
+func (this *WsPublic) SubscribeInstrument(symbol string) bool {
 	return this.ws.Subscribe(Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: &symbol})
 }
-func (this *WsPublic) UnsubscribeInstrument(symbol Symbol) bool {
+func (this *WsPublic) UnsubscribeInstrument(symbol string) bool {
 	return this.ws.Unsubscribe(Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: &symbol})
 }
 
-func (this *WsPublic) SubscribeKline(symbol Symbol, interval KlineInterval) bool {
+func (this *WsPublic) SubscribeKline(symbol string, interval KlineInterval) bool {
 	return this.ws.Subscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: &symbol})
 }
-func (this *WsPublic) UnsubscribeKline(symbol Symbol, interval KlineInterval) bool {
+func (this *WsPublic) UnsubscribeKline(symbol string, interval KlineInterval) bool {
 	return this.ws.Unsubscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: &symbol})
 }
 

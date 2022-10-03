@@ -5,7 +5,7 @@ type OrderBase struct {
 	AccountID   string      `json:"accountId"`
 	OrderID     string      `json:"orderId"`
 	OrderLinkID string      `json:"orderLinkId"`
-	Symbol      Symbol      `json:"symbol"`
+	Symbol      string      `json:"symbol"`
 	CreatedTime uint64      `json:"createTime"`
 	Price       string      `json:"orderPrice"`
 	OrigQty     string      `json:"orderQty"`
@@ -27,7 +27,7 @@ type OrderBase struct {
 //                          the price field is required
 //   orderLinkId          string User-generated order ID
 type PlaceOrder struct {
-	Symbol        Symbol       `json:"symbol"`
+	Symbol        string       `json:"symbol"`
 	Qty           int          `json:"orderQty"`
 	Side          Side         `json:"side"`
 	Type          OrderType    `json:"orderType"`
@@ -99,7 +99,7 @@ func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, bool) {
 //   side                string Order direction
 //   orderTypes          string Order type. Use commas to indicate multiple order types, eg LIMIT,LIMIT_MAKER. Default: LIMIT
 type BatchCancelOrder struct {
-	Symbol Symbol     `param:"symbol"`
+	Symbol string     `param:"symbol"`
 	Side   *Side      `param:"side"`
 	Type   *OrderType `param:"orderTypes"`
 }
@@ -144,7 +144,7 @@ func (this *Client) BatchCancelOrderByID(ID []string) ([]CancelOrderID, bool) {
 //   orderId string  Specify orderId to return all the orders that orderId of which are smaller than this particular one for pagination purpose
 //   limit   integer Default value is 500, max 500
 type OpenOrders struct {
-	Symbol  *Symbol `param:"symbol"`
+	Symbol  *string `param:"symbol"`
 	OrderID *string `param:"orderId"`
 	Limit   *int    `param:"limit"`
 }
@@ -168,7 +168,7 @@ func (this *Client) OpenOrders(v OpenOrders) ([]any, bool) {
 //   startTime long    Start time, unit in millisecond
 //   endTime   long    End time, unit in millisecond
 type OrderHistory struct {
-	Symbol    *Symbol `param:"symbol"`
+	Symbol    *string `param:"symbol"`
 	OrderID   *string `param:"orderId"`
 	Limit     *int    `param:"limit"`
 	StartTime *uint64 `param:"startTime"`
@@ -207,7 +207,7 @@ func (this *Client) OrderHistory(v OrderHistory) ([]OpenedOrder, bool) {
 //   startTime    long    Start time, unit in millisecond
 //   endTime      long    End time, unit in millisecond
 type TradeHistory struct {
-	Symbol       *Symbol `param:"symbol"`
+	Symbol       *string `param:"symbol"`
 	Limit        *int    `param:"limit"`
 	FromTicketID *int    `param:"fromTicketId"`
 	ToTicketID   *int    `param:"toTicketId"`
@@ -226,7 +226,7 @@ func (this TradeHistory) Do(client *Client) ([]Trade, bool) {
 
 type Trade struct {
 	ID            string `json:"id"`
-	Symbol        Symbol `json:"symbol"`
+	Symbol        string `json:"symbol"`
 	OrderID       string `json:"orderId"`
 	TradeID       string `json:"tradeId"`
 	Price         string `json:"orderPrice"`

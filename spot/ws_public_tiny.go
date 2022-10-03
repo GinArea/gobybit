@@ -48,7 +48,7 @@ func (this *WsPublicTiny) SetOnConnected(onConnected func()) {
 	this.ws.SetOnConnected(onConnected)
 }
 
-func (this *WsPublicTiny) Subscribe(topic TopicName, symbol Symbol) bool {
+func (this *WsPublicTiny) Subscribe(topic TopicName, symbol string) bool {
 	this.log.Infof("subscribe: topic[%s] symbol[%s] ", symbol, topic)
 	return this.ws.Send(Topic{
 		Name:  topic,
@@ -59,7 +59,7 @@ func (this *WsPublicTiny) Subscribe(topic TopicName, symbol Symbol) bool {
 	})
 }
 
-func (this *WsPublicTiny) Unsubscribe(topic TopicName, symbol Symbol) bool {
+func (this *WsPublicTiny) Unsubscribe(topic TopicName, symbol string) bool {
 	this.log.Infof("unsubscribe: topic[%s] symbol[%s]", symbol, topic)
 	return this.ws.Send(Topic{
 		Name:  topic,

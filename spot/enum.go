@@ -10,7 +10,6 @@ const (
 )
 
 // Symbol (symbol) (https://bybit-exchange.github.io/docs/spot/v1/#symbol-symbol)
-type Symbol string
 
 // Order type (type/orderTypes) (https://bybit-exchange.github.io/docs/spot/v1/#order-type-type-ordertypes)
 type OrderType string
@@ -22,41 +21,6 @@ const (
 )
 
 // Currency (currency/coin) (https://bybit-exchange.github.io/docs/spot/v1/#currency-currency-coin)
-//   The transfer API also includes:
-//   DOT
-//   DOGE
-//   LTC
-//   XLM
-//   USD
-//   Cross Margin Trading Endpoints support below currency:
-//   BTC
-//   ETH
-//   XRP
-//   SOL
-//   LTC
-//   EOS
-//   LINK
-//   XLM
-//   USDC
-//   USDT
-type Currency string
-
-const (
-	BTC  Currency = "BTC"
-	ETH  Currency = "ETH"
-	EOS  Currency = "EOS"
-	XRP  Currency = "XRP"
-	USDT Currency = "USDT"
-
-	DOT  Currency = "DOT"
-	DOGE Currency = "DOGE"
-	LTC  Currency = "LTC"
-	XLM  Currency = "XLM"
-	USD  Currency = "USD"
-
-	SOL  Currency = "SOL"
-	USDC Currency = "USDC"
-)
 
 // Order status (status) (https://bybit-exchange.github.io/docs/spot/v1/#order-status-status)
 //   ORDER_NEW - Untriggered

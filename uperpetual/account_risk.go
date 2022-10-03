@@ -1,11 +1,9 @@
 // Risk Limit (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-risklimit)
 package uperpetual
 
-import "github.com/ginarea/gobybit/iperpetual"
-
 // Get Risk Limit (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-getrisklimit)
 type GetRiskLimit struct {
-	Symbol *iperpetual.Symbol `param:"symbol"`
+	Symbol *string `param:"symbol"`
 }
 
 func (this GetRiskLimit) Do(client *Client) ([]RiskLimitItem, bool) {
@@ -13,19 +11,19 @@ func (this GetRiskLimit) Do(client *Client) ([]RiskLimitItem, bool) {
 }
 
 type RiskLimitItem struct {
-	ID             int               `json:"id"`
-	Symbol         iperpetual.Symbol `json:"symbol"`
-	Limit          int               `json:"limit"`
-	MaintainMargin float64           `json:"maintain_margin"`
-	StartingMargin float64           `json:"starting_margin"`
-	Section        []string          `json:"section"`
-	IsLowestRisk   int               `json:"is_lowest_risk"`
-	CreatedAt      string            `json:"created_at"`
-	UpdatedAt      string            `json:"updated_at"`
-	MaxLeverage    float64           `json:"max_leverage"`
+	ID             int      `json:"id"`
+	Symbol         string   `json:"symbol"`
+	Limit          int      `json:"limit"`
+	MaintainMargin float64  `json:"maintain_margin"`
+	StartingMargin float64  `json:"starting_margin"`
+	Section        []string `json:"section"`
+	IsLowestRisk   int      `json:"is_lowest_risk"`
+	CreatedAt      string   `json:"created_at"`
+	UpdatedAt      string   `json:"updated_at"`
+	MaxLeverage    float64  `json:"max_leverage"`
 }
 
-func (this *Client) GetRiskLimit(symbol *iperpetual.Symbol) ([]RiskLimitItem, bool) {
+func (this *Client) GetRiskLimit(symbol *string) ([]RiskLimitItem, bool) {
 	return GetRiskLimit{Symbol: symbol}.Do(this)
 }
 
@@ -33,10 +31,10 @@ func (this *Client) GetRiskLimit(symbol *iperpetual.Symbol) ([]RiskLimitItem, bo
 //   symbol  Required string  Symbol
 //   risk_id Required integer Risk ID
 type SetRiskLimit struct {
-	Symbol      iperpetual.Symbol `param:"symbol"`
-	Side        Side              `param:"side"`
-	RiskID      int               `param:"risk_id"`
-	PositionIdx *PositionIdx      `param:"position_idx"`
+	Symbol      string       `param:"symbol"`
+	Side        Side         `param:"side"`
+	RiskID      int          `param:"risk_id"`
+	PositionIdx *PositionIdx `param:"position_idx"`
 }
 
 func (this SetRiskLimit) Do(client *Client) (int, bool) {

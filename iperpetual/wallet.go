@@ -4,11 +4,11 @@ package iperpetual
 //
 // coin string Currency alias. Returns all wallet balances if not passed
 type WalletBalance struct {
-	Currency *Currency `param:"coin"`
+	Currency *string `param:"coin"`
 }
 
-func (this WalletBalance) Do(client *Client) (map[Currency]Balance, bool) {
-	return Get[map[Currency]Balance](client, "wallet/balance", this)
+func (this WalletBalance) Do(client *Client) (map[string]Balance, bool) {
+	return Get[map[string]Balance](client, "wallet/balance", this)
 }
 
 type Balance struct {
@@ -27,6 +27,6 @@ type Balance struct {
 	ServiceCash      float32 `json:"service_cash"`
 }
 
-func (this *Client) WalletBalance(currency *Currency) (map[Currency]Balance, bool) {
+func (this *Client) WalletBalance(currency *string) (map[string]Balance, bool) {
 	return WalletBalance{Currency: currency}.Do(this)
 }

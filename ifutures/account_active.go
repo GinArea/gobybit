@@ -1,20 +1,18 @@
 // Active Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-activeorders)
 package ifutures
 
-import "github.com/ginarea/gobybit/iperpetual"
-
 type OrderMain struct {
-	UserID      int               `json:"user_id"`
-	Symbol      iperpetual.Symbol `json:"symbol"`
-	Side        Side              `json:"side"`
-	OrderType   OrderType         `json:"order_type"`
-	Price       float64           `json:"price"`
-	Qty         int               `json:"qty"`
-	TimeInForce TimeInForce       `json:"time_in_force"`
-	OrderStatus OrderStatus       `json:"order_status"`
-	LeavesQty   float64           `json:"leaves_qty"`
-	CreatedAt   string            `json:"created_at"`
-	UpdatedAt   string            `json:"updated_at"`
+	UserID      int         `json:"user_id"`
+	Symbol      string      `json:"symbol"`
+	Side        Side        `json:"side"`
+	OrderType   OrderType   `json:"order_type"`
+	Price       float64     `json:"price"`
+	Qty         int         `json:"qty"`
+	TimeInForce TimeInForce `json:"time_in_force"`
+	OrderStatus OrderStatus `json:"order_status"`
+	LeavesQty   float64     `json:"leaves_qty"`
+	CreatedAt   string      `json:"created_at"`
+	UpdatedAt   string      `json:"updated_at"`
 }
 
 type OrderBase struct {
@@ -36,20 +34,20 @@ type OrderProfitLoss struct {
 
 // Place Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-placeactive)
 type PlaceActiveOrder struct {
-	Side           Side              `param:"side"`
-	Symbol         iperpetual.Symbol `param:"symbol"`
-	OrderType      OrderType         `param:"order_type"`
-	Qty            int               `param:"qty"`
-	TimeInForce    TimeInForce       `param:"time_in_force"`
-	PositionIdx    *PositionIdx      `param:"position_idx"`
-	Price          *float64          `param:"price"`
-	CloseOnTrigger *bool             `param:"close_on_trigger"`
-	OrderLinkID    *string           `param:"order_link_id"`
-	TakeProfit     *float64          `param:"take_profit"`
-	StopLoss       *float64          `param:"stop_loss"`
-	TpTrigger      *TriggerPrice     `param:"tp_trigger_by"`
-	SlTrigger      *TriggerPrice     `param:"sl_trigger_by"`
-	ReduceOnly     *bool             `param:"reduce_only"`
+	Side           Side          `param:"side"`
+	Symbol         string        `param:"symbol"`
+	OrderType      OrderType     `param:"order_type"`
+	Qty            int           `param:"qty"`
+	TimeInForce    TimeInForce   `param:"time_in_force"`
+	PositionIdx    *PositionIdx  `param:"position_idx"`
+	Price          *float64      `param:"price"`
+	CloseOnTrigger *bool         `param:"close_on_trigger"`
+	OrderLinkID    *string       `param:"order_link_id"`
+	TakeProfit     *float64      `param:"take_profit"`
+	StopLoss       *float64      `param:"stop_loss"`
+	TpTrigger      *TriggerPrice `param:"tp_trigger_by"`
+	SlTrigger      *TriggerPrice `param:"sl_trigger_by"`
+	ReduceOnly     *bool         `param:"reduce_only"`
 }
 
 type OrderCreated struct {
@@ -74,11 +72,11 @@ func (this *Client) PlaceActiveOrder(v PlaceActiveOrder) (OrderCreated, bool) {
 //   limit                 integer Limit for data size per page, max size is 50. Default as showing 20 pieces of data per page
 //   cursor                string  Page turning mark. Use return cursor. Sign using origin data, in request please use urlencode
 type OrderList struct {
-	Symbol      iperpetual.Symbol `param:"symbol"`
-	OrderStatus *OrderStatus      `param:"order_status"`
-	Direction   *Direction        `param:"direction"`
-	Limit       *int              `param:"limit"`
-	Cursor      *string           `param:"cursor"`
+	Symbol      string       `param:"symbol"`
+	OrderStatus *OrderStatus `param:"order_status"`
+	Direction   *Direction   `param:"direction"`
+	Limit       *int         `param:"limit"`
+	Cursor      *string      `param:"cursor"`
 }
 
 func (this OrderList) Do(client *Client) (OrderListResult, bool) {
@@ -103,9 +101,9 @@ func (this *Client) OrderList(v OrderList) (OrderListResult, bool) {
 
 // Cancel Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-cancelactive)
 type CancelOrder struct {
-	Symbol      iperpetual.Symbol `param:"symbol"`
-	OrderId     *string           `param:"order_id"`
-	OrderLinkId *string           `param:"order_link_id"`
+	Symbol      string  `param:"symbol"`
+	OrderId     *string `param:"order_id"`
+	OrderLinkId *string `param:"order_link_id"`
 }
 
 func (this CancelOrder) Do(client *Client) (OrderCancelled, bool) {
@@ -124,7 +122,7 @@ func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, bool) {
 
 // Cancel All Active Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-cancelallactive)
 type CancelAllOrders struct {
-	Symbol iperpetual.Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 }
 
 func (this CancelAllOrders) Do(client *Client) ([]CancelOrderItem, bool) {
@@ -141,21 +139,21 @@ type CancelOrderItem struct {
 	CrossSeq    int         `json:"cross_seq"`
 }
 
-func (this *Client) CancelAllOrders(symbol iperpetual.Symbol) ([]CancelOrderItem, bool) {
+func (this *Client) CancelAllOrders(symbol string) ([]CancelOrderItem, bool) {
 	return CancelAllOrders{Symbol: symbol}.Do(this)
 }
 
 // Replace Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-replaceactive)
 type ReplaceOrder struct {
-	Symbol      iperpetual.Symbol `param:"symbol"`
-	OrderID     *string           `param:"order_id"`
-	OrderLinkID *string           `param:"order_link_id"`
-	Qty         *int              `param:"p_r_qty"`
-	Price       *string           `param:"p_r_price"`
-	TakeProfit  *float64          `param:"take_profit"`
-	StopLoss    *float64          `param:"stop_loss"`
-	TpTrigger   *TriggerPrice     `param:"tp_trigger_by"`
-	SlTrigger   *TriggerPrice     `param:"sl_trigger_by"`
+	Symbol      string        `param:"symbol"`
+	OrderID     *string       `param:"order_id"`
+	OrderLinkID *string       `param:"order_link_id"`
+	Qty         *int          `param:"p_r_qty"`
+	Price       *string       `param:"p_r_price"`
+	TakeProfit  *float64      `param:"take_profit"`
+	StopLoss    *float64      `param:"stop_loss"`
+	TpTrigger   *TriggerPrice `param:"tp_trigger_by"`
+	SlTrigger   *TriggerPrice `param:"sl_trigger_by"`
 }
 
 func (this ReplaceOrder) Do(client *Client) (string, bool) {
@@ -175,9 +173,9 @@ func (this *Client) ReplaceOrder(v ReplaceOrder) (string, bool) {
 // Query real-time active order information. If only order_id or order_link_id are passed,
 // a single order will be returned; otherwise, returns up to 500 unfilled orders.
 type QueryOrder struct {
-	Symbol      iperpetual.Symbol `param:"symbol"`
-	OrderID     *string           `param:"order_id"`
-	OrderLinkID *string           `param:"order_link_id"`
+	Symbol      string  `param:"symbol"`
+	OrderID     *string `param:"order_id"`
+	OrderLinkID *string `param:"order_link_id"`
 }
 
 func (this QueryOrder) OnlySymbol() bool {

@@ -5,7 +5,7 @@ type OrderBase struct {
 	AccountID   string      `json:"accountId"`
 	OrderID     string      `json:"orderId"`
 	OrderLinkID string      `json:"orderLinkId"`
-	Symbol      Symbol      `json:"symbol"`
+	Symbol      string      `json:"symbol"`
 	SymbolName  string      `json:"symbolName"`
 	Price       string      `json:"price"`
 	OrigQty     string      `json:"origQty"`
@@ -27,7 +27,7 @@ type OrderBase struct {
 //                        the price field is required
 //   orderLinkId          string User-generated order ID
 type PlaceOrder struct {
-	Symbol      Symbol       `param:"symbol"`
+	Symbol      string       `param:"symbol"`
 	Qty         int          `param:"qty"`
 	Side        Side         `param:"side"`
 	Type        OrderType    `param:"type"`
@@ -96,7 +96,7 @@ func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, bool) {
 //   orderId              string Order ID. Required if not passing orderLinkId
 //   orderLinkId          string Unique user-set order ID. Required if not passing orderId
 type FastCancelOrder struct {
-	Symbol      Symbol  `param:"symbolId"`
+	Symbol      string  `param:"symbolId"`
 	OrderID     *string `param:"orderId"`
 	OrderLinkID *string `param:"orderLinkId"`
 }
@@ -118,7 +118,7 @@ func (this *Client) FastCancelOrder(v FastCancelOrder) (bool, bool) {
 //   side                string Order direction
 //   orderTypes          string Order type. Use commas to indicate multiple order types, eg LIMIT,LIMIT_MAKER. Default: LIMIT
 type BatchCancelOrder struct {
-	Symbol Symbol     `param:"symbol"`
+	Symbol string     `param:"symbol"`
 	Side   *Side      `param:"side"`
 	Type   *OrderType `param:"orderTypes"`
 }
@@ -137,7 +137,7 @@ func (this *Client) BatchCancelOrder(v BatchCancelOrder) (bool, bool) {
 
 // Batch Fast Cancel Active Order (https://bybit-exchange.github.io/docs/spot/v1/#t-batchfastcancelactiveorder)
 type BatchFastCancelOrder struct {
-	Symbol Symbol     `param:"symbol"`
+	Symbol string     `param:"symbol"`
 	Side   *Side      `param:"side"`
 	Type   *OrderType `param:"orderTypes"`
 }
@@ -178,7 +178,7 @@ func (this *Client) BatchCancelOrderByID(ID []string) ([]CancelOrderID, bool) {
 //   orderId string  Specify orderId to return all the orders that orderId of which are smaller than this particular one for pagination purpose
 //   limit   integer Default value is 500, max 500
 type OpenOrders struct {
-	Symbol  *Symbol `param:"symbol"`
+	Symbol  *string `param:"symbol"`
 	OrderID *string `param:"orderId"`
 	Limit   *int    `param:"limit"`
 }
@@ -198,7 +198,7 @@ func (this *Client) OpenOrders(v OpenOrders) ([]OrderBase, bool) {
 //   startTime long    Start time, unit in millisecond
 //   endTime   long    End time, unit in millisecond
 type OrderHistory struct {
-	Symbol    *Symbol `param:"symbol"`
+	Symbol    *string `param:"symbol"`
 	OrderID   *string `param:"orderId"`
 	Limit     *int    `param:"limit"`
 	StartTime *uint64 `param:"startTime"`
@@ -234,7 +234,7 @@ func (this *Client) OrderHistory(v OrderHistory) ([]OrderHistoryResult, bool) {
 //   startTime    long    Start time, unit in millisecond
 //   endTime      long    End time, unit in millisecond
 type TradeHistory struct {
-	Symbol       *Symbol `param:"symbol"`
+	Symbol       *string `param:"symbol"`
 	Limit        *int    `param:"limit"`
 	FromTicketID *int    `param:"fromTicketId"`
 	ToTicketID   *int    `param:"toTicketId"`
@@ -249,7 +249,7 @@ func (this TradeHistory) Do(client *Client) ([]Trade, bool) {
 
 type Trade struct {
 	ID              string   `json:"id"`
-	Symbol          Symbol   `json:"symbol"`
+	Symbol          string   `json:"symbol"`
 	SymbolName      string   `json:"symbolName"`
 	OrderID         string   `json:"orderId"`
 	TicketID        string   `json:"ticketId"`

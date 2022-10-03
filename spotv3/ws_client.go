@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ginarea/gobybit/iperpetual"
 	"github.com/ginarea/gobybit/transport"
 	"github.com/msw-x/moon"
 	"github.com/msw-x/moon/ufmt"
@@ -69,7 +68,7 @@ func (this *WsClient) Send(cmd any) bool {
 type Subscription struct {
 	Topic    TopicName
 	Interval string
-	Symbol   *iperpetual.Symbol
+	Symbol   *string
 }
 
 func (this *Subscription) String() string {

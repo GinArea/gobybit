@@ -1,6 +1,0 @@
-package spot
-
-func SymbolPtr(s string) *Symbol {
-	v := Symbol(s)
-	return &v
-}

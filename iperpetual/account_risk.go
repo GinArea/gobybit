@@ -3,7 +3,7 @@ package iperpetual
 
 // Get Risk Limit (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getrisklimit)
 type GetRiskLimit struct {
-	Symbol *Symbol `param:"symbol"`
+	Symbol *string `param:"symbol"`
 }
 
 func (this GetRiskLimit) Do(client *Client) ([]RiskLimitItem, bool) {
@@ -12,7 +12,7 @@ func (this GetRiskLimit) Do(client *Client) ([]RiskLimitItem, bool) {
 
 type RiskLimitItem struct {
 	ID             int      `json:"id"`
-	Symbol         Symbol   `json:"symbol"`
+	Symbol         string   `json:"symbol"`
 	Limit          int      `json:"limit"`
 	MaintainMargin string   `json:"maintain_margin"`
 	StartingMargin string   `json:"starting_margin"`
@@ -23,7 +23,7 @@ type RiskLimitItem struct {
 	MaxLeverage    string   `json:"max_leverage"`
 }
 
-func (this *Client) GetRiskLimit(symbol *Symbol) ([]RiskLimitItem, bool) {
+func (this *Client) GetRiskLimit(symbol *string) ([]RiskLimitItem, bool) {
 	return GetRiskLimit{Symbol: symbol}.Do(this)
 }
 
@@ -31,7 +31,7 @@ func (this *Client) GetRiskLimit(symbol *Symbol) ([]RiskLimitItem, bool) {
 //   symbol  Required string  Symbol
 //   risk_id Required integer Risk ID
 type SetRiskLimit struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 	RiskID int    `param:"risk_id"`
 }
 

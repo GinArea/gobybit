@@ -3,7 +3,7 @@ package iperpetual
 
 // My Position (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-myposition)
 type GetPosition struct {
-	Symbol *Symbol `param:"symbol"`
+	Symbol *string `param:"symbol"`
 }
 
 func (this GetPosition) Do(client *Client) ([]PositionItem, bool) {
@@ -18,7 +18,7 @@ type PositionBase struct {
 	ID                  int    `json:"id"`
 	UserID              int    `json:"user_id"`
 	RiskID              int    `json:"risk_id"`
-	Symbol              Symbol `json:"symbol"`
+	Symbol              string `json:"symbol"`
 	Side                Side   `json:"side"`
 	Size                int    `json:"size"`
 	PositionValue       string `json:"position_value"`
@@ -61,13 +61,13 @@ type PositionItem struct {
 	IsValid bool         `json:"is_valid"`
 }
 
-func (this *Client) GetPosition(symbol *Symbol) ([]PositionItem, bool) {
+func (this *Client) GetPosition(symbol *string) ([]PositionItem, bool) {
 	return GetPosition{Symbol: symbol}.Do(this)
 }
 
 // Change Margin (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-changemargin)
 type ChangeMargin struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 	Margin string `param:"margin"`
 }
 
@@ -81,7 +81,7 @@ func (this *Client) ChangeMargin(v ChangeMargin) (float64, bool) {
 
 // Set Trading-Stop (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-tradingstop)
 type SetTradingStop struct {
-	Symbol            Symbol        `param:"symbol"`
+	Symbol            string        `param:"symbol"`
 	TakeProfit        *int          `param:"take_profit"`
 	StopLoss          *int          `param:"stop_loss"`
 	TrailingStop      *int          `param:"trailing_stop"`
@@ -116,7 +116,7 @@ func (this *Client) SetTradingStop(v SetTradingStop) (SetTradingStopResult, bool
 
 // Set Leverage (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-setleverage)
 type SetLeverage struct {
-	Symbol       Symbol `param:"symbol"`
+	Symbol       string `param:"symbol"`
 	Leverage     int    `param:"leverage"`
 	LeverageOnly *bool  `param:"leverage_only"`
 }
@@ -133,7 +133,7 @@ func (this *Client) SetLeverage(v SetLeverage) (int, bool) {
 //
 // Switch mode between Full or Partial
 type TpSlModeSwitch struct {
-	Symbol   Symbol    `param:"symbol"`
+	Symbol   string    `param:"symbol"`
 	TpSlMode *TpSlMode `param:"tp_sl_mode"`
 }
 
@@ -153,7 +153,7 @@ func (this *Client) TpSlModeSwitch(v TpSlModeSwitch) (TpSlMode, bool) {
 //
 // Switch Cross/Isolated; must set leverage value when switching from Cross to Isolated
 type MarginSwitch struct {
-	Symbol       Symbol `param:"symbol"`
+	Symbol       string `param:"symbol"`
 	IsIsolated   bool   `param:"is_isolated"`
 	BuyLeverage  int    `param:"buy_leverage"`
 	SellLeverage int    `param:"sell_leverage"`
@@ -172,7 +172,7 @@ func (this *Client) MarginSwitch(v MarginSwitch) bool {
 //
 // Get user's trading records. The results are ordered in ascending order (the first item is the oldest)
 type GetTradeRecords struct {
-	Symbol    Symbol     `param:"symbol"`
+	Symbol    string     `param:"symbol"`
 	OrderID   *string    `param:"order_id"`
 	StartTime *int       `param:"start_time"`
 	Page      *int       `param:"page"`
@@ -204,7 +204,7 @@ type TradeRecord struct {
 	OrderQty      int       `json:"order_qty"`
 	OrderType     OrderType `json:"order_type"`
 	Side          Side      `json:"side"`
-	Symbol        Symbol    `json:"symbol"`
+	Symbol        string    `json:"symbol"`
 	UserID        int       `json:"user_id"`
 	TradeTime     uint64    `json:"trade_time_ms"`
 }
@@ -220,7 +220,7 @@ func (this *Client) GetTradeRecords(v GetTradeRecords) (TradeRecords, bool) {
 
 // Closed Profit and Loss (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-closedprofitandloss)
 type ClosedProfitLoss struct {
-	Symbol    Symbol    `param:"symbol"`
+	Symbol    string    `param:"symbol"`
 	StartTime *int      `param:"start_time"`
 	EndTime   *int      `param:"end_time"`
 	ExecType  *ExecType `param:"exec_type"`
@@ -235,7 +235,7 @@ func (this ClosedProfitLoss) Do(client *Client) (ClosedProfitLossResult, bool) {
 type ClosedData struct {
 	ID            int       `json:"id"`
 	UserID        int       `json:"user_id"`
-	Symbol        Symbol    `json:"symbol"`
+	Symbol        string    `json:"symbol"`
 	OrderID       string    `json:"order_id"`
 	Side          Side      `json:"side"`
 	Qty           float64   `json:"qty"`

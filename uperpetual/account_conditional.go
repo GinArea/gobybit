@@ -1,27 +1,25 @@
 // Conditional Orders (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-conditionalorders)
 package uperpetual
 
-import "github.com/ginarea/gobybit/iperpetual"
-
 // Place Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-placecond)
 type PlaceConditionalOrder struct {
-	Side           Side              `param:"side"`
-	Symbol         iperpetual.Symbol `param:"symbol"`
-	OrderType      OrderType         `param:"order_type"`
-	Qty            int               `param:"qty"`
-	BasePrice      string            `param:"base_price"`
-	StopPx         string            `param:"stop_px"`
-	TimeInForce    TimeInForce       `param:"time_in_force"`
-	TriggerBy      TriggerPrice      `param:"trigger_by"`
-	ReduceOnly     bool              `param:"reduce_only"`
-	CloseOnTrigger bool              `param:"close_on_trigger"`
-	Price          *float64          `param:"price"`
-	OrderLinkID    *string           `param:"order_link_id"`
-	TakeProfit     *float64          `param:"take_profit"`
-	StopLoss       *float64          `param:"stop_loss"`
-	TpTrigger      *TriggerPrice     `param:"tp_trigger_by"`
-	SlTrigger      *TriggerPrice     `param:"sl_trigger_by"`
-	PositionIdx    *PositionIdx      `param:"position_idx"`
+	Side           Side          `param:"side"`
+	Symbol         string        `param:"symbol"`
+	OrderType      OrderType     `param:"order_type"`
+	Qty            int           `param:"qty"`
+	BasePrice      string        `param:"base_price"`
+	StopPx         string        `param:"stop_px"`
+	TimeInForce    TimeInForce   `param:"time_in_force"`
+	TriggerBy      TriggerPrice  `param:"trigger_by"`
+	ReduceOnly     bool          `param:"reduce_only"`
+	CloseOnTrigger bool          `param:"close_on_trigger"`
+	Price          *float64      `param:"price"`
+	OrderLinkID    *string       `param:"order_link_id"`
+	TakeProfit     *float64      `param:"take_profit"`
+	StopLoss       *float64      `param:"stop_loss"`
+	TpTrigger      *TriggerPrice `param:"tp_trigger_by"`
+	SlTrigger      *TriggerPrice `param:"sl_trigger_by"`
+	PositionIdx    *PositionIdx  `param:"position_idx"`
 }
 
 type ConditionalOrderCreated struct {
@@ -48,25 +46,25 @@ type ConditionalOrderListResult struct {
 }
 
 type ConditionalOrderItem struct {
-	OrderID      string            `json:"stop_order_id"`
-	UserID       int               `json:"user_id"`
-	Symbol       iperpetual.Symbol `json:"symbol"`
-	Side         Side              `json:"side"`
-	OrderType    OrderType         `json:"order_type"`
-	Price        float64           `json:"price"`
-	Qty          int               `json:"qty"`
-	TimeInForce  TimeInForce       `json:"time_in_force"`
-	OrderStatus  OrderStatus       `json:"order_status"`
-	TriggerPrice float64           `json:"trigger_price"`
-	OrderLinkID  string            `json:"order_link_id"`
-	CreatedTime  string            `json:"created_time"`
-	UpdatedTime  string            `json:"updated_time"`
-	BasePrice    float64           `json:"base_price"`
-	TriggerBy    TriggerPrice      `json:"trigger_by"`
-	TpTrigger    TriggerPrice      `json:"tp_trigger_by"`
-	SlTrigger    TriggerPrice      `json:"sl_trigger_by"`
-	TakeProfit   float64           `json:"take_profit"`
-	StopLoss     float64           `json:"stop_loss"`
+	OrderID      string       `json:"stop_order_id"`
+	UserID       int          `json:"user_id"`
+	Symbol       string       `json:"symbol"`
+	Side         Side         `json:"side"`
+	OrderType    OrderType    `json:"order_type"`
+	Price        float64      `json:"price"`
+	Qty          int          `json:"qty"`
+	TimeInForce  TimeInForce  `json:"time_in_force"`
+	OrderStatus  OrderStatus  `json:"order_status"`
+	TriggerPrice float64      `json:"trigger_price"`
+	OrderLinkID  string       `json:"order_link_id"`
+	CreatedTime  string       `json:"created_time"`
+	UpdatedTime  string       `json:"updated_time"`
+	BasePrice    float64      `json:"base_price"`
+	TriggerBy    TriggerPrice `json:"trigger_by"`
+	TpTrigger    TriggerPrice `json:"tp_trigger_by"`
+	SlTrigger    TriggerPrice `json:"sl_trigger_by"`
+	TakeProfit   float64      `json:"take_profit"`
+	StopLoss     float64      `json:"stop_loss"`
 }
 
 func (this *Client) ConditionalOrderList(v OrderList) (ConditionalOrderListResult, bool) {
@@ -91,22 +89,22 @@ func (this CancelAllOrders) DoConditional(client *Client) ([]string, bool) {
 	return Post[[]string](client, "stop-order/cancel-all", this)
 }
 
-func (this *Client) CancelAllConditionalOrders(symbol iperpetual.Symbol) ([]string, bool) {
+func (this *Client) CancelAllConditionalOrders(symbol string) ([]string, bool) {
 	return CancelAllOrders{Symbol: symbol}.DoConditional(this)
 }
 
 // Replace Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-replacecond)
 type ReplaceConditionalOrder struct {
-	Symbol       iperpetual.Symbol `param:"symbol"`
-	OrderID      *string           `param:"stop_order_id"`
-	OrderLinkID  *string           `param:"order_link_id"`
-	Qty          *int              `param:"p_r_qty"`
-	Price        *string           `param:"p_r_price"`
-	TriggerPrice *string           `param:"p_r_trigger_price"`
-	TakeProfit   *float64          `param:"take_profit"`
-	StopLoss     *float64          `param:"stop_loss"`
-	TpTrigger    *TriggerPrice     `param:"tp_trigger_by"`
-	SlTrigger    *TriggerPrice     `param:"sl_trigger_by"`
+	Symbol       string        `param:"symbol"`
+	OrderID      *string       `param:"stop_order_id"`
+	OrderLinkID  *string       `param:"order_link_id"`
+	Qty          *int          `param:"p_r_qty"`
+	Price        *string       `param:"p_r_price"`
+	TriggerPrice *string       `param:"p_r_trigger_price"`
+	TakeProfit   *float64      `param:"take_profit"`
+	StopLoss     *float64      `param:"stop_loss"`
+	TpTrigger    *TriggerPrice `param:"tp_trigger_by"`
+	SlTrigger    *TriggerPrice `param:"sl_trigger_by"`
 }
 
 func (this ReplaceConditionalOrder) Do(client *Client) (string, bool) {

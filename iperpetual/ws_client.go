@@ -68,7 +68,7 @@ func (this *WsClient) Send(cmd any) bool {
 type Subscription struct {
 	Topic    TopicName
 	Interval string
-	Symbol   *Symbol
+	Symbol   *string
 }
 
 func (this *Subscription) String() string {

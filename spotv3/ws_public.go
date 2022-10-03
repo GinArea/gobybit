@@ -1,7 +1,6 @@
 package spotv3
 
 import (
-	"github.com/ginarea/gobybit/iperpetual"
 	"github.com/ginarea/gobybit/transport"
 )
 
@@ -40,37 +39,37 @@ func (this *WsPublic) SetOnConnected(onConnected func()) {
 	this.ws.SetOnConnected(onConnected)
 }
 
-func (this *WsPublic) SubscribeDepth(symbol iperpetual.Symbol) bool {
+func (this *WsPublic) SubscribeDepth(symbol string) bool {
 	return this.ws.Subscribe(Subscription{Topic: TopicDepth, Interval: "40", Symbol: &symbol})
 }
-func (this *WsPublic) UnsubscribeDepth(symbol iperpetual.Symbol) bool {
+func (this *WsPublic) UnsubscribeDepth(symbol string) bool {
 	return this.ws.Unsubscribe(Subscription{Topic: TopicDepth, Interval: "40", Symbol: &symbol})
 }
 
-func (this *WsPublic) SubscribeTrade(symbol iperpetual.Symbol) bool {
+func (this *WsPublic) SubscribeTrade(symbol string) bool {
 	return this.ws.Subscribe(Subscription{Topic: TopicTrade, Symbol: &symbol})
 }
-func (this *WsPublic) UnsubscribeTrade(symbol iperpetual.Symbol) bool {
+func (this *WsPublic) UnsubscribeTrade(symbol string) bool {
 	return this.ws.Unsubscribe(Subscription{Topic: TopicTrade, Symbol: &symbol})
 }
 
-func (this *WsPublic) SubscribeKline(symbol iperpetual.Symbol, interval KlineInterval) bool {
+func (this *WsPublic) SubscribeKline(symbol string, interval KlineInterval) bool {
 	return this.ws.Subscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: &symbol})
 }
-func (this *WsPublic) UnsubscribeKline(symbol iperpetual.Symbol, interval KlineInterval) bool {
+func (this *WsPublic) UnsubscribeKline(symbol string, interval KlineInterval) bool {
 	return this.ws.Unsubscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: &symbol})
 }
 
-func (this *WsPublic) SubscribeTickers(symbol iperpetual.Symbol) bool {
+func (this *WsPublic) SubscribeTickers(symbol string) bool {
 	return this.ws.Subscribe(Subscription{Topic: TopicTickers, Symbol: &symbol})
 }
-func (this *WsPublic) UnsubscribeTickers(symbol iperpetual.Symbol) bool {
+func (this *WsPublic) UnsubscribeTickers(symbol string) bool {
 	return this.ws.Unsubscribe(Subscription{Topic: TopicTickers, Symbol: &symbol})
 }
 
-func (this *WsPublic) SubscribeBookTicker(symbol iperpetual.Symbol) bool {
+func (this *WsPublic) SubscribeBookTicker(symbol string) bool {
 	return this.ws.Subscribe(Subscription{Topic: TopicBookTicker, Symbol: &symbol})
 }
-func (this *WsPublic) UnsubscribeBookTicker(symbol iperpetual.Symbol) bool {
+func (this *WsPublic) UnsubscribeBookTicker(symbol string) bool {
 	return this.ws.Unsubscribe(Subscription{Topic: TopicBookTicker, Symbol: &symbol})
 }

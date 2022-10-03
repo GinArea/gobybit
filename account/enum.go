@@ -26,20 +26,6 @@ const (
 )
 
 // Currency (currency/coin) (https://bybit-exchange.github.io/docs/account_asset/#currency-currency-coin)
-type Currency string
-
-const (
-	BTC  Currency = "BTC"
-	ETH  Currency = "ETH"
-	EOS  Currency = "EOS"
-	XRP  Currency = "XRP"
-	USDT Currency = "USDT"
-	DOT  Currency = "DOT"
-	DOGE Currency = "DOGE"
-	LTC  Currency = "LTC"
-	XLM  Currency = "XLM"
-	USD  Currency = "USD"
-)
 
 // Operator type (https://bybit-exchange.github.io/docs/account_asset/#operator-type)
 type OperatorType string

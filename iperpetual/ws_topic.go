@@ -26,7 +26,7 @@ type Topic[T any] struct {
 
 type OrderBookSnapshot struct {
 	Price  string `json:"price"`
-	Symbol Symbol `json:"symbol"`
+	Symbol string `json:"symbol"`
 	ID     uint64 `json:"id"`
 	Side   Side   `json:"side"`
 	Size   int    `json:"size"`
@@ -41,7 +41,7 @@ type OrderBookDelta struct {
 type TradeSnapshot struct {
 	Timestamp     string        `json:"timestamp"`
 	TradeTime     uint64        `json:"trade_time_ms"`
-	Symbol        Symbol        `json:"symbol"`
+	Symbol        string        `json:"symbol"`
 	Side          Side          `json:"side"`
 	Size          int           `json:"size"`
 	Price         float64       `json:"price"`
@@ -58,7 +58,7 @@ type InsuranceSnapshot struct {
 
 type InstrumentSnapshot struct {
 	ID                     uint64        `json:"id"`
-	Symbol                 Symbol        `json:"symbol"`
+	Symbol                 string        `json:"symbol"`
 	LastPriceE4            int64         `json:"last_price_e4"`
 	LastPrice              string        `json:"last_price"`
 	Bid1PriceE4            int64         `json:"bid1_price_e4"`
@@ -117,7 +117,7 @@ type KlineSnapshot struct {
 }
 
 type LiquidationSnapshot struct {
-	Symbol Symbol `json:"symbol"`
+	Symbol string `json:"symbol"`
 	Side   Side   `json:"side"`
 	Price  string `json:"price"`
 	Qty    string `json:"qty"`
@@ -126,7 +126,7 @@ type LiquidationSnapshot struct {
 
 type PositionSnapshot struct {
 	UserID           int         `json:"user_id"`
-	Symbol           Symbol      `json:"symbol"`
+	Symbol           string      `json:"symbol"`
 	Size             int         `json:"size"`
 	Side             Side        `json:"side"`
 	PositionValue    string      `json:"position_value"`
@@ -163,7 +163,7 @@ type PositionSnapshot struct {
 type ExecutionSnapshot struct {
 	OrderID     string   `json:"order_id"`
 	OrderLinkID string   `json:"order_link_id"`
-	Symbol      Symbol   `json:"symbol"`
+	Symbol      string   `json:"symbol"`
 	Side        Side     `json:"side"`
 	ExecID      string   `json:"exec_id"`
 	Price       string   `json:"price"`
@@ -179,7 +179,7 @@ type ExecutionSnapshot struct {
 type OrderSnapshot struct {
 	OrderID        string       `json:"order_id"`
 	OrderLinkID    string       `json:"order_link_id"`
-	Symbol         Symbol       `json:"symbol"`
+	Symbol         string       `json:"symbol"`
 	Side           Side         `json:"side"`
 	OrderType      OrderType    `json:"order_type"`
 	Price          float64      `json:"price"`
@@ -207,7 +207,7 @@ type StopOrderSnapshot struct {
 	OrderID        string       `json:"order_id"`
 	OrderLinkID    string       `json:"order_link_id"`
 	UserID         int          `json:"user_id"`
-	Symbol         Symbol       `json:"symbol"`
+	Symbol         string       `json:"symbol"`
 	Side           Side         `json:"side"`
 	OrderType      OrderType    `json:"order_type"`
 	Price          float64      `json:"price"`

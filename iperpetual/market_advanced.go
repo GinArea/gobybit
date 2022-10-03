@@ -8,7 +8,7 @@ package iperpetual
 //   period Required string Data recording period. 5min, 15min, 30min, 1h, 4h, 1d
 //   limit           int    Limit for data size per page, max size is 200. Default as showing 50 pieces of data per page
 type OpenInterest struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 	Period string `param:"period"`
 	Limit  *int   `param:"limit"`
 }
@@ -18,7 +18,7 @@ func (this OpenInterest) Do(client *Client) ([]InterestItem, bool) {
 }
 
 type InterestItem struct {
-	Symbol       Symbol `json:"symbol"`
+	Symbol       string `json:"symbol"`
 	Timestamp    uint64 `json:"timestamp"`
 	OpenInterest uint64 `json:"open_interest"`
 }
@@ -36,7 +36,7 @@ func (this *Client) OpenInterest(v OpenInterest) ([]InterestItem, bool) {
 //   symbol Required string Symbol
 //   limit           int    Limit for data size per page, max size is 1000. Default as showing 500 pieces of data per page
 type LatestBigDeal struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 	Limit  *int   `param:"limit"`
 }
 
@@ -45,7 +45,7 @@ func (this LatestBigDeal) Do(client *Client) ([]LatestBigDealItem, bool) {
 }
 
 type LatestBigDealItem struct {
-	Symbol    Symbol  `json:"symbol"`
+	Symbol    string  `json:"symbol"`
 	Side      Side    `json:"side"`
 	Timestamp uint64  `json:"timestamp"`
 	Value     float64 `json:"value"`
@@ -62,7 +62,7 @@ func (this *Client) LatestBigDeal(v LatestBigDeal) ([]LatestBigDealItem, bool) {
 //   period Required string Data recording period. 5min, 15min, 30min, 1h, 4h, 1d
 //   limit           int    Limit for data size per page, max size is 500. Default as showing 50 pieces of data per page
 type LongShortRatio struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 	Period string `param:"period"`
 	Limit  *int   `param:"limit"`
 }
@@ -72,7 +72,7 @@ func (this LongShortRatio) Do(client *Client) ([]LongShortRatioItem, bool) {
 }
 
 type LongShortRatioItem struct {
-	Symbol    Symbol  `json:"symbol"`
+	Symbol    string  `json:"symbol"`
 	BuyRatio  float64 `json:"buy_ratio"`
 	SellRatio float64 `json:"sell_ratio"`
 	Timestamp uint64  `json:"timestamp"`

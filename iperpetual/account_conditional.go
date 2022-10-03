@@ -3,7 +3,7 @@ package iperpetual
 
 type ConditionalOrderBase struct {
 	UserID      int          `json:"user_id"`
-	Symbol      Symbol       `json:"symbol"`
+	Symbol      string       `json:"symbol"`
 	Side        Side         `json:"side"`
 	OrderType   OrderType    `json:"order_type"`
 	Price       float64      `json:"price"`
@@ -26,7 +26,7 @@ type ConditionalOrderProfitLoss struct {
 // Place Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-placecond)
 type PlaceConditionalOrder struct {
 	Side           Side          `param:"side"`
-	Symbol         Symbol        `param:"symbol"`
+	Symbol         string        `param:"symbol"`
 	OrderType      OrderType     `param:"order_type"`
 	Qty            int           `param:"qty"`
 	TimeInForce    TimeInForce   `param:"time_in_force"`
@@ -115,13 +115,13 @@ type ConditionalCancelOrderItem struct {
 	StopOrderType     StopOrder   `json:"stop_order_type"`
 }
 
-func (this *Client) CancelAllConditionalOrders(symbol Symbol) ([]ConditionalCancelOrderItem, bool) {
+func (this *Client) CancelAllConditionalOrders(symbol string) ([]ConditionalCancelOrderItem, bool) {
 	return CancelAllOrders{Symbol: symbol}.DoConditional(this)
 }
 
 // Replace Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-replacecond)
 type ReplaceConditionalOrder struct {
-	Symbol       Symbol        `param:"symbol"`
+	Symbol       string        `param:"symbol"`
 	OrderID      *string       `param:"stop_order_id"`
 	OrderLinkID  *string       `param:"order_link_id"`
 	Qty          *int          `param:"p_r_qty"`

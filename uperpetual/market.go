@@ -1,8 +1,6 @@
 // Market Data Endpoints (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-marketdata)
 package uperpetual
 
-import "github.com/ginarea/gobybit/iperpetual"
-
 // Query Symbol (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-querysymbol)
 // using iperpetual
 
@@ -15,10 +13,10 @@ import "github.com/ginarea/gobybit/iperpetual"
 //   from      Required integer From timestamp in seconds
 //   limit              integer Limit for data size per page, max size is 200. Default as showing 200 pieces of data per page
 type QueryKline struct {
-	Symbol   iperpetual.Symbol `param:"symbol"`
-	Interval KlineInterval     `param:"interval"`
-	From     int64             `param:"from"`
-	Limit    *int              `param:"limit"`
+	Symbol   string        `param:"symbol"`
+	Interval KlineInterval `param:"interval"`
+	From     int64         `param:"from"`
+	Limit    *int          `param:"limit"`
 }
 
 func (this QueryKline) Do(client *Client) ([]KlineItem, bool) {
@@ -26,18 +24,18 @@ func (this QueryKline) Do(client *Client) ([]KlineItem, bool) {
 }
 
 type KlineItem struct {
-	ID       int               `json:"id"`
-	Symbol   iperpetual.Symbol `json:"symbol"`
-	Period   KlineInterval     `json:"period"`
-	StartAt  uint64            `json:"start_at"`
-	Volume   float64           `json:"volume"`
-	Open     string            `json:"open"`
-	High     string            `json:"high"`
-	Low      string            `json:"low"`
-	Close    string            `json:"close"`
-	Interval KlineInterval     `json:"interval"`
-	OpenTime uint64            `json:"open_time"`
-	Turnover string            `json:"turnover"`
+	ID       int           `json:"id"`
+	Symbol   string        `json:"symbol"`
+	Period   KlineInterval `json:"period"`
+	StartAt  uint64        `json:"start_at"`
+	Volume   float64       `json:"volume"`
+	Open     string        `json:"open"`
+	High     string        `json:"high"`
+	Low      string        `json:"low"`
+	Close    string        `json:"close"`
+	Interval KlineInterval `json:"interval"`
+	OpenTime uint64        `json:"open_time"`
+	Turnover string        `json:"turnover"`
 }
 
 func (this *Client) QueryKline(v QueryKline) ([]KlineItem, bool) {
@@ -51,8 +49,8 @@ func (this *Client) QueryKline(v QueryKline) ([]KlineItem, bool) {
 //   symbol Required string  Symbol
 //   limit           integer Limit for data size, max size is 1000. Default size is 500
 type PublicTradingRecords struct {
-	Symbol iperpetual.Symbol `param:"symbol"`
-	Limit  *int              `param:"limit"`
+	Symbol string `param:"symbol"`
+	Limit  *int   `param:"limit"`
 }
 
 func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, bool) {
@@ -60,14 +58,14 @@ func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, bool
 }
 
 type PublicTradingRecord struct {
-	ID           string            `json:"id"`
-	Symbol       iperpetual.Symbol `json:"symbol"`
-	Price        float64           `json:"price"`
-	Qty          float64           `json:"qty"`
-	Side         Side              `json:"side"`
-	Time         string            `json:"time"`
-	TradeTime    uint64            `json:"trade_time_ms"`
-	IsBlockTrade bool              `json:"is_block_trade"`
+	ID           string  `json:"id"`
+	Symbol       string  `json:"symbol"`
+	Price        float64 `json:"price"`
+	Qty          float64 `json:"qty"`
+	Side         Side    `json:"side"`
+	Time         string  `json:"time"`
+	TradeTime    uint64  `json:"trade_time_ms"`
+	IsBlockTrade bool    `json:"is_block_trade"`
 }
 
 func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradingRecord, bool) {
@@ -81,7 +79,7 @@ func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradin
 // The funding rate is generated every 8 hours at 00:00 UTC, 08:00 UTC and 16:00 UTC.
 // For example, if a request is sent at 12:00 UTC, the funding rate generated earlier that day at 08:00 UTC will be sent
 type GetLastFundingRate struct {
-	Symbol iperpetual.Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 }
 
 func (this GetLastFundingRate) Do(client *Client) (LastFundingRate, bool) {
@@ -89,12 +87,12 @@ func (this GetLastFundingRate) Do(client *Client) (LastFundingRate, bool) {
 }
 
 type LastFundingRate struct {
-	Symbol      iperpetual.Symbol `json:"symbol"`
-	FundingRate float64           `json:"funding_rate"`
-	Timestamp   string            `json:"funding_rate_timestamp"`
+	Symbol      string  `json:"symbol"`
+	FundingRate float64 `json:"funding_rate"`
+	Timestamp   string  `json:"funding_rate_timestamp"`
 }
 
-func (this *Client) GetLastFundingRate(symbol iperpetual.Symbol) (LastFundingRate, bool) {
+func (this *Client) GetLastFundingRate(symbol string) (LastFundingRate, bool) {
 	return GetLastFundingRate{Symbol: symbol}.Do(this)
 }
 
@@ -106,13 +104,13 @@ func (this QueryKline) DoMark(client *Client) ([]MarkKlineItem, bool) {
 }
 
 type MarkKlineItem struct {
-	Symbol   iperpetual.Symbol `json:"symbol"`
-	Interval KlineInterval     `json:"period"`
-	OpenTime uint64            `json:"start_at"`
-	Open     int               `json:"open"`
-	High     int               `json:"high"`
-	Low      int               `json:"low"`
-	Close    int               `json:"close"`
+	Symbol   string        `json:"symbol"`
+	Interval KlineInterval `json:"period"`
+	OpenTime uint64        `json:"start_at"`
+	Open     int           `json:"open"`
+	High     int           `json:"high"`
+	Low      int           `json:"low"`
+	Close    int           `json:"close"`
 }
 
 func (this *Client) QueryMarkKline(v QueryKline) ([]MarkKlineItem, bool) {
@@ -127,13 +125,13 @@ func (this QueryKline) DoIndex(client *Client) ([]IndexKlineItem, bool) {
 }
 
 type IndexKlineItem struct {
-	Symbol   iperpetual.Symbol `json:"symbol"`
-	Interval KlineInterval     `json:"period"`
-	OpenTime uint64            `json:"open_time"`
-	Open     string            `json:"open"`
-	High     string            `json:"high"`
-	Low      string            `json:"low"`
-	Close    string            `json:"close"`
+	Symbol   string        `json:"symbol"`
+	Interval KlineInterval `json:"period"`
+	OpenTime uint64        `json:"open_time"`
+	Open     string        `json:"open"`
+	High     string        `json:"high"`
+	Low      string        `json:"low"`
+	Close    string        `json:"close"`
 }
 
 func (this *Client) QueryIndexKline(v QueryKline) ([]IndexKlineItem, bool) {

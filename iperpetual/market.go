@@ -51,7 +51,7 @@ func (this *Client) QuerySymbolNames() ([]string, bool) {
 
 // Order Book (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-orderbook)
 type OrderBook struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 }
 
 func (this OrderBook) Do(client *Client) ([]OrderBookItem, bool) {
@@ -59,13 +59,13 @@ func (this OrderBook) Do(client *Client) ([]OrderBookItem, bool) {
 }
 
 type OrderBookItem struct {
-	Symbol Symbol `json:"symbol"`
+	Symbol string `json:"symbol"`
 	Price  string `json:"price"`
 	Size   int    `json:"size"`
 	Side   Side   `json:"side"`
 }
 
-func (this *Client) OrderBook(symbol Symbol) ([]OrderBookItem, bool) {
+func (this *Client) OrderBook(symbol string) ([]OrderBookItem, bool) {
 	return OrderBook{Symbol: symbol}.Do(this)
 }
 
@@ -75,7 +75,7 @@ func (this *Client) OrderBook(symbol Symbol) ([]OrderBookItem, bool) {
 //   from      Required integer From timestamp in seconds
 //   limit              integer Limit for data size per page, max size is 200. Default as showing 200 pieces of data per page
 type QueryKline struct {
-	Symbol   Symbol        `param:"symbol"`
+	Symbol   string        `param:"symbol"`
 	Interval KlineInterval `param:"interval"`
 	From     int64         `param:"from"`
 	Limit    *int          `param:"limit"`
@@ -86,7 +86,7 @@ func (this QueryKline) Do(client *Client) ([]KlineItem, bool) {
 }
 
 type KlineItem struct {
-	Symbol   Symbol        `json:"symbol"`
+	Symbol   string        `json:"symbol"`
 	Interval KlineInterval `json:"interval"`
 	OpenTime uint64        `json:"open_time"`
 	Open     string        `json:"open"`
@@ -103,7 +103,7 @@ func (this *Client) QueryKline(v QueryKline) ([]KlineItem, bool) {
 
 // Latest Information for Symbol (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-latestsymbolinfo)
 type SymbolLatestInformation struct {
-	Symbol *Symbol `param:"symbol"`
+	Symbol *string `param:"symbol"`
 }
 
 func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, bool) {
@@ -111,7 +111,7 @@ func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, boo
 }
 
 type LatestInformation struct {
-	Symbol                 Symbol        `json:"symbol"`
+	Symbol                 string        `json:"symbol"`
 	BidPrice               string        `json:"bid_price"`
 	AskPrice               string        `json:"ask_price"`
 	LastPrice              string        `json:"last_price"`
@@ -139,7 +139,7 @@ type LatestInformation struct {
 	DeliveryTime           string        `json:"delivery_time"`
 }
 
-func (this *Client) SymbolLatestInformation(symbol *Symbol) ([]LatestInformation, bool) {
+func (this *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation, bool) {
 	return SymbolLatestInformation{Symbol: symbol}.Do(this)
 }
 
@@ -147,7 +147,7 @@ func (this *Client) SymbolLatestInformation(symbol *Symbol) ([]LatestInformation
 //   symbol Required string  Symbol
 //   limit           integer Limit for data size, max size is 1000. Default size is 500
 type PublicTradingRecords struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 	Limit  *int   `param:"limit"`
 }
 
@@ -157,7 +157,7 @@ func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, bool
 
 type PublicTradingRecord struct {
 	ID     int     `json:"id"`
-	Symbol Symbol  `json:"symbol"`
+	Symbol string  `json:"symbol"`
 	Price  float64 `json:"price"`
 	Qty    int     `json:"qty"`
 	Side   Side    `json:"side"`
@@ -176,7 +176,7 @@ func (this QueryKline) DoMark(client *Client) ([]MarkKlineItem, bool) {
 }
 
 type MarkKlineItem struct {
-	Symbol   Symbol        `json:"symbol"`
+	Symbol   string        `json:"symbol"`
 	Interval KlineInterval `json:"period"`
 	OpenTime uint64        `json:"start_at"`
 	Open     int           `json:"open"`
@@ -197,7 +197,7 @@ func (this QueryKline) DoIndex(client *Client) ([]IndexKlineItem, bool) {
 }
 
 type IndexKlineItem struct {
-	Symbol   Symbol        `json:"symbol"`
+	Symbol   string        `json:"symbol"`
 	Interval KlineInterval `json:"period"`
 	OpenTime uint64        `json:"open_time"`
 	Open     string        `json:"open"`

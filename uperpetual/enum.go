@@ -10,14 +10,8 @@ const (
 )
 
 // Symbol (symbol) (https://bybit-exchange.github.io/docs/futuresV2/linear/#symbol-symbol)
-// using iperpetual.Symbol
 
 // Currency (currency/coin) (https://bybit-exchange.github.io/docs/futuresV2/linear/#currency-currency-coin)
-type Currency string
-
-const (
-	USDT Currency = "USDT"
-)
 
 // Contract Type (contract_type) (https://bybit-exchange.github.io/docs/futuresV2/linear/#contract-type-contract_type)
 type ContractType string

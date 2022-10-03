@@ -3,7 +3,7 @@ package iperpetual
 
 type OrderMain struct {
 	UserID      int         `json:"user_id"`
-	Symbol      Symbol      `json:"symbol"`
+	Symbol      string      `json:"symbol"`
 	Side        Side        `json:"side"`
 	OrderType   OrderType   `json:"order_type"`
 	Price       float64     `json:"price"`
@@ -34,7 +34,7 @@ type OrderProfitLoss struct {
 // Place Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-placeactive)
 type PlaceActiveOrder struct {
 	Side           Side          `param:"side"`
-	Symbol         Symbol        `param:"symbol"`
+	Symbol         string        `param:"symbol"`
 	OrderType      OrderType     `param:"order_type"`
 	Qty            int           `param:"qty"`
 	TimeInForce    TimeInForce   `param:"time_in_force"`
@@ -65,7 +65,7 @@ func (this *Client) PlaceActiveOrder(v PlaceActiveOrder) (OrderCreated, bool) {
 
 // Get Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getactive)
 type OrderList struct {
-	Symbol      Symbol       `param:"symbol"`
+	Symbol      string       `param:"symbol"`
 	OrderStatus *OrderStatus `param:"order_status"`
 	Direction   *Direction   `param:"direction"`
 	Limit       *int         `param:"limit"`
@@ -94,7 +94,7 @@ func (this *Client) OrderList(v OrderList) (OrderListResult, bool) {
 
 // Cancel Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-cancelactive)
 type CancelOrder struct {
-	Symbol      Symbol  `param:"symbol"`
+	Symbol      string  `param:"symbol"`
 	OrderId     *string `param:"order_id"`
 	OrderLinkId *string `param:"order_link_id"`
 }
@@ -113,7 +113,7 @@ func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, bool) {
 
 // Cancel All Active Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-cancelallactive)
 type CancelAllOrders struct {
-	Symbol Symbol `param:"symbol"`
+	Symbol string `param:"symbol"`
 }
 
 func (this CancelAllOrders) Do(client *Client) ([]CancelOrderItem, bool) {
@@ -131,13 +131,13 @@ type CancelOrderItem struct {
 	OrderLinkID string      `оыщт:"order_link_id"`
 }
 
-func (this *Client) CancelAllOrders(symbol Symbol) ([]CancelOrderItem, bool) {
+func (this *Client) CancelAllOrders(symbol string) ([]CancelOrderItem, bool) {
 	return CancelAllOrders{Symbol: symbol}.Do(this)
 }
 
 // Replace Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-replaceactive)
 type ReplaceOrder struct {
-	Symbol      Symbol        `param:"symbol"`
+	Symbol      string        `param:"symbol"`
 	OrderID     *string       `param:"order_id"`
 	OrderLinkID *string       `param:"order_link_id"`
 	Qty         *int          `param:"p_r_qty"`
@@ -165,7 +165,7 @@ func (this *Client) ReplaceOrder(v ReplaceOrder) (string, bool) {
 // Query real-time active order information. If only order_id or order_link_id are passed,
 // a single order will be returned; otherwise, returns up to 500 unfilled orders.
 type QueryOrder struct {
-	Symbol      Symbol  `param:"symbol"`
+	Symbol      string  `param:"symbol"`
 	OrderID     *string `param:"order_id"`
 	OrderLinkID *string `param:"order_link_id"`
 }

@@ -1,11 +1,9 @@
 // Position (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-position)
 package ifutures
 
-import "github.com/ginarea/gobybit/iperpetual"
-
 // My Position (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-myposition)
 type GetPosition struct {
-	Symbol *iperpetual.Symbol `param:"symbol"`
+	Symbol *string `param:"symbol"`
 }
 
 func (this GetPosition) Do(client *Client) ([]PositionItem, bool) {
@@ -13,37 +11,37 @@ func (this GetPosition) Do(client *Client) ([]PositionItem, bool) {
 }
 
 type PositionBase struct {
-	ID                  int               `json:"id"`
-	UserID              int               `json:"user_id"`
-	RiskID              int               `json:"risk_id"`
-	Symbol              iperpetual.Symbol `json:"symbol"`
-	Side                Side              `json:"side"`
-	Size                int               `json:"size"`
-	PositionValue       string            `json:"position_value"`
-	EntryPrice          string            `json:"entry_price"`
-	IsIsolated          bool              `json:"is_isolated"`
-	AutoAddMargin       int               `json:"auto_add_margin"`
-	Leverage            string            `json:"leverage"`
-	EffectiveLeverage   string            `json:"effective_leverage"`
-	PositionMargin      string            `json:"position_margin"`
-	LiqPrice            string            `json:"liq_price"`
-	BustPrice           string            `json:"bust_price"`
-	OccClosingFee       string            `json:"occ_closing_fee"`
-	OccFundingFee       string            `json:"occ_funding_fee"`
-	TakeProfit          string            `json:"take_profit"`
-	StopLoss            string            `json:"stop_loss"`
-	TrailingStop        string            `json:"trailing_stop"`
-	PositionStatus      string            `json:"position_status"`
-	DeleverageIndicator int               `json:"deleverage_indicator"`
-	OcCalcData          string            `json:"oc_calc_data"`
-	OrderMargin         string            `json:"order_margin"`
-	WalletBalance       string            `json:"wallet_balance"`
-	RealisedPnl         string            `json:"realised_pnl"`
-	CumRealisedPnl      string            `json:"cum_realised_pnl"`
-	CrossSeq            int               `json:"cross_seq"`
-	PositionSeq         int               `json:"position_seq"`
-	CreatedAt           string            `json:"created_at"`
-	UpdatedAt           string            `json:"updated_at"`
+	ID                  int    `json:"id"`
+	UserID              int    `json:"user_id"`
+	RiskID              int    `json:"risk_id"`
+	Symbol              string `json:"symbol"`
+	Side                Side   `json:"side"`
+	Size                int    `json:"size"`
+	PositionValue       string `json:"position_value"`
+	EntryPrice          string `json:"entry_price"`
+	IsIsolated          bool   `json:"is_isolated"`
+	AutoAddMargin       int    `json:"auto_add_margin"`
+	Leverage            string `json:"leverage"`
+	EffectiveLeverage   string `json:"effective_leverage"`
+	PositionMargin      string `json:"position_margin"`
+	LiqPrice            string `json:"liq_price"`
+	BustPrice           string `json:"bust_price"`
+	OccClosingFee       string `json:"occ_closing_fee"`
+	OccFundingFee       string `json:"occ_funding_fee"`
+	TakeProfit          string `json:"take_profit"`
+	StopLoss            string `json:"stop_loss"`
+	TrailingStop        string `json:"trailing_stop"`
+	PositionStatus      string `json:"position_status"`
+	DeleverageIndicator int    `json:"deleverage_indicator"`
+	OcCalcData          string `json:"oc_calc_data"`
+	OrderMargin         string `json:"order_margin"`
+	WalletBalance       string `json:"wallet_balance"`
+	RealisedPnl         string `json:"realised_pnl"`
+	CumRealisedPnl      string `json:"cum_realised_pnl"`
+	CrossSeq            int    `json:"cross_seq"`
+	PositionSeq         int    `json:"position_seq"`
+	CreatedAt           string `json:"created_at"`
+	UpdatedAt           string `json:"updated_at"`
 }
 
 type PositionData struct {
@@ -59,15 +57,15 @@ type PositionItem struct {
 	IsValid bool         `json:"is_valid"`
 }
 
-func (this *Client) GetPosition(symbol *iperpetual.Symbol) ([]PositionItem, bool) {
+func (this *Client) GetPosition(symbol *string) ([]PositionItem, bool) {
 	return GetPosition{Symbol: symbol}.Do(this)
 }
 
 // Change Margin (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-changemargin)
 type ChangeMargin struct {
-	Symbol      iperpetual.Symbol `param:"symbol"`
-	PositionIdx PositionIdx       `param:"position_idx"`
-	Margin      string            `param:"margin"`
+	Symbol      string      `param:"symbol"`
+	PositionIdx PositionIdx `param:"position_idx"`
+	Margin      string      `param:"margin"`
 }
 
 func (this ChangeMargin) Do(client *Client) (float64, bool) {
@@ -80,16 +78,16 @@ func (this *Client) ChangeMargin(v ChangeMargin) (float64, bool) {
 
 // Set Trading-Stop (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-tradingstop)
 type SetTradingStop struct {
-	Symbol            iperpetual.Symbol `param:"symbol"`
-	PositionIdx       PositionIdx       `param:"position_idx"`
-	TakeProfit        *int              `param:"take_profit"`
-	StopLoss          *int              `param:"stop_loss"`
-	TrailingStop      *int              `param:"trailing_stop"`
-	TpTrigger         *TriggerPrice     `param:"tp_trigger_by"`
-	SlTrigger         *TriggerPrice     `param:"sl_trigger_by"`
-	NewTrailingActive *int              `param:"new_trailing_active"`
-	SlSize            *int              `param:"sl_size"`
-	TpSize            *int              `param:"tp_size"`
+	Symbol            string        `param:"symbol"`
+	PositionIdx       PositionIdx   `param:"position_idx"`
+	TakeProfit        *int          `param:"take_profit"`
+	StopLoss          *int          `param:"stop_loss"`
+	TrailingStop      *int          `param:"trailing_stop"`
+	TpTrigger         *TriggerPrice `param:"tp_trigger_by"`
+	SlTrigger         *TriggerPrice `param:"sl_trigger_by"`
+	NewTrailingActive *int          `param:"new_trailing_active"`
+	SlSize            *int          `param:"sl_size"`
+	TpSize            *int          `param:"tp_size"`
 }
 
 func (this SetTradingStop) Do(client *Client) (SetTradingStopResult, bool) {
@@ -115,9 +113,9 @@ func (this *Client) SetTradingStop(v SetTradingStop) (SetTradingStopResult, bool
 
 // Set Leverage (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-setleverage)
 type SetLeverage struct {
-	Symbol       iperpetual.Symbol `param:"symbol"`
-	BuyLeverage  int               `param:"buy_leverage"`
-	SellLeverage int               `param:"sell_leverage"`
+	Symbol       string `param:"symbol"`
+	BuyLeverage  int    `param:"buy_leverage"`
+	SellLeverage int    `param:"sell_leverage"`
 }
 
 func (this SetLeverage) Do(client *Client) (int, bool) {
@@ -130,9 +128,9 @@ func (this *Client) SetLeverage(v SetLeverage) (int, bool) {
 
 // Position Mode Switch (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-switchpositionmode)
 type PositionModeSwitch struct {
-	Mode     PositionMode       `param:"mode"`
-	Symbol   *iperpetual.Symbol `param:"symbol"`
-	Currency *Currency          `param:"coin"`
+	Mode     PositionMode `param:"mode"`
+	Symbol   *string      `param:"symbol"`
+	Currency *string      `param:"coin"`
 }
 
 type PositionMode int
@@ -155,8 +153,8 @@ func (this *Client) PositionModeSwitch(v PositionModeSwitch) bool {
 //
 // Switch mode between Full or Partial
 type TpSlModeSwitch struct {
-	Symbol   iperpetual.Symbol `param:"symbol"`
-	TpSlMode *TpSlMode         `param:"tp_sl_mode"`
+	Symbol   string    `param:"symbol"`
+	TpSlMode *TpSlMode `param:"tp_sl_mode"`
 }
 
 func (this TpSlModeSwitch) Do(client *Client) (TpSlMode, bool) {
@@ -175,10 +173,10 @@ func (this *Client) TpSlModeSwitch(v TpSlModeSwitch) (TpSlMode, bool) {
 //
 // Switch Cross/Isolated; must set leverage value when switching from Cross to Isolated
 type MarginSwitch struct {
-	Symbol       iperpetual.Symbol `param:"symbol"`
-	IsIsolated   bool              `param:"is_isolated"`
-	BuyLeverage  int               `param:"buy_leverage"`
-	SellLeverage int               `param:"sell_leverage"`
+	Symbol       string `param:"symbol"`
+	IsIsolated   bool   `param:"is_isolated"`
+	BuyLeverage  int    `param:"buy_leverage"`
+	SellLeverage int    `param:"sell_leverage"`
 }
 
 func (this MarginSwitch) Do(client *Client) bool {
@@ -194,12 +192,12 @@ func (this *Client) MarginSwitch(v MarginSwitch) bool {
 //
 // Get user's trading records. The results are ordered in ascending order (the first item is the oldest).
 type GetTradeRecords struct {
-	Symbol    iperpetual.Symbol `param:"symbol"`
-	OrderID   *string           `param:"order_id"`
-	StartTime *int              `param:"start_time"`
-	Page      *int              `param:"page"`
-	Limit     *int              `param:"limit"`
-	Order     *SortOrder        `param:"order"`
+	Symbol    string     `param:"symbol"`
+	OrderID   *string    `param:"order_id"`
+	StartTime *int       `param:"start_time"`
+	Page      *int       `param:"page"`
+	Limit     *int       `param:"limit"`
+	Order     *SortOrder `param:"order"`
 }
 
 func (this GetTradeRecords) Do(client *Client) (TradeRecords, bool) {
@@ -207,28 +205,28 @@ func (this GetTradeRecords) Do(client *Client) (TradeRecords, bool) {
 }
 
 type TradeRecord struct {
-	ClosedSize    int               `json:"closed_size"`
-	CrossSeq      int               `json:"cross_seq"`
-	ExecFee       string            `json:"exec_fee"`
-	ExecID        string            `json:"exec_id"`
-	ExecPrice     string            `json:"exec_price"`
-	ExecQty       int               `json:"exec_qty"`
-	ExecTime      string            `json:"exec_time"`
-	ExecType      ExecType          `json:"exec_type"`
-	ExecValue     string            `json:"exec_value"`
-	FeeRate       string            `json:"fee_rate"`
-	LastLiquidity string            `json:"last_liquidity_ind"`
-	LeavesQty     int               `json:"leaves_qty"`
-	NthFill       int               `json:"nth_fill"`
-	OrderID       string            `json:"order_id"`
-	OrderLinkID   string            `json:"order_link_id"`
-	OrderPrice    string            `json:"order_price"`
-	OrderQty      int               `json:"order_qty"`
-	OrderType     OrderType         `json:"order_type"`
-	Side          Side              `json:"side"`
-	Symbol        iperpetual.Symbol `json:"symbol"`
-	UserID        int               `json:"user_id"`
-	TradeTime     uint64            `json:"trade_time_ms"`
+	ClosedSize    int       `json:"closed_size"`
+	CrossSeq      int       `json:"cross_seq"`
+	ExecFee       string    `json:"exec_fee"`
+	ExecID        string    `json:"exec_id"`
+	ExecPrice     string    `json:"exec_price"`
+	ExecQty       int       `json:"exec_qty"`
+	ExecTime      string    `json:"exec_time"`
+	ExecType      ExecType  `json:"exec_type"`
+	ExecValue     string    `json:"exec_value"`
+	FeeRate       string    `json:"fee_rate"`
+	LastLiquidity string    `json:"last_liquidity_ind"`
+	LeavesQty     int       `json:"leaves_qty"`
+	NthFill       int       `json:"nth_fill"`
+	OrderID       string    `json:"order_id"`
+	OrderLinkID   string    `json:"order_link_id"`
+	OrderPrice    string    `json:"order_price"`
+	OrderQty      int       `json:"order_qty"`
+	OrderType     OrderType `json:"order_type"`
+	Side          Side      `json:"side"`
+	Symbol        string    `json:"symbol"`
+	UserID        int       `json:"user_id"`
+	TradeTime     uint64    `json:"trade_time_ms"`
 }
 
 type TradeRecords struct {
@@ -242,12 +240,12 @@ func (this *Client) GetTradeRecords(v GetTradeRecords) (TradeRecords, bool) {
 
 // Closed Profit and Loss (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-closedprofitandloss)
 type ClosedProfitLoss struct {
-	Symbol    iperpetual.Symbol `param:"symbol"`
-	StartTime *int              `param:"start_time"`
-	EndTime   *int              `param:"end_time"`
-	ExecType  *ExecType         `param:"exec_type"`
-	Page      *int              `param:"page"`
-	Limit     *int              `param:"limit"`
+	Symbol    string    `param:"symbol"`
+	StartTime *int      `param:"start_time"`
+	EndTime   *int      `param:"end_time"`
+	ExecType  *ExecType `param:"exec_type"`
+	Page      *int      `param:"page"`
+	Limit     *int      `param:"limit"`
 }
 
 func (this ClosedProfitLoss) Do(client *Client) (ClosedProfitLossResult, bool) {
@@ -255,24 +253,24 @@ func (this ClosedProfitLoss) Do(client *Client) (ClosedProfitLossResult, bool) {
 }
 
 type ClosedData struct {
-	ID            int               `json:"id"`
-	UserID        int               `json:"user_id"`
-	Symbol        iperpetual.Symbol `json:"symbol"`
-	OrderID       string            `json:"order_id"`
-	Side          Side              `json:"side"`
-	Qty           float64           `json:"qty"`
-	OrderPrice    float64           `json:"order_price"`
-	OrderType     OrderType         `json:"order_type"`
-	ExecType      ExecType          `json:"exec_type"`
-	ClosedSize    float64           `json:"closed_size"`
-	CumEntryValue float64           `json:"cum_entry_value"`
-	AvgEntryPrice float64           `json:"avg_entry_price"`
-	CumExitValue  float64           `json:"cum_exit_value"`
-	AvgExitPrice  float64           `json:"avg_exit_price"`
-	ClosedPnl     float64           `json:"closed_pnl"`
-	FillCount     int               `json:"fill_count"`
-	Leverage      int               `json:"leverage"`
-	CreatedAt     uint64            `json:"created_at"`
+	ID            int       `json:"id"`
+	UserID        int       `json:"user_id"`
+	Symbol        string    `json:"symbol"`
+	OrderID       string    `json:"order_id"`
+	Side          Side      `json:"side"`
+	Qty           float64   `json:"qty"`
+	OrderPrice    float64   `json:"order_price"`
+	OrderType     OrderType `json:"order_type"`
+	ExecType      ExecType  `json:"exec_type"`
+	ClosedSize    float64   `json:"closed_size"`
+	CumEntryValue float64   `json:"cum_entry_value"`
+	AvgEntryPrice float64   `json:"avg_entry_price"`
+	CumExitValue  float64   `json:"cum_exit_value"`
+	AvgExitPrice  float64   `json:"avg_exit_price"`
+	ClosedPnl     float64   `json:"closed_pnl"`
+	FillCount     int       `json:"fill_count"`
+	Leverage      int       `json:"leverage"`
+	CreatedAt     uint64    `json:"created_at"`
 }
 
 type ClosedProfitLossResult struct {

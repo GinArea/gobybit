@@ -10,19 +10,8 @@ const (
 )
 
 // Symbol (symbol) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#symbol-symbol)
-//
-// using iperpetual.Symbol
 
 // Currency (currency/coin) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#currency-currency-coin)
-type Currency string
-
-const (
-	BTC  Currency = "BTC"
-	ETH  Currency = "ETH"
-	EOS  Currency = "EOS"
-	XRP  Currency = "XRP"
-	USDT Currency = "USDT"
-)
 
 // Contract Type (contract_type) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#contract-type-contract_type)
 type ContractType string

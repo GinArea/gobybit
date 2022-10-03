@@ -10,19 +10,8 @@ const (
 )
 
 // Symbol (symbol) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#symbol-symbol)
-type Symbol string
 
 // Currency (currency/coin) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#currency-currency-coin)
-type Currency string
-
-const (
-	BTC  Currency = "BTC"
-	ETH  Currency = "ETH"
-	EOS  Currency = "EOS"
-	XRP  Currency = "XRP"
-	DOT  Currency = "DOT"
-	USDT Currency = "USDT"
-)
 
 // Contract Type (contract_type) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#contract-type-contract_type)
 type ContractType string
