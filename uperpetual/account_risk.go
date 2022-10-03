@@ -1,9 +1,9 @@
-// [Risk Limit] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-risklimit
+// Risk Limit (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-risklimit)
 package uperpetual
 
 import "github.com/ginarea/gobybit/iperpetual"
 
-// [Get Risk Limit] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-getrisklimit
+// Get Risk Limit (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-getrisklimit)
 type GetRiskLimit struct {
 	Symbol *iperpetual.Symbol `param:"symbol"`
 }
@@ -29,9 +29,9 @@ func (this *Client) GetRiskLimit(symbol *iperpetual.Symbol) ([]RiskLimitItem, bo
 	return GetRiskLimit{Symbol: symbol}.Do(this)
 }
 
-// [Set Risk Limit] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-setrisklimit
-// symbol  Required string  Symbol
-// risk_id Required integer Risk ID
+// Set Risk Limit (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-setrisklimit)
+//   symbol  Required string  Symbol
+//   risk_id Required integer Risk ID
 type SetRiskLimit struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
 	Side        Side              `param:"side"`

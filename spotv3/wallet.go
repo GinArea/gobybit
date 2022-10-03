@@ -1,7 +1,7 @@
-// [Wallet Data Endpoints] https://bybit-exchange.github.io/docs/spot/v3/#t-wallet
+// Wallet Data Endpoints (https://bybit-exchange.github.io/docs/spot/v3/#t-wallet)
 package spotv3
 
-// [Get Wallet Balance] https://bybit-exchange.github.io/docs/spot/v3/#t-balance
+// Get Wallet Balance (https://bybit-exchange.github.io/docs/spot/v3/#t-balance)
 type Balance struct {
 	Coin     string `json:"coin"`
 	CoinID   string `json:"coinId"`

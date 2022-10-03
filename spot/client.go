@@ -1,4 +1,4 @@
-// [Spot] https://bybit-exchange.github.io/docs/spot/v1
+// Spot (https://bybit-exchange.github.io/docs/spot/v1)
 package spot
 
 import (
@@ -7,6 +7,7 @@ import (
 	"github.com/ginarea/gobybit/transport"
 )
 
+// Spot HTTP client
 type Client struct {
 	c *transport.Client
 }

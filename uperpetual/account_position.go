@@ -1,9 +1,9 @@
-// [Position] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-position
+// Position (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-position)
 package uperpetual
 
 import "github.com/ginarea/gobybit/iperpetual"
 
-// [My Position] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-myposition
+// My Position (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-myposition)
 type GetPositionAll struct {
 }
 
@@ -60,7 +60,7 @@ func (this *Client) GetPosition(symbol iperpetual.Symbol) ([]PositionData, bool)
 	return GetPosition{Symbol: symbol}.Do(this)
 }
 
-// [Set Auto Add Margin] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-setautoaddmargin
+// Set Auto Add Margin (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-setautoaddmargin)
 type SetAutoAddMargin struct {
 	Symbol        iperpetual.Symbol `param:"symbol"`
 	Side          Side              `param:"side"`
@@ -77,7 +77,8 @@ func (this *Client) SetAutoAddMargin(v SetAutoAddMargin) bool {
 	return v.Do(this)
 }
 
-// [Cross/Isolated Margin Switch] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-marginswitch
+// Cross/Isolated Margin Switch (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-marginswitch)
+//
 // Switch Cross/Isolated; must set leverage value when switching from Cross to Isolated
 type MarginSwitch struct {
 	Symbol       iperpetual.Symbol `param:"symbol"`
@@ -95,7 +96,7 @@ func (this *Client) MarginSwitch(v MarginSwitch) bool {
 	return v.Do(this)
 }
 
-// [Position Mode Switch] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-switchpositionmode
+// Position Mode Switch (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-switchpositionmode)
 type PositionModeSwitch struct {
 	Mode     PositionMode       `param:"mode"`
 	Symbol   *iperpetual.Symbol `param:"symbol"`
@@ -118,7 +119,8 @@ func (this *Client) PositionModeSwitch(v PositionModeSwitch) bool {
 	return v.Do(this)
 }
 
-// [Full/Partial Position TP/SL Switch] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-switchmode
+// Full/Partial Position TP/SL Switch (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-switchmode)
+//
 // Switch mode between Full or Partial
 type TpSlModeSwitch struct {
 	Symbol   iperpetual.Symbol `param:"symbol"`
@@ -137,7 +139,7 @@ func (this *Client) TpSlModeSwitch(v TpSlModeSwitch) (TpSlMode, bool) {
 	return v.Do(this)
 }
 
-// [Add/Reduce Margin] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-addmargin
+// Add/Reduce Margin (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-addmargin)
 type AddReduceMargin struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
 	Side        Side              `param:"side"`
@@ -165,7 +167,7 @@ func (this *Client) AddReduceMargin(v AddReduceMargin) (AddReduceMarginResult, b
 	return v.Do(this)
 }
 
-// [Set Leverage] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-setleverage
+// Set Leverage (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-setleverage)
 type SetLeverage struct {
 	Symbol       iperpetual.Symbol `param:"symbol"`
 	BuyLeverage  int               `param:"buy_leverage"`
@@ -181,7 +183,7 @@ func (this *Client) SetLeverage(v SetLeverage) bool {
 	return v.Do(this)
 }
 
-// [Set Trading-Stop] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-tradingstop
+// Set Trading-Stop (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-tradingstop)
 type SetTradingStop struct {
 	Symbol       iperpetual.Symbol `param:"symbol"`
 	Side         Side              `param:"side"`
@@ -204,8 +206,9 @@ func (this *Client) SetTradingStop(v SetTradingStop) bool {
 	return v.Do(this)
 }
 
-// [Get User Trade Records] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-usertraderecords
-// Get user's trading records.
+// Get User Trade Records (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-usertraderecords)
+//
+// Get user's trading records
 type GetTradeRecords struct {
 	Symbol    iperpetual.Symbol `param:"symbol"`
 	StartTime *int              `param:"start_time"`
@@ -250,8 +253,9 @@ func (this *Client) GetTradeRecords(v GetTradeRecords) (TradeRecords, bool) {
 	return v.Do(this)
 }
 
-// [Extended User Trade Records] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-userhistorytraderecords
-// Get user's trading records.
+// Extended User Trade Records (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-userhistorytraderecords)
+//
+// Get user's trading records
 type GetExtendedTradeRecords struct {
 	Symbol    iperpetual.Symbol `param:"symbol"`
 	StartTime *int              `param:"start_time"`
@@ -274,7 +278,7 @@ func (this *Client) GetExtendedTradeRecords(v GetExtendedTradeRecords) (Extended
 	return v.Do(this)
 }
 
-// [Closed Profit and Loss] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-closedprofitandloss
+// Closed Profit and Loss (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-closedprofitandloss)
 type ClosedProfitLoss struct {
 	Symbol    iperpetual.Symbol `param:"symbol"`
 	StartTime *int              `param:"start_time"`

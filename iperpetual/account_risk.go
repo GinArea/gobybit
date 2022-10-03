@@ -1,7 +1,7 @@
-// [Risk Limit] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-risklimit
+// Risk Limit (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-risklimit)
 package iperpetual
 
-// [Get Risk Limit] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getrisklimit
+// Get Risk Limit (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getrisklimit)
 type GetRiskLimit struct {
 	Symbol *Symbol `param:"symbol"`
 }
@@ -27,9 +27,9 @@ func (this *Client) GetRiskLimit(symbol *Symbol) ([]RiskLimitItem, bool) {
 	return GetRiskLimit{Symbol: symbol}.Do(this)
 }
 
-// [Set Risk Limit] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-setrisklimit
-// symbol  Required string  Symbol
-// risk_id Required integer Risk ID
+// Set Risk Limit (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-setrisklimit)
+//   symbol  Required string  Symbol
+//   risk_id Required integer Risk ID
 type SetRiskLimit struct {
 	Symbol Symbol `param:"symbol"`
 	RiskID int    `param:"risk_id"`

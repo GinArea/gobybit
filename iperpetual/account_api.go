@@ -1,4 +1,4 @@
-// [API Key Info] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-key
+// API Key Info (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-key)
 package iperpetual
 
 type GetKeyInfo struct {

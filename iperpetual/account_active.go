@@ -1,4 +1,4 @@
-// [Active Orders] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-activeorders
+// Active Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-activeorders)
 package iperpetual
 
 type OrderMain struct {
@@ -31,7 +31,7 @@ type OrderProfitLoss struct {
 	SlTrigger  TriggerPrice `json:"sl_trigger_by"`
 }
 
-// [Place Active Order] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-placeactive
+// Place Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-placeactive)
 type PlaceActiveOrder struct {
 	Side           Side          `param:"side"`
 	Symbol         Symbol        `param:"symbol"`
@@ -63,7 +63,7 @@ func (this *Client) PlaceActiveOrder(v PlaceActiveOrder) (OrderCreated, bool) {
 	return v.Do(this)
 }
 
-// [Get Active Order] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getactive
+// Get Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getactive)
 type OrderList struct {
 	Symbol      Symbol       `param:"symbol"`
 	OrderStatus *OrderStatus `param:"order_status"`
@@ -92,7 +92,7 @@ func (this *Client) OrderList(v OrderList) (OrderListResult, bool) {
 	return v.Do(this)
 }
 
-// [Cancel Active Order] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-cancelactive
+// Cancel Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-cancelactive)
 type CancelOrder struct {
 	Symbol      Symbol  `param:"symbol"`
 	OrderId     *string `param:"order_id"`
@@ -111,7 +111,7 @@ func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, bool) {
 	return v.Do(this)
 }
 
-// [Cancel All Active Orders] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-cancelallactive
+// Cancel All Active Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-cancelallactive)
 type CancelAllOrders struct {
 	Symbol Symbol `param:"symbol"`
 }
@@ -135,7 +135,7 @@ func (this *Client) CancelAllOrders(symbol Symbol) ([]CancelOrderItem, bool) {
 	return CancelAllOrders{Symbol: symbol}.Do(this)
 }
 
-// [Replace Active Order] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-replaceactive
+// Replace Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-replaceactive)
 type ReplaceOrder struct {
 	Symbol      Symbol        `param:"symbol"`
 	OrderID     *string       `param:"order_id"`
@@ -160,7 +160,8 @@ func (this *Client) ReplaceOrder(v ReplaceOrder) (string, bool) {
 	return v.Do(this)
 }
 
-// [Query Active Order (real-time)] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-queryactive
+// Query Active Order (real-time) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-queryactive)
+//
 // Query real-time active order information. If only order_id or order_link_id are passed,
 // a single order will be returned; otherwise, returns up to 500 unfilled orders.
 type QueryOrder struct {

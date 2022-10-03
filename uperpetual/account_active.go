@@ -1,9 +1,9 @@
-// [Active Orders] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-activeorders
+// Active Orders (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-activeorders)
 package uperpetual
 
 import "github.com/ginarea/gobybit/iperpetual"
 
-// [Place Active Order] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-placeactive
+// Place Active Order (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-placeactive)
 type PlaceActiveOrder struct {
 	Side           Side              `param:"side"`
 	Symbol         iperpetual.Symbol `param:"symbol"`
@@ -34,7 +34,7 @@ func (this *Client) PlaceActiveOrder(v PlaceActiveOrder) (OrderCreated, bool) {
 	return v.Do(this)
 }
 
-// [Get Active Order] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-getactive
+// Get Active Order (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-getactive)
 type OrderList struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
 	OrderID     *string           `param:"order_id"`
@@ -58,7 +58,7 @@ func (this *Client) OrderList(v OrderList) (OrderListResult, bool) {
 	return v.Do(this)
 }
 
-// [Cancel Active Order] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-cancelactive
+// Cancel Active Order (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-cancelactive)
 type CancelOrder struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
 	OrderID     *string           `param:"order_id"`
@@ -77,7 +77,7 @@ func (this *Client) CancelOrder(v CancelOrder) (string, bool) {
 	return v.Do(this)
 }
 
-// [Cancel All Active Orders] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-cancelallactive
+// Cancel All Active Orders (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-cancelallactive)
 type CancelAllOrders struct {
 	Symbol iperpetual.Symbol `param:"symbol"`
 }
@@ -90,7 +90,7 @@ func (this *Client) CancelAllOrders(symbol iperpetual.Symbol) ([]string, bool) {
 	return CancelAllOrders{Symbol: symbol}.Do(this)
 }
 
-// [Replace Active Order] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-replaceactive
+// Replace Active Order (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-replaceactive)
 type ReplaceOrder struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
 	OrderID     *string           `param:"order_id"`
@@ -115,7 +115,7 @@ func (this *Client) ReplaceOrder(v ReplaceOrder) (string, bool) {
 	return v.Do(this)
 }
 
-// [Query Active Order (real-time)] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-queryactive
+// Query Active Order (real-time) (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-queryactive)
 type QueryOrder struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
 	OrderID     *string           `param:"order_id"`

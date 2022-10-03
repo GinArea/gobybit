@@ -1,4 +1,4 @@
-// [USDT Perpetual] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-introduction
+// USDT Perpetual (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-introduction)
 package uperpetual
 
 import (
@@ -8,6 +8,7 @@ import (
 	"github.com/ginarea/gobybit/transport"
 )
 
+// USDT Perpetual HTTP client
 type Client struct {
 	c *transport.Client
 }

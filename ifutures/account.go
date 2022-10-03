@@ -1,4 +1,4 @@
-// [Account Data Endpoints] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-accountdata
+// Account Data Endpoints (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-accountdata)
 package ifutures
 
 type PositionIdx int

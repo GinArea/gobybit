@@ -1,4 +1,4 @@
-// [Account Asset] https://bybit-exchange.github.io/docs/account_asset/#t-introduction
+// Account Asset (https://bybit-exchange.github.io/docs/account_asset/#t-introduction)
 package account
 
 import (
@@ -7,6 +7,7 @@ import (
 	"github.com/ginarea/gobybit/transport"
 )
 
+// Account Asset HTTP client
 type Client struct {
 	c *transport.Client
 }

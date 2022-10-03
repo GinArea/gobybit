@@ -1,15 +1,15 @@
-// [API Data Endpoints] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-api
-// The following API data endpoints do not require authentication.
+// API Data Endpoints (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-api)
 package iperpetual
 
-// [Server Time] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-servertime
+// Server Time (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-servertime)
 func (this *Client) ServerTime() (string, bool) {
 	resp := &Response[struct{}]{}
 	err := this.GetPublic("time", nil, resp)
 	return resp.TimeNow, err == nil
 }
 
-// [Announcement] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-announcement
+// Announcement (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-announcement)
+//
 // Get Bybit OpenAPI announcements in the last 30 days in reverse order.
 type Announcement struct {
 	ID        int    `json:"id"`

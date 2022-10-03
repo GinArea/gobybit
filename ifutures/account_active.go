@@ -1,4 +1,4 @@
-// [Active Orders] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-activeorders
+// Active Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-activeorders)
 package ifutures
 
 import "github.com/ginarea/gobybit/iperpetual"
@@ -34,7 +34,7 @@ type OrderProfitLoss struct {
 	SlTrigger  TriggerPrice `json:"sl_trigger_by"`
 }
 
-// [Place Active Order] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-placeactive
+// Place Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-placeactive)
 type PlaceActiveOrder struct {
 	Side           Side              `param:"side"`
 	Symbol         iperpetual.Symbol `param:"symbol"`
@@ -65,14 +65,14 @@ func (this *Client) PlaceActiveOrder(v PlaceActiveOrder) (OrderCreated, bool) {
 	return v.Do(this)
 }
 
-// [Get Active Order] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-getactive
-// symbol       Required string  Name of the trading pair
-// order_status          string  Queries orders of all statuses if order_status not provided.
+// Get Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-getactive)
+//   symbol       Required string  Name of the trading pair
+//   order_status          string  Queries orders of all statuses if order_status not provided.
 //                                 If you want to query orders with specific statuses, you can pass the
 //                                 order_status split by ',' (eg Filled,New).
-// direction             string	 Search direction. prev: prev page, next: next page. Defaults to next
-// limit                 integer Limit for data size per page, max size is 50. Default as showing 20 pieces of data per page
-// cursor                string	 Page turning mark. Use return cursor. Sign using origin data, in request please use urlencode
+//   direction             string  Search direction. prev: prev page, next: next page. Defaults to next
+//   limit                 integer Limit for data size per page, max size is 50. Default as showing 20 pieces of data per page
+//   cursor                string  Page turning mark. Use return cursor. Sign using origin data, in request please use urlencode
 type OrderList struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
 	OrderStatus *OrderStatus      `param:"order_status"`
@@ -101,7 +101,7 @@ func (this *Client) OrderList(v OrderList) (OrderListResult, bool) {
 	return v.Do(this)
 }
 
-// [Cancel Active Order] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-cancelactive
+// Cancel Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-cancelactive)
 type CancelOrder struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
 	OrderId     *string           `param:"order_id"`
@@ -122,7 +122,7 @@ func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, bool) {
 	return v.Do(this)
 }
 
-// [Cancel All Active Orders] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-cancelallactive
+// Cancel All Active Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-cancelallactive)
 type CancelAllOrders struct {
 	Symbol iperpetual.Symbol `param:"symbol"`
 }
@@ -145,7 +145,7 @@ func (this *Client) CancelAllOrders(symbol iperpetual.Symbol) ([]CancelOrderItem
 	return CancelAllOrders{Symbol: symbol}.Do(this)
 }
 
-// [Replace Active Order] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-replaceactive
+// Replace Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-replaceactive)
 type ReplaceOrder struct {
 	Symbol      iperpetual.Symbol `param:"symbol"`
 	OrderID     *string           `param:"order_id"`
@@ -170,7 +170,8 @@ func (this *Client) ReplaceOrder(v ReplaceOrder) (string, bool) {
 	return v.Do(this)
 }
 
-// [Query Active Order (real-time)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-queryactive
+// Query Active Order (real-time) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-queryactive)
+//
 // Query real-time active order information. If only order_id or order_link_id are passed,
 // a single order will be returned; otherwise, returns up to 500 unfilled orders.
 type QueryOrder struct {

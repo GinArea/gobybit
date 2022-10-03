@@ -1,4 +1,4 @@
-// [Inverse Perpetual] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-introduction
+// Inverse Perpetual (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-introduction)
 package iperpetual
 
 import (
@@ -7,6 +7,7 @@ import (
 	"github.com/ginarea/gobybit/transport"
 )
 
+// Inverse Perpetual HTTP client
 type Client struct {
 	c *transport.Client
 }

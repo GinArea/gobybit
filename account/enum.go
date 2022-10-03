@@ -1,7 +1,7 @@
-// [Enums Definitions] https://bybit-exchange.github.io/docs/account_asset/#t-enums
+// Enums Definitions (https://bybit-exchange.github.io/docs/account_asset/#t-enums)
 package account
 
-// [Account type (from_account_type/to_account_type)] https://bybit-exchange.github.io/docs/account_asset/#account-type-from_account_type-to_account_type
+// Account type (from_account_type/to_account_type) (https://bybit-exchange.github.io/docs/account_asset/#account-type-from_account_type-to_account_type)
 type AccountType string
 
 const (
@@ -12,7 +12,7 @@ const (
 	AccountUnified    AccountType = "UNIFIED"
 )
 
-// [Withdraw status (status)] https://bybit-exchange.github.io/docs/account_asset/#withdraw-status-status
+// Withdraw status (status) (https://bybit-exchange.github.io/docs/account_asset/#withdraw-status-status)
 type Withdraw string
 
 const (
@@ -25,7 +25,7 @@ const (
 	WithdrawBlockchainConfirmed Withdraw = "BlockchainConfirmed"
 )
 
-// [Currency (currency/coin)] https://bybit-exchange.github.io/docs/account_asset/#currency-currency-coin
+// Currency (currency/coin) (https://bybit-exchange.github.io/docs/account_asset/#currency-currency-coin)
 type Currency string
 
 const (
@@ -41,7 +41,7 @@ const (
 	USD  Currency = "USD"
 )
 
-// [Operator type] https://bybit-exchange.github.io/docs/account_asset/#operator-type
+// Operator type (https://bybit-exchange.github.io/docs/account_asset/#operator-type)
 type OperatorType string
 
 const (
@@ -51,7 +51,7 @@ const (
 	OperatorAffiliateUser OperatorType = "AFFILIATE_USER"
 )
 
-// [Transfer type (type)] https://bybit-exchange.github.io/docs/account_asset/#transfer-type-type
+// Transfer type (type) (https://bybit-exchange.github.io/docs/account_asset/#transfer-type-type)
 type TransferType string
 
 const (
@@ -59,7 +59,7 @@ const (
 	TransferOut TransferType = "OUT"
 )
 
-// [Transfer status (status)] https://bybit-exchange.github.io/docs/account_asset/#transfer-status-status
+// Transfer status (status) (https://bybit-exchange.github.io/docs/account_asset/#transfer-status-status)
 type TransferStatus string
 
 const (
@@ -68,7 +68,7 @@ const (
 	TransferFailed  TransferStatus = "FAILED"
 )
 
-// [Page direction (direction)] https://bybit-exchange.github.io/docs/account_asset/#page-direction-direction
+// Page direction (direction) (https://bybit-exchange.github.io/docs/account_asset/#page-direction-direction)
 type PageDirection string
 
 const (

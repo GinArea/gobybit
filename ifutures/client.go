@@ -1,4 +1,4 @@
-// [Inverse Futures] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures
+// Inverse Futures (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures)
 package ifutures
 
 import (
@@ -8,6 +8,7 @@ import (
 	"github.com/ginarea/gobybit/transport"
 )
 
+// Inverse Futures HTTP client
 type Client struct {
 	c *transport.Client
 }

@@ -1,6 +1,7 @@
 package iperpetual
 
-// [Get Wallet Balance] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-balance
+// Get Wallet Balance (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-balance)
+//
 // coin string Currency alias. Returns all wallet balances if not passed
 type WalletBalance struct {
 	Currency *Currency `param:"coin"`

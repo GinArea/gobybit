@@ -1,7 +1,7 @@
-// [Position] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-position
+// Position (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-position)
 package iperpetual
 
-// [My Position] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-myposition
+// My Position (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-myposition)
 type GetPosition struct {
 	Symbol *Symbol `param:"symbol"`
 }
@@ -65,7 +65,7 @@ func (this *Client) GetPosition(symbol *Symbol) ([]PositionItem, bool) {
 	return GetPosition{Symbol: symbol}.Do(this)
 }
 
-// [Change Margin] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-changemargin
+// Change Margin (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-changemargin)
 type ChangeMargin struct {
 	Symbol Symbol `param:"symbol"`
 	Margin string `param:"margin"`
@@ -79,7 +79,7 @@ func (this *Client) ChangeMargin(v ChangeMargin) (float64, bool) {
 	return v.Do(this)
 }
 
-// [Set Trading-Stop] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-tradingstop
+// Set Trading-Stop (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-tradingstop)
 type SetTradingStop struct {
 	Symbol            Symbol        `param:"symbol"`
 	TakeProfit        *int          `param:"take_profit"`
@@ -114,7 +114,7 @@ func (this *Client) SetTradingStop(v SetTradingStop) (SetTradingStopResult, bool
 	return v.Do(this)
 }
 
-// [Set Leverage] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-setleverage
+// Set Leverage (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-setleverage)
 type SetLeverage struct {
 	Symbol       Symbol `param:"symbol"`
 	Leverage     int    `param:"leverage"`
@@ -129,7 +129,8 @@ func (this *Client) SetLeverage(v SetLeverage) (int, bool) {
 	return v.Do(this)
 }
 
-// [Full/Partial Position TP/SL Switch] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-switchmode
+// Full/Partial Position TP/SL Switch (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-switchmode)
+//
 // Switch mode between Full or Partial
 type TpSlModeSwitch struct {
 	Symbol   Symbol    `param:"symbol"`
@@ -148,7 +149,8 @@ func (this *Client) TpSlModeSwitch(v TpSlModeSwitch) (TpSlMode, bool) {
 	return v.Do(this)
 }
 
-// [Cross/Isolated Margin Switch] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-marginswitch
+// Cross/Isolated Margin Switch (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-marginswitch)
+//
 // Switch Cross/Isolated; must set leverage value when switching from Cross to Isolated
 type MarginSwitch struct {
 	Symbol       Symbol `param:"symbol"`
@@ -166,8 +168,9 @@ func (this *Client) MarginSwitch(v MarginSwitch) bool {
 	return v.Do(this)
 }
 
-// [Get User Trade Records] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-usertraderecords
-// Get user's trading records. The results are ordered in ascending order (the first item is the oldest).
+// Get User Trade Records (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-usertraderecords)
+//
+// Get user's trading records. The results are ordered in ascending order (the first item is the oldest)
 type GetTradeRecords struct {
 	Symbol    Symbol     `param:"symbol"`
 	OrderID   *string    `param:"order_id"`
@@ -215,7 +218,7 @@ func (this *Client) GetTradeRecords(v GetTradeRecords) (TradeRecords, bool) {
 	return v.Do(this)
 }
 
-// [Closed Profit and Loss] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-closedprofitandloss
+// Closed Profit and Loss (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-closedprofitandloss)
 type ClosedProfitLoss struct {
 	Symbol    Symbol    `param:"symbol"`
 	StartTime *int      `param:"start_time"`

@@ -1,4 +1,4 @@
-// [Account Data Endpoints] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-accountdata
+// Account Data Endpoints (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-accountdata)
 package uperpetual
 
 type PositionIdx int

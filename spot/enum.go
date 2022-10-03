@@ -1,7 +1,7 @@
-// [Enums Definitions] https://bybit-exchange.github.io/docs/spot/v1/#t-enums
+// Enums Definitions (https://bybit-exchange.github.io/docs/spot/v1/#t-enums)
 package spot
 
-// [Side (side)]: https://bybit-exchange.github.io/docs/spot/v1/#side-side
+// Side (side) (https://bybit-exchange.github.io/docs/spot/v1/#side-side)
 type Side string
 
 const (
@@ -9,10 +9,10 @@ const (
 	Sell Side = "Sell"
 )
 
-// [Symbol (symbol)] https://bybit-exchange.github.io/docs/spot/v1/#symbol-symbol
+// Symbol (symbol) (https://bybit-exchange.github.io/docs/spot/v1/#symbol-symbol)
 type Symbol string
 
-// [Order type (type/orderTypes)] https://bybit-exchange.github.io/docs/spot/v1/#order-type-type-ordertypes
+// Order type (type/orderTypes) (https://bybit-exchange.github.io/docs/spot/v1/#order-type-type-ordertypes)
 type OrderType string
 
 const (
@@ -21,24 +21,24 @@ const (
 	LimitMarket OrderType = "LIMIT_MAKER"
 )
 
-// [Currency (currency/coin)] https://bybit-exchange.github.io/docs/spot/v1/#currency-currency-coin
-// The transfer API also includes:
-// DOT
-// DOGE
-// LTC
-// XLM
-// USD
-// Cross Margin Trading Endpoints support below currency:
-// BTC
-// ETH
-// XRP
-// SOL
-// LTC
-// EOS
-// LINK
-// XLM
-// USDC
-// USDT
+// Currency (currency/coin) (https://bybit-exchange.github.io/docs/spot/v1/#currency-currency-coin)
+//   The transfer API also includes:
+//   DOT
+//   DOGE
+//   LTC
+//   XLM
+//   USD
+//   Cross Margin Trading Endpoints support below currency:
+//   BTC
+//   ETH
+//   XRP
+//   SOL
+//   LTC
+//   EOS
+//   LINK
+//   XLM
+//   USDC
+//   USDT
 type Currency string
 
 const (
@@ -58,10 +58,10 @@ const (
 	USDC Currency = "USDC"
 )
 
-// [Order status (status)] https://bybit-exchange.github.io/docs/spot/v1/#order-status-status
-// ORDER_NEW Untriggered
-// ORDER_FILLED Triggered
-// ORDER_FAILED fail to trigger
+// Order status (status) (https://bybit-exchange.github.io/docs/spot/v1/#order-status-status)
+//   ORDER_NEW - Untriggered
+//   ORDER_FILLED - Triggered
+//   ORDER_FAILED - fail to trigger
 type OrderStatus string
 
 const (
@@ -79,16 +79,16 @@ const (
 	OrderFailed   OrderStatus = "ORDER_FAILED"
 )
 
-// [Quantity (qty)] https://bybit-exchange.github.io/docs/spot/v1/#quantity-qty
+// Quantity (qty) (https://bybit-exchange.github.io/docs/spot/v1/#quantity-qty)
 type Qty uint64
 
-// [Price (price)] https://bybit-exchange.github.io/docs/spot/v1/#price-price
+// Price (price) (https://bybit-exchange.github.io/docs/spot/v1/#price-price)
 type Price float64
 
-// [Time in force (time_in_force)] https://bybit-exchange.github.io/docs/spot/v1/#time-in-force-time_in_force
-// GTC - Good Till Canceled
-// FOK - Fill or Kill
-// IOC - Immediate or Cancel
+// Time in force (time_in_force) (https://bybit-exchange.github.io/docs/spot/v1/#time-in-force-time_in_force)
+//   GTC - Good Till Canceled
+//   FOK - Fill or Kill
+//   IOC - Immediate or Cancel
 type TimeInForce string
 
 const (
@@ -97,20 +97,20 @@ const (
 	ImmediateOrCancel TimeInForce = "IOC"
 )
 
-// [Kline interval (interval)] https://bybit-exchange.github.io/docs/spot/v1/#kline-interval-interval
-// 1m - 1 minute
-// 3m - 3 minutes
-// 5m - 5 minutes
-// 15m - 15 minutes
-// 30m - 30 minutes
-// 1h - 1 hour
-// 2h - 2 hours
-// 4h - 4 hours
-// 6h - 6 hours
-// 12h - 12 hours
-// 1d - 1 day
-// 1w - 1 week
-// 1M - 1 month
+// Kline interval (interval) (https://bybit-exchange.github.io/docs/spot/v1/#kline-interval-interval)
+//   1m - 1 minute
+//   3m - 3 minutes
+//   5m - 5 minutes
+//   15m - 15 minutes
+//   30m - 30 minutes
+//   1h - 1 hour
+//   2h - 2 hours
+//   4h - 4 hours
+//   6h - 6 hours
+//   12h - 12 hours
+//   1d - 1 day
+//   1w - 1 week
+//   1M - 1 month
 type KlineInterval string
 
 const (
@@ -129,17 +129,17 @@ const (
 	Interval1M  KlineInterval = "1M"
 )
 
-// [LT status (status)] https://bybit-exchange.github.io/docs/spot/v1/#lt-status-status
-// 1 - ETP can be purchased and redeemed
-// 2 - ETP can be purchased, but not redeemed
-// 3 - ETP can be redeemed, but not purchased
-// 4 - ETP cannot be purchased nor redeemed
+// LT status (status) (https://bybit-exchange.github.io/docs/spot/v1/#lt-status-status)
+//   1 - ETP can be purchased and redeemed
+//   2 - ETP can be purchased, but not redeemed
+//   3 - ETP can be redeemed, but not purchased
+//   4 - ETP cannot be purchased nor redeemed
 type LtStatus string
 
-// [LT order status (orderStatus)] https://bybit-exchange.github.io/docs/spot/v1/#lt-order-status-orderstatus
-// 1 - Completed
-// 2 - In progress
-// 3 - Failed
+// LT order status (orderStatus) (https://bybit-exchange.github.io/docs/spot/v1/#lt-order-status-orderstatus)
+//   1 - Completed
+//   2 - In progress
+//   3 - Failed
 type LtOrderStatus string
 
 const (
@@ -148,9 +148,9 @@ const (
 	Failed     LtOrderStatus = "3"
 )
 
-// [LT order type (orderType)] https://bybit-exchange.github.io/docs/spot/v1/#lt-order-type-ordertype
-// 1 - Purchase
-// 2 - Redemption
+// LT order type (orderType) (https://bybit-exchange.github.io/docs/spot/v1/#lt-order-type-ordertype)
+//   1 - Purchase
+//   2 - Redemption
 type LtOrderType string
 
 const (

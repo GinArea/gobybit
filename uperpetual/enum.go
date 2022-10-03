@@ -1,7 +1,7 @@
-// [Enums Definitions] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-enums
+// Enums Definitions (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-enums)
 package uperpetual
 
-// [Side (side)]: https://bybit-exchange.github.io/docs/futuresV2/linear/#side-side
+// Side (side) (https://bybit-exchange.github.io/docs/futuresV2/linear/#side-side)
 type Side string
 
 const (
@@ -9,17 +9,17 @@ const (
 	Sell Side = "Sell"
 )
 
-// [Symbol (symbol)] https://bybit-exchange.github.io/docs/futuresV2/linear/#symbol-symbol
+// Symbol (symbol) (https://bybit-exchange.github.io/docs/futuresV2/linear/#symbol-symbol)
 // using iperpetual.Symbol
 
-// [Currency (currency/coin)] https://bybit-exchange.github.io/docs/futuresV2/linear/#currency-currency-coin
+// Currency (currency/coin) (https://bybit-exchange.github.io/docs/futuresV2/linear/#currency-currency-coin)
 type Currency string
 
 const (
 	USDT Currency = "USDT"
 )
 
-// [Contract Type (contract_type)] https://bybit-exchange.github.io/docs/futuresV2/linear/#contract-type-contract_type
+// Contract Type (contract_type) (https://bybit-exchange.github.io/docs/futuresV2/linear/#contract-type-contract_type)
 type ContractType string
 
 const (
@@ -28,7 +28,7 @@ const (
 	InverseFutures   ContractType = "InverseFutures"
 )
 
-// [Contract Status (status)] https://bybit-exchange.github.io/docs/futuresV2/linear/#contract-status-status
+// Contract Status (status) (https://bybit-exchange.github.io/docs/futuresV2/linear/#contract-status-status)
 type ContractStatus string
 
 const (
@@ -37,7 +37,7 @@ const (
 	Closed   ContractStatus = "Closed"
 )
 
-// [Wallet fund type (wallet_fund_type/type)] https://bybit-exchange.github.io/docs/futuresV2/linear/#wallet-fund-type-wallet_fund_type-type
+// Wallet fund type (wallet_fund_type/type) (https://bybit-exchange.github.io/docs/futuresV2/linear/#wallet-fund-type-wallet_fund_type-type)
 type WalletFund string
 
 const (
@@ -51,7 +51,7 @@ const (
 	FundExchangeOrderDeposit  WalletFund = "ExchangeOrderDeposit"
 )
 
-// [Withdraw status (status)] https://bybit-exchange.github.io/docs/futuresV2/linear/#withdraw-status-status
+// Withdraw status (status) (https://bybit-exchange.github.io/docs/futuresV2/linear/#withdraw-status-status)
 type Withdraw string
 
 const (
@@ -64,7 +64,7 @@ const (
 	WithdrawExpire        Withdraw = "Expire"
 )
 
-// [Order type (order_type)] https://bybit-exchange.github.io/docs/futuresV2/linear/#order-type-order_type
+// Order type (order_type) (https://bybit-exchange.github.io/docs/futuresV2/linear/#order-type-order_type)
 type OrderType string
 
 const (
@@ -72,13 +72,13 @@ const (
 	Market OrderType = "Market"
 )
 
-// [Quantity (qty)] https://bybit-exchange.github.io/docs/futuresV2/linear/#quantity-qty
+// Quantity (qty) (https://bybit-exchange.github.io/docs/futuresV2/linear/#quantity-qty)
 type Qty uint64
 
-// [Price (price)] https://bybit-exchange.github.io/docs/futuresV2/linear/#price-price
+// Price (price) (https://bybit-exchange.github.io/docs/futuresV2/linear/#price-price)
 type Price float64
 
-// [Time in force (time_in_force)] https://bybit-exchange.github.io/docs/futuresV2/linear/#time-in-force-time_in_force
+// Time in force (time_in_force) (https://bybit-exchange.github.io/docs/futuresV2/linear/#time-in-force-time_in_force)
 type TimeInForce string
 
 const (
@@ -88,7 +88,7 @@ const (
 	PostOnly          TimeInForce = "FillOrKill"
 )
 
-// [Trigger price type (trigger_by)] https://bybit-exchange.github.io/docs/futuresV2/linear/#trigger-price-type-trigger_by
+// Trigger price type (trigger_by) (https://bybit-exchange.github.io/docs/futuresV2/linear/#trigger-price-type-trigger_by)
 type TriggerPrice string
 
 const (
@@ -97,8 +97,9 @@ const (
 	MarkPrice  TriggerPrice = "MarkPrice"
 )
 
-// [Order (order)] https://bybit-exchange.github.io/docs/futuresV2/linear/#order-order
-// This is used for sorting orders/trades in a specified direction.
+// Order (order) (https://bybit-exchange.github.io/docs/futuresV2/linear/#order-order)
+//
+// This is used for sorting orders/trades in a specified direction
 type SortOrder string
 
 const (
@@ -106,15 +107,15 @@ const (
 	Asc  SortOrder = "asc"
 )
 
-// [Order status (order_status/stop_order_status)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#order-status-order_status-stop_order_status
-// Created - order has been accepted by the system but not yet put through the matching engine
-// New - order has been placed successfully
-// PendingCancel - matching engine has received the cancelation request but it may not be canceled successfully
-// Only for conditional orders:
-// Untriggered - order yet to be triggered
-// Deactivated - order has been canceled by the user before being triggered
-// Triggered - order has been triggered by last traded price
-// Active - order has been triggered and the new active order has been successfully placed. Is the final state of a successful conditional order
+// Order status (order_status/stop_order_status) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#order-status-order_status-stop_order_status)
+//   Created - order has been accepted by the system but not yet put through the matching engine
+//   New - order has been placed successfully
+//   PendingCancel - matching engine has received the cancelation request but it may not be canceled successfully
+//   Only for conditional orders:
+//   Untriggered - order yet to be triggered
+//   Deactivated - order has been canceled by the user before being triggered
+//   Triggered - order has been triggered by last traded price
+//   Active - order has been triggered and the new active order has been successfully placed. Is the final state of a successful conditional order
 type OrderStatus string
 
 const (
@@ -150,10 +151,10 @@ const (
 	CancelByPzSideCh    CancelType = "CancelByPzSideCh"
 )
 
-// [Create type (create_type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#create-type-create_type
-// CreateByLiq - Created by partial liquidation
-// CreateByAdl_PassThrough - Created by ADL
-// CreateByTakeOver_PassThrough - Created by liquidation takeover
+// Create type (create_type) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#create-type-create_type)
+//   CreateByLiq - Created by partial liquidation
+//   CreateByAdl_PassThrough - Created by ADL
+//   CreateByTakeOver_PassThrough - Created by liquidation takeover
 type CreateType string
 
 const (
@@ -171,7 +172,7 @@ const (
 	CreateByTakeOverPassThrough CreateType = "CreateByTakeOver_PassThrough"
 )
 
-// [Exec type (exec_type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#exec-type-exec_type
+// Exec type (exec_type) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#exec-type-exec_type)
 type ExecType string
 
 const (
@@ -182,9 +183,9 @@ const (
 	Settle    ExecType = "Settle"
 )
 
-// [Liquidity type (last_liquidity_ind)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#liquidity-type-last_liquidity_ind
-// AddedLiquidity - liquidity maker
-// RemovedLiquidity - liquidity Taker
+// Liquidity type (last_liquidity_ind) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#liquidity-type-last_liquidity_ind)
+//   AddedLiquidity - liquidity maker
+//   RemovedLiquidity - liquidity Taker
 type Liquidity string
 
 const (
@@ -192,12 +193,13 @@ const (
 	LiquidityRemoved Liquidity = "RemovedLiquidity"
 )
 
-// [Tick direction type (tick_direction)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#tick-direction-type-tick_direction
+// Tick direction type (tick_direction) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#tick-direction-type-tick_direction)
+//
 // It indicates price fluctuation relative to the last trade.
-// PlusTick - price rise
-// ZeroPlusTick - trade occurs at the same price as the previous trade, which occurred at a price higher than that for the trade preceding it
-// MinusTick - price drop
-// ZeroMinusTick - trade occurs at the same price as the previous trade, which occurred at a price lower than that for the trade preceding it
+//   PlusTick - price rise
+//   ZeroPlusTick - trade occurs at the same price as the previous trade, which occurred at a price higher than that for the trade preceding it
+//   MinusTick - price drop
+//   ZeroMinusTick - trade occurs at the same price as the previous trade, which occurred at a price lower than that for the trade preceding it
 type TickDirection string
 
 const (
@@ -207,10 +209,11 @@ const (
 	TickZeroMinus TickDirection = "TickZeroMinus"
 )
 
-// [TP/SL mode (tp_sl_mode)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#tp-sl-mode-tp_sl_mode
+// TP/SL mode (tp_sl_mode) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#tp-sl-mode-tp_sl_mode)
+//
 // Take profit/stop loss mode
-// Full - Full take profit/stop loss mode (a single TP order and a single SL order can be placed, covering the entire position)
-// Partial - Partial take profit/stop loss mode (multiple TP and SL orders can be placed, covering portions of the position)
+//   Full - Full take profit/stop loss mode (a single TP order and a single SL order can be placed, covering the entire position)
+//   Partial - Partial take profit/stop loss mode (multiple TP and SL orders can be placed, covering portions of the position)
 type TpSlMode string
 
 const (
@@ -218,20 +221,20 @@ const (
 	TpSlPartial TpSlMode = "Partial"
 )
 
-// [Kline interval (interval)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#kline-interval-interval
-// 1 - 1 minute
-// 3 - 3 minutes
-// 5 - 5 minutes
-// 15 - 15 minutes
-// 30 - 30 minutes
-// 60 - 1 hour
-// 120 - 2 hours
-// 240 - 4 hours
-// 360 - 6 hours
-// 720 - 12 hours
-// D - 1 day
-// W - 1 week
-// M - 1 month
+// Kline interval (interval) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#kline-interval-interval)
+//   1 - 1 minute
+//   3 - 3 minutes
+//   5 - 5 minutes
+//   15 - 15 minutes
+//   30 - 30 minutes
+//   60 - 1 hour
+//   120 - 2 hours
+//   240 - 4 hours
+//   360 - 6 hours
+//   720 - 12 hours
+//   D - 1 day
+//   W - 1 week
+//   M - 1 month
 type KlineInterval string
 
 const (
@@ -250,7 +253,7 @@ const (
 	Interval1M  KlineInterval = "M"
 )
 
-// [Stop order type (stop_order_type)] https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#stop-order-type-stop_order_type
+// Stop order type (stop_order_type) (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#stop-order-type-stop_order_type)
 type StopOrder string
 
 const (

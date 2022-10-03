@@ -1,4 +1,4 @@
-// [Conditional Orders] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-conditionalorders
+// Conditional Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-conditionalorders)
 package iperpetual
 
 type ConditionalOrderBase struct {
@@ -23,7 +23,7 @@ type ConditionalOrderProfitLoss struct {
 	SlTrigger  TriggerPrice `json:"sl_trigger_by"`
 }
 
-// [Place Conditional Order] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-placecond
+// Place Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-placecond)
 type PlaceConditionalOrder struct {
 	Side           Side          `param:"side"`
 	Symbol         Symbol        `param:"symbol"`
@@ -60,7 +60,7 @@ func (this *Client) PlaceConditionalOrder(v PlaceConditionalOrder) (ConditionalO
 	return v.Do(this)
 }
 
-// [Get Conditional Order] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getcond
+// Get Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getcond)
 func (this OrderList) DoConditional(client *Client) (ConditionalOrderListResult, bool) {
 	return Get[ConditionalOrderListResult](client, "stop-order/list", this)
 }
@@ -83,7 +83,7 @@ func (this *Client) ConditionalOrderList(v OrderList) (ConditionalOrderListResul
 	return v.DoConditional(this)
 }
 
-// [Cancel Conditional Order] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-cancelcond
+// Cancel Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-cancelcond)
 func (this CancelOrder) DoConditional(client *Client) (string, bool) {
 	type result struct {
 		StopOrderID string `json:"stop_order_id"`
@@ -96,7 +96,7 @@ func (this *Client) CancelConditionalOrder(v CancelOrder) (string, bool) {
 	return v.DoConditional(this)
 }
 
-// [Cancel All Conditional Orders] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-cancelallcond
+// Cancel All Conditional Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-cancelallcond)
 func (this CancelAllOrders) DoConditional(client *Client) ([]ConditionalCancelOrderItem, bool) {
 	return Post[[]ConditionalCancelOrderItem](client, "stop-order/cancelAll", this)
 }
@@ -119,7 +119,7 @@ func (this *Client) CancelAllConditionalOrders(symbol Symbol) ([]ConditionalCanc
 	return CancelAllOrders{Symbol: symbol}.DoConditional(this)
 }
 
-// [Replace Conditional Order] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-replacecond
+// Replace Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-replacecond)
 type ReplaceConditionalOrder struct {
 	Symbol       Symbol        `param:"symbol"`
 	OrderID      *string       `param:"stop_order_id"`
@@ -145,7 +145,8 @@ func (this *Client) ReplaceConditionalOrder(v ReplaceConditionalOrder) (string, 
 	return v.Do(this)
 }
 
-// [Query Conditional Order (real-time)] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querycond
+// Query Conditional Order (real-time) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querycond)
+//
 // When only symbol is passed, the response uses a different structure.
 func (this QueryOrder) DoConditional(client *Client) ([]ConditionalOrder, bool) {
 	if this.OnlySymbol() {

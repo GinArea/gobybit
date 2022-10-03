@@ -1,7 +1,7 @@
-// [Transfer Data Endpoints] https://bybit-exchange.github.io/docs/account_asset/#t-transfer_api
+// Transfer Data Endpoints (https://bybit-exchange.github.io/docs/account_asset/#t-transfer_api)
 package account
 
-// [Create Internal Transfer] https://bybit-exchange.github.io/docs/account_asset/#t-createinternaltransfer
+// Create Internal Transfer (https://bybit-exchange.github.io/docs/account_asset/#t-createinternaltransfer)
 type CreateInternalTransfer struct {
 	// param as json on body
 	TransferID      string   `json:"transfer_id"`
@@ -23,7 +23,7 @@ func (this *Client) CreateInternalTransfer(v CreateInternalTransfer) (string, bo
 	return v.Do(this)
 }
 
-// [Query Internal Transfer List] https://bybit-exchange.github.io/docs/account_asset/#t-querytransferlist
+// Query Internal Transfer List (https://bybit-exchange.github.io/docs/account_asset/#t-querytransferlist)
 type QueryInternalTransferList struct {
 	TransferID *string         `param:"transfer_id"`
 	Coin       *Currency       `param:"coin"`

@@ -1,7 +1,7 @@
-// [Market Data Endpoints] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-marketdata
+// Market Data Endpoints (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-marketdata)
 package iperpetual
 
-// [Query Symbol] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querysymbol
+// Query Symbol (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querysymbol)
 type SymbolInfo struct {
 	Name            string         `json:"name"`
 	Alias           string         `json:"alias"`
@@ -49,7 +49,7 @@ func (this *Client) QuerySymbolNames() ([]string, bool) {
 	return names, ok
 }
 
-// [Order Book] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-orderbook
+// Order Book (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-orderbook)
 type OrderBook struct {
 	Symbol Symbol `param:"symbol"`
 }
@@ -69,11 +69,11 @@ func (this *Client) OrderBook(symbol Symbol) ([]OrderBookItem, bool) {
 	return OrderBook{Symbol: symbol}.Do(this)
 }
 
-// [Query Kline] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querykline
-// symbol    Required string  Symbol
-// interval  Required string  Data refresh interval. Enum : 1 3 5 15 30 60 120 240 360 720 "D" "M" "W"
-// from      Required integer From timestamp in seconds
-// limit              integer Limit for data size per page, max size is 200. Default as showing 200 pieces of data per page
+// Query Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querykline)
+//   symbol    Required string  Symbol
+//   interval  Required string  Data refresh interval. Enum : 1 3 5 15 30 60 120 240 360 720 "D" "M" "W"
+//   from      Required integer From timestamp in seconds
+//   limit              integer Limit for data size per page, max size is 200. Default as showing 200 pieces of data per page
 type QueryKline struct {
 	Symbol   Symbol        `param:"symbol"`
 	Interval KlineInterval `param:"interval"`
@@ -101,7 +101,7 @@ func (this *Client) QueryKline(v QueryKline) ([]KlineItem, bool) {
 	return v.Do(this)
 }
 
-// [Latest Information for Symbol] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-latestsymbolinfo
+// Latest Information for Symbol (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-latestsymbolinfo)
 type SymbolLatestInformation struct {
 	Symbol *Symbol `param:"symbol"`
 }
@@ -143,9 +143,9 @@ func (this *Client) SymbolLatestInformation(symbol *Symbol) ([]LatestInformation
 	return SymbolLatestInformation{Symbol: symbol}.Do(this)
 }
 
-// [Public Trading Records] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-publictradingrecords
-// symbol Required string  Symbol
-// limit           integer Limit for data size, max size is 1000. Default size is 500
+// Public Trading Records (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-publictradingrecords)
+//   symbol Required string  Symbol
+//   limit           integer Limit for data size, max size is 1000. Default size is 500
 type PublicTradingRecords struct {
 	Symbol Symbol `param:"symbol"`
 	Limit  *int   `param:"limit"`
@@ -168,8 +168,9 @@ func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradin
 	return v.Do(this)
 }
 
-// [Query Mark Price Kline] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-markpricekline
-// Query mark price kline (like Query Kline but for mark price).
+// Query Mark Price Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-markpricekline)
+//
+// Query mark price kline (like Query Kline but for mark price)
 func (this QueryKline) DoMark(client *Client) ([]MarkKlineItem, bool) {
 	return GetPublic[[]MarkKlineItem](client, "mark-price-kline", this)
 }
@@ -188,7 +189,8 @@ func (this *Client) QueryMarkKline(v QueryKline) ([]MarkKlineItem, bool) {
 	return v.DoMark(this)
 }
 
-// [Query Index Price Kline] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-queryindexpricekline
+// Query Index Price Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-queryindexpricekline)
+//
 // Index price kline. Tracks BTC spot prices, with a frequency of every second
 func (this QueryKline) DoIndex(client *Client) ([]IndexKlineItem, bool) {
 	return GetPublic[[]IndexKlineItem](client, "index-price-kline", this)
@@ -208,7 +210,8 @@ func (this *Client) QueryIndexKline(v QueryKline) ([]IndexKlineItem, bool) {
 	return v.DoIndex(this)
 }
 
-// [Query Premium Index Kline] https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querypremiumindexkline
+// Query Premium Index Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querypremiumindexkline)
+//
 // Premium index kline. Tracks the premium / discount of BTC perpetual contracts relative to the mark price per minute
 func (this QueryKline) DoPremium(client *Client) ([]IndexKlineItem, bool) {
 	return GetPublic[[]IndexKlineItem](client, "premium-index-kline", this)

@@ -1,8 +1,7 @@
-// [API Data Endpoints] https://bybit-exchange.github.io/docs/futuresV2/linear/#t-api
-// The following API data endpoints do not require authentication.
+// API Data Endpoints (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-api)
 package spotv3
 
-// [Server Time] https://bybit-exchange.github.io/docs/spot/v3/#t-servertime
+// Server Time (https://bybit-exchange.github.io/docs/spot/v3/#t-servertime)
 func (this *Client) ServerTime() (string, bool) {
 	type result struct {
 		ServerTime string `json:"serverTime"`
