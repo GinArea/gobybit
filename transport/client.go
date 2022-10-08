@@ -72,6 +72,14 @@ func (this *Client) WithLogResponse(logResponse bool) *Client {
 	return this
 }
 
+func (this *Client) Key() string {
+	return this.key
+}
+
+func (this *Client) Secret() string {
+	return this.secret
+}
+
 func (this *Client) Request(method string, path string, param any, ret any, sign bool) (err error) {
 	logf := func(format string, a ...any) {
 		m := fmt.Sprintf(format, a...)

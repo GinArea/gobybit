@@ -50,6 +50,14 @@ func (this *Client) WithLogResponse(logResponse bool) *Client {
 	return this
 }
 
+func (this *Client) Key() string {
+	return this.c.Key()
+}
+
+func (this *Client) Secret() string {
+	return this.c.Secret()
+}
+
 func (this *Client) InversePerpetual() *iperpetual.Client {
 	return iperpetual.NewClient(this.c)
 }
