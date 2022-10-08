@@ -25,6 +25,7 @@ type KeyInfo struct {
 	ReadOnly      bool      `json:"read_only"`
 	VipLevel      string    `json:"vip_level"`
 	MktMakerLevel string    `json:"mkt_maker_level"`
+	AffiliateID   int       `json:"affiliate_id"`
 }
 
 func (this *Client) GetKeyInfo() ([]KeyInfo, bool) {
