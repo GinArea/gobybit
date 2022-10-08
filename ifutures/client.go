@@ -17,6 +17,10 @@ func NewClient(client *transport.Client) *Client {
 	return &Client{c: client}
 }
 
+func (this *Client) Transport() *transport.Client {
+	return this.c
+}
+
 func (this *Client) Get(path string, param any, ret any) error {
 	return this.c.Get(this.url(path), param, ret)
 }
