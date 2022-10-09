@@ -29,3 +29,8 @@ func (this *Float64) UnmarshalJSON(b []byte) error {
 func (this *Float64) Value() float64 {
 	return float64(*this)
 }
+
+func (this *Float64) Ptr() *float64 {
+	v := this.Value()
+	return &v
+}
