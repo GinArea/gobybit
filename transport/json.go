@@ -16,16 +16,16 @@ func JsonUnmarshal[V any](jsonBlob []byte) V {
 	return v
 }
 
-type JsonFloat64 float64
+type Float64 float64
 
-func (this *JsonFloat64) UnmarshalJSON(b []byte) error {
+func (this *Float64) UnmarshalJSON(b []byte) error {
 	s := string(b)
 	s = strings.Trim(s, `"`)
 	f, err := strconv.ParseFloat(s, 64)
-	*this = JsonFloat64(f)
+	*this = Float64(f)
 	return err
 }
 
-func (this *JsonFloat64) Value() float64 {
+func (this *Float64) Value() float64 {
 	return float64(*this)
 }

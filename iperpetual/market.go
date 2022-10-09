@@ -1,41 +1,45 @@
 // Market Data Endpoints (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-marketdata)
 package iperpetual
 
-import "github.com/ginarea/gobybit/transport"
+import (
+	"time"
+
+	"github.com/ginarea/gobybit/transport"
+)
 
 // Query Symbol (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querysymbol)
 type SymbolInfo struct {
-	Name            string                `json:"name"`
-	Alias           string                `json:"alias"`
-	Status          ContractStatus        `json:"status"`
-	BaseCurrency    string                `json:"base_currency"`
-	QuoteCurrency   string                `json:"quote_currency"`
-	PriceScale      int                   `json:"price_scale"`
-	TakerFee        transport.JsonFloat64 `json:"taker_fee"`
-	MakerFee        transport.JsonFloat64 `json:"maker_fee"`
-	FundingInterval int                   `json:"funding_interval"`
-	LeverageFilter  LeverageFilter        `json:"leverage_filter"`
-	PriceFilter     PriceFilter           `json:"price_filter"`
-	LotSizeFilter   LotSizeFilter         `json:"lot_size_filter"`
+	Name            string            `json:"name"`
+	Alias           string            `json:"alias"`
+	Status          ContractStatus    `json:"status"`
+	BaseCurrency    string            `json:"base_currency"`
+	QuoteCurrency   string            `json:"quote_currency"`
+	PriceScale      int               `json:"price_scale"`
+	TakerFee        transport.Float64 `json:"taker_fee"`
+	MakerFee        transport.Float64 `json:"maker_fee"`
+	FundingInterval int               `json:"funding_interval"`
+	LeverageFilter  LeverageFilter    `json:"leverage_filter"`
+	PriceFilter     PriceFilter       `json:"price_filter"`
+	LotSizeFilter   LotSizeFilter     `json:"lot_size_filter"`
 }
 
 type LeverageFilter struct {
-	Min  int                   `json:"min_leverage"`
-	Max  int                   `json:"max_leverage"`
-	Step transport.JsonFloat64 `json:"leverage_step"`
+	Min  int               `json:"min_leverage"`
+	Max  int               `json:"max_leverage"`
+	Step transport.Float64 `json:"leverage_step"`
 }
 
 type PriceFilter struct {
-	Min      transport.JsonFloat64 `json:"min_price"`
-	Max      transport.JsonFloat64 `json:"max_price"`
-	TickSize transport.JsonFloat64 `json:"tick_size"`
+	Min      transport.Float64 `json:"min_price"`
+	Max      transport.Float64 `json:"max_price"`
+	TickSize transport.Float64 `json:"tick_size"`
 }
 
 type LotSizeFilter struct {
-	MaxTradingQty         float64               `json:"max_trading_qty"`
-	MinTradingQty         float64               `json:"min_trading_qty"`
-	QtyStep               float64               `json:"qty_step"`
-	PostOnlyMaxTradingQty transport.JsonFloat64 `json:"post_only_max_trading_qty"`
+	MaxTradingQty         float64           `json:"max_trading_qty"`
+	MinTradingQty         float64           `json:"min_trading_qty"`
+	QtyStep               float64           `json:"qty_step"`
+	PostOnlyMaxTradingQty transport.Float64 `json:"post_only_max_trading_qty"`
 }
 
 func (this *Client) QuerySymbol() ([]SymbolInfo, bool) {
@@ -113,32 +117,32 @@ func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, boo
 }
 
 type LatestInformation struct {
-	Symbol                 string        `json:"symbol"`
-	BidPrice               string        `json:"bid_price"`
-	AskPrice               string        `json:"ask_price"`
-	LastPrice              string        `json:"last_price"`
-	LastTickDirection      TickDirection `json:"last_tick_direction"`
-	PrevPrice24h           string        `json:"prev_price_24h"`
-	Price24hPcnt           string        `json:"price_24h_pcnt"`
-	HighPrice24h           string        `json:"high_price_24h"`
-	LowPrice24h            string        `json:"low_price_24h"`
-	PrevPrice1h            string        `json:"prev_price_1h"`
-	Price1hPcnt            string        `json:"price_1h_pcnt"`
-	MarkPrice              string        `json:"mark_price"`
-	IndexPrice             string        `json:"index_price"`
-	OpenInterest           float64       `json:"open_interest"`
-	OpenValue              string        `json:"open_value"`
-	TotalTurnover          string        `json:"total_turnover"`
-	Turnover24h            string        `json:"turnover_24h"`
-	TotalVolume            float64       `json:"total_volume"`
-	Volume24h              float64       `json:"volume_24h"`
-	FundingRate            string        `json:"funding_rate"`
-	PredictedFundingRate   string        `json:"predicted_funding_rate"`
-	NextFundingTime        string        `json:"next_funding_time"`
-	CountdownHour          int           `json:"countdown_hour"`
-	DeliveryFeeRate        string        `json:"delivery_fee_rate"`
-	PredictedDeliveryPrice string        `json:"predicted_delivery_price"`
-	DeliveryTime           string        `json:"delivery_time"`
+	Symbol                 string            `json:"symbol"`
+	BidPrice               transport.Float64 `json:"bid_price"`
+	AskPrice               transport.Float64 `json:"ask_price"`
+	LastPrice              transport.Float64 `json:"last_price"`
+	LastTickDirection      TickDirection     `json:"last_tick_direction"`
+	PrevPrice24h           transport.Float64 `json:"prev_price_24h"`
+	Price24hPcnt           transport.Float64 `json:"price_24h_pcnt"`
+	HighPrice24h           transport.Float64 `json:"high_price_24h"`
+	LowPrice24h            transport.Float64 `json:"low_price_24h"`
+	PrevPrice1h            transport.Float64 `json:"prev_price_1h"`
+	Price1hPcnt            transport.Float64 `json:"price_1h_pcnt"`
+	MarkPrice              transport.Float64 `json:"mark_price"`
+	IndexPrice             transport.Float64 `json:"index_price"`
+	OpenInterest           float64           `json:"open_interest"`
+	OpenValue              transport.Float64 `json:"open_value"`
+	TotalTurnover          transport.Float64 `json:"total_turnover"`
+	Turnover24h            transport.Float64 `json:"turnover_24h"`
+	TotalVolume            float64           `json:"total_volume"`
+	Volume24h              float64           `json:"volume_24h"`
+	FundingRate            transport.Float64 `json:"funding_rate"`
+	PredictedFundingRate   transport.Float64 `json:"predicted_funding_rate"`
+	NextFundingTime        time.Time         `json:"next_funding_time"`
+	CountdownHour          int               `json:"countdown_hour"`
+	DeliveryFeeRate        string            `json:"delivery_fee_rate"`
+	PredictedDeliveryPrice string            `json:"predicted_delivery_price"`
+	DeliveryTime           string            `json:"delivery_time"`
 }
 
 func (this *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation, bool) {
