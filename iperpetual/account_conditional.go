@@ -28,7 +28,7 @@ type PlaceConditionalOrder struct {
 	Side           Side          `param:"side"`
 	Symbol         string        `param:"symbol"`
 	OrderType      OrderType     `param:"order_type"`
-	Qty            int           `param:"qty"`
+	Qty            float64       `param:"qty"`
 	TimeInForce    TimeInForce   `param:"time_in_force"`
 	BasePrice      string        `param:"base_price"`
 	StopPx         string        `param:"stop_px"`
@@ -43,6 +43,7 @@ type PlaceConditionalOrder struct {
 }
 
 type ConditionalOrderCreated struct {
+	ConditionalOrderBase
 	ConditionalOrderProfitLoss
 	Remark       string  `json:"remark"`
 	RejectReason string  `json:"reject_reason"`

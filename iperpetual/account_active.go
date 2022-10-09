@@ -1,6 +1,8 @@
 // Active Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-activeorders)
 package iperpetual
 
+import "time"
+
 type OrderMain struct {
 	UserID      int         `json:"user_id"`
 	Symbol      string      `json:"symbol"`
@@ -11,8 +13,8 @@ type OrderMain struct {
 	TimeInForce TimeInForce `json:"time_in_force"`
 	OrderStatus OrderStatus `json:"order_status"`
 	LeavesQty   float64     `json:"leaves_qty"`
-	CreatedAt   string      `json:"created_at"`
-	UpdatedAt   string      `json:"updated_at"`
+	CreatedAt   time.Time   `json:"created_at"`
+	UpdatedAt   time.Time   `json:"updated_at"`
 }
 
 type OrderBase struct {
@@ -36,7 +38,7 @@ type PlaceActiveOrder struct {
 	Side           Side          `param:"side"`
 	Symbol         string        `param:"symbol"`
 	OrderType      OrderType     `param:"order_type"`
-	Qty            int           `param:"qty"`
+	Qty            float64       `param:"qty"`
 	TimeInForce    TimeInForce   `param:"time_in_force"`
 	Price          *float64      `param:"price"`
 	CloseOnTrigger *bool         `param:"close_on_trigger"`

@@ -14,10 +14,10 @@ type SymbolInfo struct {
 	Status          ContractStatus    `json:"status"`
 	BaseCurrency    string            `json:"base_currency"`
 	QuoteCurrency   string            `json:"quote_currency"`
-	PriceScale      int               `json:"price_scale"`
+	PriceScale      float64           `json:"price_scale"`
 	TakerFee        transport.Float64 `json:"taker_fee"`
 	MakerFee        transport.Float64 `json:"maker_fee"`
-	FundingInterval int               `json:"funding_interval"`
+	FundingInterval float64           `json:"funding_interval"`
 	LeverageFilter  LeverageFilter    `json:"leverage_filter"`
 	PriceFilter     PriceFilter       `json:"price_filter"`
 	LotSizeFilter   LotSizeFilter     `json:"lot_size_filter"`

@@ -1,6 +1,12 @@
 // Position (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-position)
 package iperpetual
 
+import (
+	"time"
+
+	"github.com/ginarea/gobybit/transport"
+)
+
 // My Position (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-myposition)
 type GetPosition struct {
 	Symbol *string `param:"symbol"`
@@ -15,44 +21,44 @@ func (this GetPosition) Do(client *Client) ([]PositionItem, bool) {
 }
 
 type PositionBase struct {
-	ID                  int    `json:"id"`
-	UserID              int    `json:"user_id"`
-	RiskID              int    `json:"risk_id"`
-	Symbol              string `json:"symbol"`
-	Side                Side   `json:"side"`
-	Size                int    `json:"size"`
-	PositionValue       string `json:"position_value"`
-	EntryPrice          string `json:"entry_price"`
-	IsIsolated          bool   `json:"is_isolated"`
-	AutoAddMargin       int    `json:"auto_add_margin"`
-	Leverage            string `json:"leverage"`
-	EffectiveLeverage   string `json:"effective_leverage"`
-	PositionMargin      string `json:"position_margin"`
-	LiqPrice            string `json:"liq_price"`
-	BustPrice           string `json:"bust_price"`
-	OccClosingFee       string `json:"occ_closing_fee"`
-	OccFundingFee       string `json:"occ_funding_fee"`
-	TakeProfit          string `json:"take_profit"`
-	StopLoss            string `json:"stop_loss"`
-	TrailingStop        string `json:"trailing_stop"`
-	PositionStatus      string `json:"position_status"`
-	DeleverageIndicator int    `json:"deleverage_indicator"`
-	OcCalcData          string `json:"oc_calc_data"`
-	OrderMargin         string `json:"order_margin"`
-	WalletBalance       string `json:"wallet_balance"`
-	RealisedPnl         string `json:"realised_pnl"`
-	CumRealisedPnl      string `json:"cum_realised_pnl"`
-	CrossSeq            int    `json:"cross_seq"`
-	PositionSeq         int    `json:"position_seq"`
-	CreatedAt           string `json:"created_at"`
-	UpdatedAt           string `json:"updated_at"`
+	ID                  int               `json:"id"`
+	UserID              int               `json:"user_id"`
+	RiskID              int               `json:"risk_id"`
+	Symbol              string            `json:"symbol"`
+	Side                Side              `json:"side"`
+	Size                int               `json:"size"`
+	PositionValue       transport.Float64 `json:"position_value"`
+	EntryPrice          transport.Float64 `json:"entry_price"`
+	IsIsolated          bool              `json:"is_isolated"`
+	AutoAddMargin       int               `json:"auto_add_margin"`
+	Leverage            transport.Float64 `json:"leverage"`
+	EffectiveLeverage   transport.Float64 `json:"effective_leverage"`
+	PositionMargin      transport.Float64 `json:"position_margin"`
+	LiqPrice            transport.Float64 `json:"liq_price"`
+	BustPrice           transport.Float64 `json:"bust_price"`
+	OccClosingFee       transport.Float64 `json:"occ_closing_fee"`
+	OccFundingFee       transport.Float64 `json:"occ_funding_fee"`
+	TakeProfit          transport.Float64 `json:"take_profit"`
+	StopLoss            transport.Float64 `json:"stop_loss"`
+	TrailingStop        transport.Float64 `json:"trailing_stop"`
+	PositionStatus      string            `json:"position_status"`
+	DeleverageIndicator int               `json:"deleverage_indicator"`
+	OcCalcData          string            `json:"oc_calc_data"`
+	OrderMargin         transport.Float64 `json:"order_margin"`
+	WalletBalance       transport.Float64 `json:"wallet_balance"`
+	RealisedPnl         transport.Float64 `json:"realised_pnl"`
+	CumRealisedPnl      transport.Float64 `json:"cum_realised_pnl"`
+	CrossSeq            int               `json:"cross_seq"`
+	PositionSeq         int               `json:"position_seq"`
+	CreatedAt           time.Time         `json:"created_at"`
+	UpdatedAt           time.Time         `json:"updated_at"`
 }
 
 type PositionData struct {
 	PositionBase
 	PositionIdx   PositionIdx `json:"position_idx"`
 	Mode          int         `json:"mode"`
-	UnrealisedPnl int         `json:"unrealised_pnl"`
+	UnrealisedPnl float64     `json:"unrealised_pnl"`
 	TpSlMode      TpSlMode    `json:"tp_sl_mode"`
 }
 
@@ -63,6 +69,21 @@ type PositionItem struct {
 
 func (this *Client) GetPosition(symbol *string) ([]PositionItem, bool) {
 	return GetPosition{Symbol: symbol}.Do(this)
+}
+
+func (this *Client) GetOnePosition(symbol string) (i PositionItem, ok bool) {
+	ret, ok := GetPosition{Symbol: &symbol}.Do(this)
+	if ok {
+		ok = len(ret) == 1
+		if ok {
+			i = ret[0]
+		}
+	}
+	return
+}
+
+func (this *Client) GetAllPositions() ([]PositionItem, bool) {
+	return GetPosition{}.Do(this)
 }
 
 // Change Margin (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-changemargin)
