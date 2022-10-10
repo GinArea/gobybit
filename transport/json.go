@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func JsonUnmarshal[V any](jsonBlob []byte) V {
@@ -33,4 +34,11 @@ func (this *Float64) Value() float64 {
 func (this *Float64) Ptr() *float64 {
 	v := this.Value()
 	return &v
+}
+
+type Time time.Time
+
+func (this *Time) UnmarshalJSON(b []byte) error {
+	// convert uint timestamp to time.Time
+	return nil
 }
