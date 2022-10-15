@@ -201,3 +201,17 @@ type OrderExtFields struct {
 func (this *Client) QueryOrder(v QueryOrder) ([]Order, bool) {
 	return v.Do(this)
 }
+
+func (this *Client) QueryOrderByID(symbol string, orderID string) (i Order, ok bool) {
+	ret, ok := this.QueryOrder(QueryOrder{
+		Symbol:  symbol,
+		OrderID: &orderID,
+	})
+	if ok {
+		ok = len(ret) == 1
+		if ok {
+			i = ret[0]
+		}
+	}
+	return
+}
