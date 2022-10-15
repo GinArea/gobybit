@@ -149,6 +149,17 @@ func (this *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation
 	return SymbolLatestInformation{Symbol: symbol}.Do(this)
 }
 
+func (this *Client) OneSymbolLatestInformation(symbol string) (i LatestInformation, ok bool) {
+	ret, ok := this.SymbolLatestInformation(&symbol)
+	if ok {
+		ok = len(ret) == 1
+		if ok {
+			i = ret[0]
+		}
+	}
+	return
+}
+
 // Public Trading Records (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-publictradingrecords)
 //   symbol Required string  Symbol
 //   limit           integer Limit for data size, max size is 1000. Default size is 500
