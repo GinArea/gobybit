@@ -30,18 +30,30 @@ func (this *WsMonoExecutor[T]) Subscribe(onShot func(T)) {
 	})
 }
 
-type WsDualExecutor[T any, TD any] struct {
-	WsExecutor
+type WsDualExecutor[T any] struct {
+	WsMonoExecutor[T]
 }
 
-func NewWsDualExecutor[T any, TD any](section *WsSection, subscription Subscription) *WsDualExecutor[T, TD] {
-	e := &WsDualExecutor[T, TD]{}
+func NewWsDualExecutor[T any](section *WsSection, subscription Subscription) *WsDualExecutor[T] {
+	e := &WsDualExecutor[T]{}
 	e.Init(section, subscription)
 	return e
 }
 
-func (this *WsDualExecutor[T, TD]) Subscribe(onShot func(T), onDelta func(TD)) {
+func (this *WsDualExecutor[T]) Subscribe(onShot func(T), onDelta func(Delta)) {
 	this.section.subscribe(this.topic, func(m []byte, delta bool) error {
 		return WsFuncDelta(m, onShot, delta, onDelta)
 	})
 }
+
+/*
+func (this *WsDualExecutor[T, TD]) Subscribe(onShot func(T)) {
+	var current T
+	this.SubscribeDual(func(shot T) {
+		current = shot
+		onShot(shot)
+	}, func(delta TD) {
+		WsApplyDelta(&current, delta)
+	})
+}
+*/

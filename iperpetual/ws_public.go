@@ -10,12 +10,12 @@ func NewWsPublic(client *WsClient) *WsPublic {
 	return c
 }
 
-func (this WsPublic) OrderBook25(symbol string) *WsDualExecutor[[]OrderBookShot, OrderBookDelta] {
-	return NewWsDualExecutor[[]OrderBookShot, OrderBookDelta](&this.WsSection, Subscription{Topic: TopicOrderBook25, Symbol: symbol})
+func (this WsPublic) OrderBook25(symbol string) *WsDualExecutor[[]OrderBookShot] {
+	return NewWsDualExecutor[[]OrderBookShot](&this.WsSection, Subscription{Topic: TopicOrderBook25, Symbol: symbol})
 }
 
-func (this WsPublic) OrderBook200(symbol string) *WsDualExecutor[[]OrderBookShot, OrderBookDelta] {
-	return NewWsDualExecutor[[]OrderBookShot, OrderBookDelta](&this.WsSection, Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: symbol})
+func (this WsPublic) OrderBook200(symbol string) *WsDualExecutor[[]OrderBookShot] {
+	return NewWsDualExecutor[[]OrderBookShot](&this.WsSection, Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: symbol})
 }
 
 func (this WsPublic) Trade() *WsMonoExecutor[[]TradeShot] {
@@ -26,8 +26,8 @@ func (this WsPublic) Insurance() *WsMonoExecutor[[]InsuranceShot] {
 	return NewWsMonoExecutor[[]InsuranceShot](&this.WsSection, Subscription{Topic: TopicInsurance})
 }
 
-func (this WsPublic) Instrument(symbol string) *WsDualExecutor[InstrumentShot, InstrumentDelta] {
-	return NewWsDualExecutor[InstrumentShot, InstrumentDelta](&this.WsSection, Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: symbol})
+func (this WsPublic) Instrument(symbol string) *WsDualExecutor[InstrumentShot] {
+	return NewWsDualExecutor[InstrumentShot](&this.WsSection, Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: symbol})
 }
 
 func (this WsPublic) Kline(symbol string, interval KlineInterval) *WsMonoExecutor[[]KlineShot] {

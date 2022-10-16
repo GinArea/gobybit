@@ -27,18 +27,18 @@ type Topic[T any] struct {
 	Data T      `json:"data"`
 }
 
+type Delta struct {
+	Delete []any `json:"delete"`
+	Update []any `json:"update"`
+	Insert []any `json:"insert"`
+}
+
 type OrderBookShot struct {
 	Price  string `json:"price"`
 	Symbol string `json:"symbol"`
 	ID     uint64 `json:"id"`
 	Side   Side   `json:"side"`
 	Size   int    `json:"size"`
-}
-
-type OrderBookDelta struct {
-	Delete []any `json:"delete"`
-	Update []any `json:"update"`
-	Insert []any `json:"insert"`
 }
 
 type TradeShot struct {
@@ -97,12 +97,6 @@ type InstrumentShot struct {
 	FundingRateInterval    uint64        `json:"funding_rate_interval"`
 	SettleTimeE9           uint64        `json:"settle_time_e9"`
 	DelistingStatus        string        `json:"delisting_status"`
-}
-
-type InstrumentDelta struct {
-	Delete []any `json:"delete"`
-	Update []any `json:"update"`
-	Insert []any `json:"insert"`
 }
 
 type KlineShot struct {
