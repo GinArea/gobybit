@@ -23,24 +23,24 @@ func NewWsPrivate(client *WsClient, key string, secret string) *WsPrivate {
 	return c
 }
 
-func (this WsPrivate) Position() *WsMonoExecutor[[]PositionShot] {
-	return NewWsMonoExecutor[[]PositionShot](&this.WsSection, Subscription{Topic: TopicPosition})
+func (this WsPrivate) Position() *WsExecutor[[]PositionShot] {
+	return NewWsExecutor[[]PositionShot](&this.WsSection, Subscription{Topic: TopicPosition})
 }
 
-func (this WsPrivate) Execution() *WsMonoExecutor[[]ExecutionShot] {
-	return NewWsMonoExecutor[[]ExecutionShot](&this.WsSection, Subscription{Topic: TopicExecution})
+func (this WsPrivate) Execution() *WsExecutor[[]ExecutionShot] {
+	return NewWsExecutor[[]ExecutionShot](&this.WsSection, Subscription{Topic: TopicExecution})
 }
 
-func (this WsPrivate) Order() *WsMonoExecutor[[]OrderShot] {
-	return NewWsMonoExecutor[[]OrderShot](&this.WsSection, Subscription{Topic: TopicOrder})
+func (this WsPrivate) Order() *WsExecutor[[]OrderShot] {
+	return NewWsExecutor[[]OrderShot](&this.WsSection, Subscription{Topic: TopicOrder})
 }
 
-func (this WsPrivate) StopOrder() *WsMonoExecutor[[]StopOrderShot] {
-	return NewWsMonoExecutor[[]StopOrderShot](&this.WsSection, Subscription{Topic: TopicStopOrder})
+func (this WsPrivate) StopOrder() *WsExecutor[[]StopOrderShot] {
+	return NewWsExecutor[[]StopOrderShot](&this.WsSection, Subscription{Topic: TopicStopOrder})
 }
 
-func (this WsPrivate) Wallet() *WsMonoExecutor[[]WalletShot] {
-	return NewWsMonoExecutor[[]WalletShot](&this.WsSection, Subscription{Topic: TopicWallet})
+func (this WsPrivate) Wallet() *WsExecutor[[]WalletShot] {
+	return NewWsExecutor[[]WalletShot](&this.WsSection, Subscription{Topic: TopicWallet})
 }
 
 func (this *WsPrivate) auth() {
