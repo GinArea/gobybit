@@ -1,89 +1,39 @@
 package iperpetual
 
-import (
-	"github.com/ginarea/gobybit/transport"
-)
-
 type WsPublic struct {
-	ws *WsClient
+	WsSection
 }
 
-func NewWsPublic() *WsPublic {
-	return &WsPublic{
-		ws: NewWsClient("public"),
-	}
+func NewWsPublic(client *WsClient) *WsPublic {
+	c := &WsPublic{}
+	c.init(client)
+	return c
 }
 
-func (this *WsPublic) Shutdown() {
-	this.ws.Shutdown()
+func (this WsPublic) OrderBook25(symbol string) *WsDualExecutor[[]OrderBookShot, OrderBookDelta] {
+	return NewWsDualExecutor[[]OrderBookShot, OrderBookDelta](&this.WsSection, Subscription{Topic: TopicOrderBook25, Symbol: symbol})
 }
 
-func (this *WsPublic) Conf() *transport.WsConf {
-	return this.ws.Conf()
+func (this WsPublic) OrderBook200(symbol string) *WsDualExecutor[[]OrderBookShot, OrderBookDelta] {
+	return NewWsDualExecutor[[]OrderBookShot, OrderBookDelta](&this.WsSection, Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: symbol})
 }
 
-func (this *WsPublic) WithProxy(proxy string) *WsPublic {
-	this.Conf().SetProxy(proxy)
-	return this
+func (this WsPublic) Trade() *WsMonoExecutor[[]TradeShot] {
+	return NewWsMonoExecutor[[]TradeShot](&this.WsSection, Subscription{Topic: TopicTrade})
 }
 
-func (this *WsPublic) Connected() bool {
-	return this.ws.Connected()
+func (this WsPublic) Insurance() *WsMonoExecutor[[]InsuranceShot] {
+	return NewWsMonoExecutor[[]InsuranceShot](&this.WsSection, Subscription{Topic: TopicInsurance})
 }
 
-func (this *WsPublic) Run() {
-	this.ws.Run()
+func (this WsPublic) Instrument(symbol string) *WsDualExecutor[InstrumentShot, InstrumentDelta] {
+	return NewWsDualExecutor[InstrumentShot, InstrumentDelta](&this.WsSection, Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: symbol})
 }
 
-func (this *WsPublic) SetOnConnected(onConnected func()) {
-	this.ws.SetOnConnected(onConnected)
+func (this WsPublic) Kline(symbol string, interval KlineInterval) *WsMonoExecutor[[]KlineShot] {
+	return NewWsMonoExecutor[[]KlineShot](&this.WsSection, Subscription{Topic: TopicKline, Interval: string(interval), Symbol: symbol})
 }
 
-func (this *WsPublic) SubscribeOrderBook25(symbol string) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicOrderBook25, Symbol: &symbol})
-}
-func (this *WsPublic) UnsubscribeOrderBook25(symbol string) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicOrderBook25, Symbol: &symbol})
-}
-
-func (this *WsPublic) SubscribeOrderBook200(symbol string) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: &symbol})
-}
-func (this *WsPublic) UnsubscribeOrderBook200(symbol string) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicOrderBook200, Interval: "100ms", Symbol: &symbol})
-}
-
-func (this *WsPublic) SubscribeTrade() bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicTrade})
-}
-func (this *WsPublic) UnsubscribeTrade() bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicTrade})
-}
-
-func (this *WsPublic) SubscribeInsurance() bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicInsurance})
-}
-func (this *WsPublic) UnsubscribeInsurance() bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicInsurance})
-}
-
-func (this *WsPublic) SubscribeInstrument(symbol string) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: &symbol})
-}
-func (this *WsPublic) UnsubscribeInstrument(symbol string) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicInstrument, Interval: "100ms", Symbol: &symbol})
-}
-
-func (this *WsPublic) SubscribeKline(symbol string, interval KlineInterval) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: &symbol})
-}
-func (this *WsPublic) UnsubscribeKline(symbol string, interval KlineInterval) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: &symbol})
-}
-
-func (this *WsPublic) SubscribeLiquidation() bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicLiquidation})
-}
-func (this *WsPublic) UnsubscribeLiquidation() bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicLiquidation})
+func (this WsPublic) Liquidation() *WsMonoExecutor[LiquidationShot] {
+	return NewWsMonoExecutor[LiquidationShot](&this.WsSection, Subscription{Topic: TopicLiquidation})
 }

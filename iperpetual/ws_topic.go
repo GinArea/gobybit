@@ -2,8 +2,8 @@ package iperpetual
 
 type TopicName string
 
+// public:
 const (
-	// public:
 	TopicOrderBook25  TopicName = "orderBookL2_25"
 	TopicOrderBook200 TopicName = "orderBook_200"
 	TopicTrade        TopicName = "trade"
@@ -11,7 +11,10 @@ const (
 	TopicInstrument   TopicName = "instrument_info"
 	TopicKline        TopicName = "klineV2"
 	TopicLiquidation  TopicName = "liquidation"
-	// private:
+)
+
+// private:
+const (
 	TopicPosition  TopicName = "position"
 	TopicExecution TopicName = "execution"
 	TopicOrder     TopicName = "order"
@@ -24,7 +27,7 @@ type Topic[T any] struct {
 	Data T      `json:"data"`
 }
 
-type OrderBookSnapshot struct {
+type OrderBookShot struct {
 	Price  string `json:"price"`
 	Symbol string `json:"symbol"`
 	ID     uint64 `json:"id"`
@@ -38,7 +41,7 @@ type OrderBookDelta struct {
 	Insert []any `json:"insert"`
 }
 
-type TradeSnapshot struct {
+type TradeShot struct {
 	Timestamp     string        `json:"timestamp"`
 	TradeTime     uint64        `json:"trade_time_ms"`
 	Symbol        string        `json:"symbol"`
@@ -50,13 +53,13 @@ type TradeSnapshot struct {
 	CrossSeq      uint64        `json:"cross_seq"`
 }
 
-type InsuranceSnapshot struct {
+type InsuranceShot struct {
 	Currency      string `json:"currency"`
 	Timestamp     string `json:"timestamp"`
 	WalletBalance uint64 `json:"wallet_balance"`
 }
 
-type InstrumentSnapshot struct {
+type InstrumentShot struct {
 	ID                     uint64        `json:"id"`
 	Symbol                 string        `json:"symbol"`
 	LastPriceE4            int64         `json:"last_price_e4"`
@@ -102,7 +105,7 @@ type InstrumentDelta struct {
 	Insert []any `json:"insert"`
 }
 
-type KlineSnapshot struct {
+type KlineShot struct {
 	Start     uint64  `json:"start"`
 	End       uint64  `json:"end"`
 	Open      float64 `json:"open"`
@@ -116,7 +119,7 @@ type KlineSnapshot struct {
 	Timestamp uint64  `json:"timestamp"`
 }
 
-type LiquidationSnapshot struct {
+type LiquidationShot struct {
 	Symbol string `json:"symbol"`
 	Side   Side   `json:"side"`
 	Price  string `json:"price"`
@@ -124,7 +127,7 @@ type LiquidationSnapshot struct {
 	Time   int64  `json:"time"`
 }
 
-type PositionSnapshot struct {
+type PositionShot struct {
 	UserID           int         `json:"user_id"`
 	Symbol           string      `json:"symbol"`
 	Size             int         `json:"size"`
@@ -160,7 +163,7 @@ type PositionSnapshot struct {
 	SlFreeSize       int         `json:"sl_free_size_x"`
 }
 
-type ExecutionSnapshot struct {
+type ExecutionShot struct {
 	OrderID     string   `json:"order_id"`
 	OrderLinkID string   `json:"order_link_id"`
 	Symbol      string   `json:"symbol"`
@@ -176,7 +179,7 @@ type ExecutionSnapshot struct {
 	TradeTime   string   `json:"trade_time"`
 }
 
-type OrderSnapshot struct {
+type OrderShot struct {
 	OrderID        string       `json:"order_id"`
 	OrderLinkID    string       `json:"order_link_id"`
 	Symbol         string       `json:"symbol"`
@@ -203,7 +206,7 @@ type OrderSnapshot struct {
 	CloseOnTrigger bool         `json:"close_on_trigger"`
 }
 
-type StopOrderSnapshot struct {
+type StopOrderShot struct {
 	OrderID        string       `json:"order_id"`
 	OrderLinkID    string       `json:"order_link_id"`
 	UserID         int          `json:"user_id"`
@@ -223,7 +226,7 @@ type StopOrderSnapshot struct {
 	StopLoss       float64      `json:"stop_loss"`
 }
 
-type WalletSnapshot struct {
+type WalletShot struct {
 	UserID           uint64 `json:"user_id"`
 	Coin             string `json:"coin"`
 	AvailableBalance string `json:"available_balance"`

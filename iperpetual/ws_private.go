@@ -6,50 +6,41 @@ import (
 	"encoding/hex"
 	"fmt"
 	"time"
-
-	"github.com/ginarea/gobybit/transport"
 )
 
 type WsPrivate struct {
-	ws     *WsClient
+	WsSection
 	key    string
 	secret string
 }
 
-func NewWsPrivate(key string, secret string) *WsPrivate {
-	return &WsPrivate{
-		ws:     NewWsClient("private"),
+func NewWsPrivate(client *WsClient, key string, secret string) *WsPrivate {
+	c := &WsPrivate{
 		key:    key,
 		secret: secret,
 	}
+	c.init(client)
+	return c
 }
 
-func (this *WsPrivate) Shutdown() {
-	this.ws.Shutdown()
+func (this WsPrivate) Position() *WsMonoExecutor[[]PositionShot] {
+	return NewWsMonoExecutor[[]PositionShot](&this.WsSection, Subscription{Topic: TopicPosition})
 }
 
-func (this *WsPrivate) Conf() *transport.WsConf {
-	return this.ws.Conf()
+func (this WsPrivate) Execution() *WsMonoExecutor[[]ExecutionShot] {
+	return NewWsMonoExecutor[[]ExecutionShot](&this.WsSection, Subscription{Topic: TopicExecution})
 }
 
-func (this *WsPrivate) WithProxy(proxy string) *WsPrivate {
-	this.Conf().SetProxy(proxy)
-	return this
+func (this WsPrivate) Order() *WsMonoExecutor[[]OrderShot] {
+	return NewWsMonoExecutor[[]OrderShot](&this.WsSection, Subscription{Topic: TopicOrder})
 }
 
-func (this *WsPrivate) Connected() bool {
-	return this.ws.Connected()
+func (this WsPrivate) StopOrder() *WsMonoExecutor[[]StopOrderShot] {
+	return NewWsMonoExecutor[[]StopOrderShot](&this.WsSection, Subscription{Topic: TopicStopOrder})
 }
 
-func (this *WsPrivate) Run() {
-	this.ws.SetOnConnected(func() {
-		this.auth()
-	})
-	this.ws.Run()
-}
-
-func (this *WsPrivate) SetOnAuth(onAuth func(bool)) {
-	this.ws.SetOnAuth(onAuth)
+func (this WsPrivate) Wallet() *WsMonoExecutor[[]WalletShot] {
+	return NewWsMonoExecutor[[]WalletShot](&this.WsSection, Subscription{Topic: TopicWallet})
 }
 
 func (this *WsPrivate) auth() {
@@ -69,40 +60,5 @@ func (this *WsPrivate) auth() {
 			signature,
 		},
 	}
-	this.ws.Send(cmd)
-}
-
-func (this *WsPrivate) SubscribePosition() bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicPosition})
-}
-func (this *WsPrivate) UnsubscribePosition() bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicPosition})
-}
-
-func (this *WsPrivate) SubscribeExecution() bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicExecution})
-}
-func (this *WsPrivate) UnsubcribeExecution() bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicExecution})
-}
-
-func (this *WsPrivate) SubscribeOrder() bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicOrder})
-}
-func (this *WsPrivate) UnsubscribeOrder() bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicOrder})
-}
-
-func (this *WsPrivate) SubscribeStopOrder() bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicStopOrder})
-}
-func (this *WsPrivate) UnsubscribeStopOrder() bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicStopOrder})
-}
-
-func (this *WsPrivate) SubscribeWallet() bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicWallet})
-}
-func (this *WsPrivate) UnsubscribeWallet() bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicWallet})
+	this.ws.send(cmd)
 }

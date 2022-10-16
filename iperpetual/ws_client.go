@@ -1,8 +1,8 @@
+// WebSocket Data (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-websocket)
 package iperpetual
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/ginarea/gobybit/transport"
 	"github.com/msw-x/moon"
@@ -11,18 +11,24 @@ import (
 )
 
 type WsClient struct {
-	log         *ulog.Log
-	ws          *transport.WsClient
-	onConnected func()
-	onAuth      func(bool)
+	log            *ulog.Log
+	ws             *transport.WsClient
+	public         *WsPublic
+	private        *WsPrivate
+	ready          bool
+	onConnected    func()
+	onDisconnected func()
+	onAuth         func(bool)
 }
 
-func NewWsClient(name string) *WsClient {
+func NewWsClient() *WsClient {
 	ws := transport.NewWsClient("wss://stream.bybit.com/realtime")
-	return &WsClient{
-		log: ulog.New(fmt.Sprintf("ws-%s[%s]", name, ws.ID())),
+	c := &WsClient{
+		log: ulog.New(fmt.Sprintf("ws-iperpetual[%s]", ws.ID())),
 		ws:  ws,
 	}
+	c.public = NewWsPublic(c)
+	return c
 }
 
 func (this *WsClient) Shutdown() {
@@ -39,80 +45,87 @@ func (this *WsClient) WithProxy(proxy string) *WsClient {
 	return this
 }
 
-func (this *WsClient) Connected() bool {
-	return this.ws.Connected()
-}
-
-func (this *WsClient) Run() {
-	this.log.Debug("run")
-	this.ws.SetOnMessage(this.processMessage)
-	this.ws.Run()
+func (this *WsClient) WithAuth(key string, secret string) *WsClient {
+	this.private = NewWsPrivate(this, key, secret)
+	return this
 }
 
 func (this *WsClient) SetOnConnected(onConnected func()) {
-	this.ws.SetOnConnected(onConnected)
+	this.onConnected = onConnected
 }
 
-func (this *WsClient) SetOnDisconnected(onConnected func()) {
-	this.ws.SetOnDisconnected(onConnected)
+func (this *WsClient) SetOnDisconnected(onDisconnected func()) {
+	this.onDisconnected = onDisconnected
 }
 
 func (this *WsClient) SetOnAuth(onAuth func(bool)) {
 	this.onAuth = onAuth
 }
 
-func (this *WsClient) Send(cmd any) bool {
+func (this *WsClient) Public() *WsPublic {
+	return this.public
+}
+
+func (this *WsClient) Private() *WsPrivate {
+	if this.private == nil {
+		moon.Panic("private methods are forbidden")
+	}
+	return this.private
+}
+
+func (this *WsClient) Run() {
+	this.log.Debug("run")
+	this.ws.SetOnConnected(func() {
+		if this.onConnected != nil {
+			this.onConnected()
+		}
+		if this.private == nil {
+			this.ready = true
+		} else {
+			this.log.Info("auth")
+			this.private.auth()
+		}
+		this.public.subscribeAll()
+	})
+	this.ws.SetOnDisconnected(func() {
+		this.ready = false
+		if this.onDisconnected != nil {
+			this.onDisconnected()
+		}
+	})
+	this.ws.SetOnMessage(this.processMessage)
+	this.ws.Run()
+}
+
+func (this *WsClient) Connected() bool {
+	return this.ws.Connected()
+}
+
+func (this *WsClient) Ready() bool {
+	return this.ready
+}
+
+func (this *WsClient) send(cmd any) bool {
 	return this.ws.Send(cmd)
 }
 
-type Subscription struct {
-	Topic    TopicName
-	Interval string
-	Symbol   *string
+func (this *WsClient) subscribe(topic string) bool {
+	this.log.Infof("subscribe: topic[%s]", topic)
+	return this.send(Request{
+		Name: "subscribe",
+		Args: []string{topic},
+	})
 }
 
-func (this *Subscription) String() string {
-	s := []string{string(this.Topic)}
-	if this.Interval != "" {
-		s = append(s, this.Interval)
-	}
-	if this.Symbol != nil {
-		s = append(s, string(*this.Symbol))
-	}
-	return ufmt.JoinSliceWith(".", s)
-}
-
-func (this *Subscription) Request(operation string) Request {
-	return Request{
-		Operation: operation,
-		Args:      []string{this.String()},
-	}
-}
-
-func (this *WsClient) Subscribe(s Subscription) bool {
-	this.log.Infof("subscribe: topic[%s]", s.Topic)
-	return this.ws.Send(s.Request("subscribe"))
-}
-
-func (this *WsClient) Unsubscribe(s Subscription) bool {
-	this.log.Infof("unsubscribe: topic[%s]", s.Topic)
-	return this.ws.Send(s.Request("unsubscribe"))
-}
-
-type Request struct {
-	Operation string   `json:"op"`
-	Args      []string `json:"args"`
-}
-
-type Responce struct {
-	Success bool    `json:"success"`
-	RetMsg  string  `json:"ret_msg"`
-	ConnID  string  `json:"conn_id"`
-	Request Request `json:"request"`
+func (this *WsClient) unsubscribe(topic string) bool {
+	this.log.Infof("unsubscribe: topic[%s]", topic)
+	return this.send(Request{
+		Name: "unsubscribe",
+		Args: []string{topic},
+	})
 }
 
 func (this *WsClient) processMessage(name string, msg []byte) {
-	this.log.Debug("name:", name)
 	switch name {
 	case "success":
 		v := transport.JsonUnmarshal[Responce](msg)
@@ -122,11 +135,13 @@ func (this *WsClient) processMessage(name string, msg []byte) {
 			Name string `json:"topic"`
 			Type string `json:"type"`
 		}](msg)
-		s := strings.Split(v.Name, ".")
-		name := s[0]
-		this.processTopic(TopicName(name), v.Type == "delta", msg)
+		this.processTopic(TopicMessage{
+			Topic: v.Name,
+			Delta: v.Type == "delta",
+			Bin:   msg,
+		})
 	default:
-		moon.Panic("unknown message:", name)
+		this.log.Error("unknown message:", name)
 	}
 }
 
@@ -137,63 +152,53 @@ func (this *WsClient) processResponce(r Responce) {
 	}
 	name := r.RetMsg
 	if name == "" {
-		name = r.Request.Operation
+		name = r.Request.Name
 	}
-	this.log.Debug("response:", name, "success:", r.Success)
 	switch name {
 	case "pong":
 	case "auth":
+		this.log.Info("auth:", ufmt.SuccessFailure(r.Success))
 		if this.onAuth != nil {
 			this.onAuth(r.Success)
 		}
+		if this.private != nil {
+			this.ready = true
+			this.private.subscribeAll()
+		}
 	case "subscribe":
+		this.log.Infof("topic%s subscribe: %s", r.Request.Args, ufmt.SuccessFailure(r.Success))
 	case "unsubscribe":
+		this.log.Infof("topic%s unsubscribe: %s", r.Request.Args, ufmt.SuccessFailure(r.Success))
 	default:
-		moon.Panic("unknown response:", name)
+		this.log.Error("unknown response:", name)
 	}
 }
 
-func (this *WsClient) processTopic(topic TopicName, delta bool, msg []byte) {
-	switch topic {
-	// public
-	case TopicOrderBook25:
-		if delta {
-			transport.JsonUnmarshal[Topic[OrderBookDelta]](msg)
-		} else {
-			transport.JsonUnmarshal[Topic[[]OrderBookSnapshot]](msg)
-		}
-	case TopicOrderBook200:
-		if delta {
-			transport.JsonUnmarshal[Topic[OrderBookDelta]](msg)
-		} else {
-			transport.JsonUnmarshal[Topic[[]OrderBookSnapshot]](msg)
-		}
-	case TopicTrade:
-		transport.JsonUnmarshal[Topic[[]TradeSnapshot]](msg)
-	case TopicInsurance:
-		transport.JsonUnmarshal[Topic[[]InsuranceSnapshot]](msg)
-	case TopicInstrument:
-		if delta {
-			transport.JsonUnmarshal[Topic[InstrumentDelta]](msg)
-		} else {
-			transport.JsonUnmarshal[Topic[InstrumentSnapshot]](msg)
-		}
-	case TopicKline:
-		transport.JsonUnmarshal[Topic[[]KlineSnapshot]](msg)
-	case TopicLiquidation:
-		transport.JsonUnmarshal[Topic[LiquidationSnapshot]](msg)
-	// private
-	case TopicPosition:
-		transport.JsonUnmarshal[Topic[[]PositionSnapshot]](msg)
-	case TopicExecution:
-		transport.JsonUnmarshal[Topic[[]ExecutionSnapshot]](msg)
-	case TopicOrder:
-		transport.JsonUnmarshal[Topic[[]OrderSnapshot]](msg)
-	case TopicStopOrder:
-		transport.JsonUnmarshal[Topic[[]StopOrderSnapshot]](msg)
-	case TopicWallet:
-		transport.JsonUnmarshal[Topic[[]WalletSnapshot]](msg)
-	default:
-		moon.Panic("unknown topic:", topic)
+func (this *WsClient) processTopic(m TopicMessage) {
+	ok, err := this.public.processTopic(m)
+	if err == nil && this.private != nil && !ok {
+		_, err = this.private.processTopic(m)
 	}
+	if err != nil {
+		this.log.Errorf("process topic[%s]: %v", m.Topic, err)
+	}
+	return
+}
+
+type Request struct {
+	Name string   `json:"op"`
+	Args []string `json:"args"`
+}
+
+type Responce struct {
+	Success bool    `json:"success"`
+	RetMsg  string  `json:"ret_msg"`
+	ConnID  string  `json:"conn_id"`
+	Request Request `json:"request"`
+}
+
+type TopicMessage struct {
+	Topic string
+	Delta bool
+	Bin   []byte
 }
