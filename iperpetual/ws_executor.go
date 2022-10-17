@@ -26,6 +26,10 @@ func (this *WsExecutor[T]) Unsubscribe() {
 	this.section.unsubscribe(this.topic)
 }
 
+func (this *WsExecutor[T]) Instant() *WsInstant[T] {
+	return NewWsInstant[T](this)
+}
+
 type WsDeltaExecutor[T any] struct {
 	WsExecutor[T]
 }
@@ -36,20 +40,22 @@ func NewWsDeltaExecutor[T any](section *WsSection, subscription Subscription) *W
 	return e
 }
 
-func (this *WsDeltaExecutor[T]) Subscribe(onShot func(T), onDelta func(Delta)) {
+func (this *WsDeltaExecutor[T]) SubscribeWithDelta(onShot func(T), onDelta func(Delta)) {
 	this.section.subscribe(this.topic, func(m []byte, delta bool) error {
 		return WsFuncDelta(m, onShot, delta, onDelta)
 	})
 }
 
-/*
-func (this *WsDeltaExecutor[T, TD]) Subscribe(onShot func(T)) {
+func (this *WsDeltaExecutor[T]) Subscribe(onShot func(T)) {
 	var current T
-	this.SubscribeDual(func(shot T) {
+	this.SubscribeWithDelta(func(shot T) {
 		current = shot
 		onShot(shot)
-	}, func(delta TD) {
-		WsApplyDelta(&current, delta)
+	}, func(delta Delta) {
+		WsDeltaApply(&current, delta)
 	})
 }
-*/
+
+func (this *WsDeltaExecutor[T]) Instant() *WsInstant[T] {
+	return NewWsInstant[T](this)
+}
