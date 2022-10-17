@@ -1,7 +1,11 @@
 // Active Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-activeorders)
 package iperpetual
 
-import "time"
+import (
+	"time"
+
+	"github.com/ginarea/gobybit/transport"
+)
 
 type OrderMain struct {
 	UserID      int         `json:"user_id"`
@@ -53,8 +57,8 @@ type PlaceActiveOrder struct {
 type OrderCreated struct {
 	OrderBase
 	OrderProfitLoss
-	LastExecTime  string `json:"last_exec_time"`
-	LastExecPrice string `json:"last_exec_price"`
+	LastExecTime  string            `json:"last_exec_time"`
+	LastExecPrice transport.Float64 `json:"last_exec_price"`
 }
 
 func (this *PlaceActiveOrder) Do(client *Client) (OrderCreated, bool) {
