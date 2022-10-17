@@ -27,12 +27,6 @@ type Topic[T any] struct {
 	Data T      `json:"data"`
 }
 
-type Delta struct {
-	Delete []any `json:"delete"`
-	Update []any `json:"update"`
-	Insert []any `json:"insert"`
-}
-
 type OrderBookShot struct {
 	Price  string `json:"price"`
 	Symbol string `json:"symbol"`
