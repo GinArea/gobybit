@@ -50,9 +50,12 @@ func (this *WsDeltaExecutor[T]) Subscribe(onShot func(T)) {
 	var current T
 	this.SubscribeWithDelta(func(shot T) {
 		current = shot
-		onShot(shot)
+		onShot(current)
 	}, func(delta Delta) {
-		WsDeltaApply(&current, delta)
+		if delta.HasData() {
+			WsDeltaApply(&current, delta)
+			onShot(current)
+		}
 	})
 }
 

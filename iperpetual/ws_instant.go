@@ -23,6 +23,10 @@ func (this *WsInstant[T]) Empty() bool {
 	return this.v == nil
 }
 
+func (this *WsInstant[T]) Has() bool {
+	return !this.Empty()
+}
+
 func (this *WsInstant[T]) Value() T {
 	return *this.v
 }

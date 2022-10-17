@@ -10,6 +10,10 @@ type Delta struct {
 	Insert []any `json:"insert"`
 }
 
+func (this *Delta) HasData() bool {
+	return len(this.Delete) > 0 || len(this.Update) > 0 || len(this.Insert) > 0
+}
+
 // Find sliсe item (struct) with required field of id for delta
 func wsDeltaFindByID(slice []any, id uint64) (any, bool) {
 	for _, v := range slice {
