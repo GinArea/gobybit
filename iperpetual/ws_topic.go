@@ -1,5 +1,11 @@
 package iperpetual
 
+import (
+	"time"
+
+	"github.com/ginarea/gobybit/transport"
+)
+
 type TopicName string
 
 // public:
@@ -116,39 +122,39 @@ type LiquidationShot struct {
 }
 
 type PositionShot struct {
-	UserID           int         `json:"user_id"`
-	Symbol           string      `json:"symbol"`
-	Size             int         `json:"size"`
-	Side             Side        `json:"side"`
-	PositionValue    string      `json:"position_value"`
-	EntryPrice       string      `json:"entry_price"`
-	LiqPrice         string      `json:"liq_price"`
-	BustPrice        string      `json:"bust_price"`
-	Leverage         string      `json:"leverage"`
-	OrderMargin      string      `json:"order_margin"`
-	PositionMargin   string      `json:"position_margin"`
-	AvailableBalance string      `json:"available_balance"`
-	TakeProfit       string      `json:"take_profit"`
-	StopLoss         string      `json:"stop_loss"`
-	RealisedPnl      string      `json:"realised_pnl"`
-	TrailingStop     string      `json:"trailing_stop"`
-	TrailingActive   string      `json:"trailing_active"`
-	WalletBalance    string      `json:"wallet_balance"`
-	RiskID           int         `json:"risk_id"`
-	OccClosingFee    string      `json:"occ_closing_fee"`
-	OccFundingFee    string      `json:"occ_funding_fee"`
-	AutoAddMargin    int         `json:"auto_add_margin"`
-	CumRealisedPnl   string      `json:"cum_realised_pnl"`
-	PositionStatus   string      `json:"position_status"`
-	PositionSeq      int         `json:"position_seq"`
-	IsIsolated       bool        `json:"is_isolated"`
-	Mode             int         `json:"mode"`
-	PositionIdx      PositionIdx `json:"position_idx"`
-	TpSlMode         TpSlMode    `json:"tp_sl_mode"`
-	TpOrderNum       int         `json:"tp_order_num"`
-	SlOrderNum       int         `json:"sl_order_num"`
-	TpFreeSize       int         `json:"tp_free_size_x"`
-	SlFreeSize       int         `json:"sl_free_size_x"`
+	UserID           int               `json:"user_id"`
+	Symbol           string            `json:"symbol"`
+	Size             int               `json:"size"`
+	Side             Side              `json:"side"`
+	PositionValue    transport.Float64 `json:"position_value"`
+	EntryPrice       transport.Float64 `json:"entry_price"`
+	LiqPrice         transport.Float64 `json:"liq_price"`
+	BustPrice        transport.Float64 `json:"bust_price"`
+	Leverage         transport.Float64 `json:"leverage"`
+	OrderMargin      string            `json:"order_margin"`
+	PositionMargin   string            `json:"position_margin"`
+	AvailableBalance transport.Float64 `json:"available_balance"`
+	TakeProfit       string            `json:"take_profit"`
+	StopLoss         string            `json:"stop_loss"`
+	RealisedPnl      transport.Float64 `json:"realised_pnl"`
+	TrailingStop     string            `json:"trailing_stop"`
+	TrailingActive   string            `json:"trailing_active"`
+	WalletBalance    transport.Float64 `json:"wallet_balance"`
+	RiskID           int               `json:"risk_id"`
+	OccClosingFee    string            `json:"occ_closing_fee"`
+	OccFundingFee    string            `json:"occ_funding_fee"`
+	AutoAddMargin    int               `json:"auto_add_margin"`
+	CumRealisedPnl   string            `json:"cum_realised_pnl"`
+	PositionStatus   string            `json:"position_status"`
+	PositionSeq      int               `json:"position_seq"`
+	IsIsolated       bool              `json:"is_isolated"`
+	Mode             int               `json:"mode"`
+	PositionIdx      PositionIdx       `json:"position_idx"`
+	TpSlMode         TpSlMode          `json:"tp_sl_mode"`
+	TpOrderNum       int               `json:"tp_order_num"`
+	SlOrderNum       int               `json:"sl_order_num"`
+	TpFreeSize       int               `json:"tp_free_size_x"`
+	SlFreeSize       int               `json:"sl_free_size_x"`
 }
 
 type ExecutionShot struct {
@@ -168,30 +174,30 @@ type ExecutionShot struct {
 }
 
 type OrderShot struct {
-	OrderID        string       `json:"order_id"`
-	OrderLinkID    string       `json:"order_link_id"`
-	Symbol         string       `json:"symbol"`
-	Side           Side         `json:"side"`
-	OrderType      OrderType    `json:"order_type"`
-	Price          float64      `json:"price"`
-	Qty            string       `json:"qty"`
-	TimeInForce    TimeInForce  `json:"time_in_force"`
-	CreateType     CreateType   `json:"create_type"`
-	CancelType     CancelType   `json:"cancel_type"`
-	OrderStatus    OrderStatus  `json:"order_status"`
-	LeavesQty      float64      `json:"leaves_qty"`
-	CumExecQty     float64      `json:"cum_exec_qty"`
-	CumExecValue   string       `json:"cum_exec_value"`
-	CumExecFee     string       `json:"cum_exec_fee"`
-	Timestamp      string       `json:"timestamp"`
-	TakeProfit     float64      `json:"take_profit"`
-	TpTrigger      TriggerPrice `json:"tp_trigger_by"`
-	SlTrigger      TriggerPrice `json:"sl_trigger_by"`
-	StopLoss       float64      `json:"stop_loss"`
-	TrailingStop   string       `json:"trailing_stop"`
-	LastExecPrice  string       `json:"last_exec_price"`
-	ReduceOnly     bool         `json:"reduce_only"`
-	CloseOnTrigger bool         `json:"close_on_trigger"`
+	OrderID        string            `json:"order_id"`
+	OrderLinkID    string            `json:"order_link_id"`
+	Symbol         string            `json:"symbol"`
+	Side           Side              `json:"side"`
+	OrderType      OrderType         `json:"order_type"`
+	Price          float64           `json:"price"`
+	Qty            transport.Float64 `json:"qty"`
+	TimeInForce    TimeInForce       `json:"time_in_force"`
+	CreateType     CreateType        `json:"create_type"`
+	CancelType     CancelType        `json:"cancel_type"`
+	OrderStatus    OrderStatus       `json:"order_status"`
+	LeavesQty      float64           `json:"leaves_qty"`
+	CumExecQty     float64           `json:"cum_exec_qty"`
+	CumExecValue   transport.Float64 `json:"cum_exec_value"`
+	CumExecFee     transport.Float64 `json:"cum_exec_fee"`
+	Timestamp      time.Time         `json:"timestamp"`
+	TakeProfit     float64           `json:"take_profit"`
+	TpTrigger      TriggerPrice      `json:"tp_trigger_by"`
+	SlTrigger      TriggerPrice      `json:"sl_trigger_by"`
+	StopLoss       float64           `json:"stop_loss"`
+	TrailingStop   string            `json:"trailing_stop"`
+	LastExecPrice  transport.Float64 `json:"last_exec_price"`
+	ReduceOnly     bool              `json:"reduce_only"`
+	CloseOnTrigger bool              `json:"close_on_trigger"`
 }
 
 type StopOrderShot struct {
