@@ -27,13 +27,21 @@ func (this *Float64) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-func (this *Float64) Value() float64 {
-	return float64(*this)
+func (this Float64) Value() float64 {
+	return float64(this)
 }
 
-func (this *Float64) Ptr() *float64 {
+func (this Float64) Ptr() *float64 {
 	v := this.Value()
 	return &v
+}
+
+func (this Float64) IsZero() bool {
+	return this.Value() == 0
+}
+
+func (this Float64) IsNotZero() bool {
+	return this.Value() != 0
 }
 
 type Time time.Time
