@@ -10,13 +10,13 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/msw-x/moon"
-	"github.com/msw-x/moon/syn"
 	"github.com/msw-x/moon/ulog"
+	"github.com/msw-x/moon/usync"
 )
 
 type WsConn struct {
 	log            *ulog.Log
-	do             *syn.Do
+	do             *usync.Do
 	url            string
 	ws             *websocket.Conn
 	mutex          sync.Mutex
@@ -29,7 +29,7 @@ type WsConn struct {
 
 func NewWsConn(url string) *WsConn {
 	conn := &WsConn{
-		do:   syn.NewDo(),
+		do:   usync.NewDo(),
 		url:  url,
 		conf: NewWsConf(),
 	}
