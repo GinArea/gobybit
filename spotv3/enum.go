@@ -5,6 +5,7 @@ package spotv3
 type Side string
 
 const (
+	None Side = "None"
 	Buy  Side = "Buy"
 	Sell Side = "Sell"
 )
