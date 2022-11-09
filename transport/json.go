@@ -22,6 +22,10 @@ type Float64 float64
 func (this *Float64) UnmarshalJSON(b []byte) error {
 	s := string(b)
 	s = strings.Trim(s, `"`)
+	if s == "" {
+		*this = 0
+		return nil
+	}
 	f, err := strconv.ParseFloat(s, 64)
 	*this = Float64(f)
 	return err
@@ -44,9 +48,16 @@ func (this Float64) IsNotZero() bool {
 	return this.Value() != 0
 }
 
+type Timestamp time.Time
+
+func (this *Timestamp) UnmarshalJSON(b []byte) error {
+	// convert uint timestamp to time.Time
+	return nil
+}
+
 type Time time.Time
 
 func (this *Time) UnmarshalJSON(b []byte) error {
-	// convert uint timestamp to time.Time
+	// convert tim to time.Time
 	return nil
 }
