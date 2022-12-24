@@ -16,16 +16,17 @@ type OrderBase struct {
 }
 
 // Place Active Order (https://bybit-exchange.github.io/docs/spot/v1/#t-placeactive)
-//   symbol      Required string Name of the trading pair
-//   qty         Required number Order quantity (for market orders: when side is Buy, this is in the quote currency.
-//                        Otherwise, qty is in the base currency. For example, on BTCUSDT a Buy order is in USDT, otherwise it's in BTC.
-//                        For limit orders, the qty is always in the base currency.)
-//   side        Required string Order direction
-//   type        Required string Order type
-//   timeInForce          string Time in force
-//   price                number Order price. When the type field is MARKET, the price field is optional. When the type field is LIMIT or LIMIT_MAKER,
-//                        the price field is required
-//   orderLinkId          string User-generated order ID
+//
+//	symbol      Required string Name of the trading pair
+//	qty         Required number Order quantity (for market orders: when side is Buy, this is in the quote currency.
+//	                     Otherwise, qty is in the base currency. For example, on BTCUSDT a Buy order is in USDT, otherwise it's in BTC.
+//	                     For limit orders, the qty is always in the base currency.)
+//	side        Required string Order direction
+//	type        Required string Order type
+//	timeInForce          string Time in force
+//	price                number Order price. When the type field is MARKET, the price field is optional. When the type field is LIMIT or LIMIT_MAKER,
+//	                     the price field is required
+//	orderLinkId          string User-generated order ID
 type PlaceOrder struct {
 	Symbol      string       `param:"symbol"`
 	Qty         int          `param:"qty"`
@@ -50,8 +51,9 @@ func (this *Client) PlaceOrder(v PlaceOrder) (OrderCreated, bool) {
 }
 
 // Get Active Order (https://bybit-exchange.github.io/docs/spot/v1/#t-getactive)
-//   orderId     string Order ID. Required if not passing orderLinkId
-//   orderLinkId string Unique user-set order ID. Required if not passing orderId
+//
+//	orderId     string Order ID. Required if not passing orderLinkId
+//	orderLinkId string Unique user-set order ID. Required if not passing orderId
 type GetOrder struct {
 	OrderID     *string `param:"orderId"`
 	OrderLinkID *string `param:"orderLinkId"`
@@ -71,8 +73,9 @@ func (this *Client) GetOrder(v GetOrder) (Order, bool) {
 }
 
 // Cancel Active Order (https://bybit-exchange.github.io/docs/spot/v1/#t-cancelactive)
-//   orderId     string Order ID. Required if not passing orderLinkId
-//   orderLinkId string Unique user-set order ID. Required if not passing orderId
+//
+//	orderId     string Order ID. Required if not passing orderLinkId
+//	orderLinkId string Unique user-set order ID. Required if not passing orderId
 type CancelOrder struct {
 	OrderID     *string `param:"orderId"`
 	OrderLinkID *string `param:"orderLinkId"`
@@ -92,9 +95,10 @@ func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, bool) {
 }
 
 // Fast Cancel Active Order (https://bybit-exchange.github.io/docs/spot/v1/#t-fastcancelactiveorder)
-//   symbolId    Required string Name of the trading pair
-//   orderId              string Order ID. Required if not passing orderLinkId
-//   orderLinkId          string Unique user-set order ID. Required if not passing orderId
+//
+//	symbolId    Required string Name of the trading pair
+//	orderId              string Order ID. Required if not passing orderLinkId
+//	orderLinkId          string Unique user-set order ID. Required if not passing orderId
 type FastCancelOrder struct {
 	Symbol      string  `param:"symbolId"`
 	OrderID     *string `param:"orderId"`
@@ -114,9 +118,10 @@ func (this *Client) FastCancelOrder(v FastCancelOrder) (bool, bool) {
 }
 
 // Batch Cancel Active Order (https://bybit-exchange.github.io/docs/spot/v1/#t-batchcancelactiveorder)
-//   symbol     Required string Name of the trading pair
-//   side                string Order direction
-//   orderTypes          string Order type. Use commas to indicate multiple order types, eg LIMIT,LIMIT_MAKER. Default: LIMIT
+//
+//	symbol     Required string Name of the trading pair
+//	side                string Order direction
+//	orderTypes          string Order type. Use commas to indicate multiple order types, eg LIMIT,LIMIT_MAKER. Default: LIMIT
 type BatchCancelOrder struct {
 	Symbol string     `param:"symbol"`
 	Side   *Side      `param:"side"`
@@ -155,7 +160,8 @@ func (this *Client) BatchFastCancelOrder(v BatchFastCancelOrder) (bool, bool) {
 }
 
 // Batch Cancel Active Order By IDs (https://bybit-exchange.github.io/docs/spot/v1/#t-batchcancelactiveorderbyids)
-//   orderIds Required string Order ID, use commas to indicate multiple orderIds. Maximum of 100 ids.
+//
+//	orderIds Required string Order ID, use commas to indicate multiple orderIds. Maximum of 100 ids.
 type BatchCancelOrderByID struct {
 	ID []string `param:"orderIds"`
 }
@@ -174,9 +180,10 @@ func (this *Client) BatchCancelOrderByID(ID []string) ([]CancelOrderID, bool) {
 }
 
 // Open Orders (https://bybit-exchange.github.io/docs/spot/v1/#t-openorders)
-//   symbol  string  Name of the trading pair
-//   orderId string  Specify orderId to return all the orders that orderId of which are smaller than this particular one for pagination purpose
-//   limit   integer Default value is 500, max 500
+//
+//	symbol  string  Name of the trading pair
+//	orderId string  Specify orderId to return all the orders that orderId of which are smaller than this particular one for pagination purpose
+//	limit   integer Default value is 500, max 500
 type OpenOrders struct {
 	Symbol  *string `param:"symbol"`
 	OrderID *string `param:"orderId"`
@@ -192,11 +199,12 @@ func (this *Client) OpenOrders(v OpenOrders) ([]OrderBase, bool) {
 }
 
 // Order History (https://bybit-exchange.github.io/docs/spot/v1/#t-orderhistory)
-//   symbol    string  Name of the trading pair
-//   orderId   string  Specify orderId to return all the orders that orderId of which are smaller than this particular one for pagination purpose
-//   limit     integer Default value is 500, max 500
-//   startTime long    Start time, unit in millisecond
-//   endTime   long    End time, unit in millisecond
+//
+//	symbol    string  Name of the trading pair
+//	orderId   string  Specify orderId to return all the orders that orderId of which are smaller than this particular one for pagination purpose
+//	limit     integer Default value is 500, max 500
+//	startTime long    Start time, unit in millisecond
+//	endTime   long    End time, unit in millisecond
 type OrderHistory struct {
 	Symbol    *string `param:"symbol"`
 	OrderID   *string `param:"orderId"`
@@ -226,13 +234,14 @@ func (this *Client) OrderHistory(v OrderHistory) ([]OrderHistoryResult, bool) {
 }
 
 // Trade History (https://bybit-exchange.github.io/docs/spot/v1/#t-tradehistory)
-//   symbol       string  Name of the trading pair
-//   limit        integer Default value is 50, max 50
-//   fromTicketId integer Query greater than the trade ID. (fromTicketId < trade ID)
-//   toTicketId   integer Query smaller than the trade ID. (trade ID < toTicketId)
-//   orderId      integer Order ID
-//   startTime    long    Start time, unit in millisecond
-//   endTime      long    End time, unit in millisecond
+//
+//	symbol       string  Name of the trading pair
+//	limit        integer Default value is 50, max 50
+//	fromTicketId integer Query greater than the trade ID. (fromTicketId < trade ID)
+//	toTicketId   integer Query smaller than the trade ID. (trade ID < toTicketId)
+//	orderId      integer Order ID
+//	startTime    long    Start time, unit in millisecond
+//	endTime      long    End time, unit in millisecond
 type TradeHistory struct {
 	Symbol       *string `param:"symbol"`
 	Limit        *int    `param:"limit"`

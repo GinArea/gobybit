@@ -33,12 +33,13 @@ const (
 )
 
 // Wallet fund type (wallet_fund_type/type) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#wallet-fund-type-wallet_fund_type-type)
-//   ReturnServiceCash - Refund of handling fee bonus
-//   Insurance - Insurance account transfer
-//   SubMember - Parent-child account transfer
-//   Coupon - Coupon interest
-//   AccountTransfer - Account transfer
-//   CashBack - Cash back
+//
+//	ReturnServiceCash - Refund of handling fee bonus
+//	Insurance - Insurance account transfer
+//	SubMember - Parent-child account transfer
+//	Coupon - Coupon interest
+//	AccountTransfer - Account transfer
+//	CashBack - Cash back
 type WalletFund string
 
 const (
@@ -115,14 +116,15 @@ const (
 )
 
 // Order status (order_status/stop_order_status) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#order-status-order_status-stop_order_status)
-//   Created - order has been accepted by the system but not yet put through the matching engine
-//   New - order has been placed successfully
-//   PendingCancel - matching engine has received the cancelation request but it may not be canceled successfully
-//   Only for conditional orders:
-//   Untriggered - order yet to be triggered
-//   Deactivated - order has been canceled by the user before being triggered
-//   Triggered - order has been triggered by last traded price
-//   Active - order has been triggered and the new active order has been successfully placed. Is the final state of a successful conditional order
+//
+//	Created - order has been accepted by the system but not yet put through the matching engine
+//	New - order has been placed successfully
+//	PendingCancel - matching engine has received the cancelation request but it may not be canceled successfully
+//	Only for conditional orders:
+//	Untriggered - order yet to be triggered
+//	Deactivated - order has been canceled by the user before being triggered
+//	Triggered - order has been triggered by last traded price
+//	Active - order has been triggered and the new active order has been successfully placed. Is the final state of a successful conditional order
 type OrderStatus string
 
 const (
@@ -140,10 +142,11 @@ const (
 )
 
 // Cancel type (cancel_type) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#cancel-type-cancel_type)
-//   CancelByPrepareLiq, CancelAllBeforeLiq - canceled due to liquidation
-//   CancelByPrepareAdl, CancelAllBeforeAdl - canceled due to ADL
-//   CancelByTpSlTsClear - TP/SL order canceled successfully
-//   CancelByPzSideCh - order has been canceled after TP/SL is triggered
+//
+//	CancelByPrepareLiq, CancelAllBeforeLiq - canceled due to liquidation
+//	CancelByPrepareAdl, CancelAllBeforeAdl - canceled due to ADL
+//	CancelByTpSlTsClear - TP/SL order canceled successfully
+//	CancelByPzSideCh - order has been canceled after TP/SL is triggered
 type CancelType string
 
 const (
@@ -159,9 +162,10 @@ const (
 )
 
 // Create type (create_type) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#create-type-create_type)
-//   CreateByLiq - Created by partial liquidation
-//   CreateByAdl_PassThrough - Created by ADL
-//   CreateByTakeOver_PassThrough - Created by liquidation takeover
+//
+//	CreateByLiq - Created by partial liquidation
+//	CreateByAdl_PassThrough - Created by ADL
+//	CreateByTakeOver_PassThrough - Created by liquidation takeover
 type CreateType string
 
 const (
@@ -191,8 +195,9 @@ const (
 )
 
 // Liquidity type (last_liquidity_ind) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#liquidity-type-last_liquidity_ind)
-//   AddedLiquidity - liquidity maker
-//   RemovedLiquidity - liquidity Taker
+//
+//	AddedLiquidity - liquidity maker
+//	RemovedLiquidity - liquidity Taker
 type Liquidity string
 
 const (
@@ -203,10 +208,11 @@ const (
 // Tick direction type (tick_direction) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#tick-direction-type-tick_direction)
 //
 // It indicates price fluctuation relative to the last trade.
-//   PlusTick - price rise
-//   ZeroPlusTick - trade occurs at the same price as the previous trade, which occurred at a price higher than that for the trade preceding it
-//   MinusTick - price drop
-//   ZeroMinusTick - trade occurs at the same price as the previous trade, which occurred at a price lower than that for the trade preceding it
+//
+//	PlusTick - price rise
+//	ZeroPlusTick - trade occurs at the same price as the previous trade, which occurred at a price higher than that for the trade preceding it
+//	MinusTick - price drop
+//	ZeroMinusTick - trade occurs at the same price as the previous trade, which occurred at a price lower than that for the trade preceding it
 type TickDirection string
 
 const (
@@ -219,8 +225,9 @@ const (
 // TP/SL mode (tp_sl_mode) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#tp-sl-mode-tp_sl_mode)
 //
 // Take profit/stop loss mode
-//   Full - Full take profit/stop loss mode (a single TP order and a single SL order can be placed, covering the entire position)
-//   Partial - Partial take profit/stop loss mode (multiple TP and SL orders can be placed, covering portions of the position)
+//
+//	Full - Full take profit/stop loss mode (a single TP order and a single SL order can be placed, covering the entire position)
+//	Partial - Partial take profit/stop loss mode (multiple TP and SL orders can be placed, covering portions of the position)
 type TpSlMode string
 
 const (
@@ -229,19 +236,20 @@ const (
 )
 
 // Kline interval (interval) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#kline-interval-interval)
-//   1 - 1 minute
-//   3 - 3 minutes
-//   5 - 5 minutes
-//   15 - 15 minutes
-//   30 - 30 minutes
-//   60 - 1 hour
-//   120 - 2 hours
-//   240 - 4 hours
-//   360 - 6 hours
-//   720 - 12 hours
-//   D - 1 day
-//   W - 1 week
-//   M - 1 month
+//
+//	1 - 1 minute
+//	3 - 3 minutes
+//	5 - 5 minutes
+//	15 - 15 minutes
+//	30 - 30 minutes
+//	60 - 1 hour
+//	120 - 2 hours
+//	240 - 4 hours
+//	360 - 6 hours
+//	720 - 12 hours
+//	D - 1 day
+//	W - 1 week
+//	M - 1 month
 type KlineInterval string
 
 const (

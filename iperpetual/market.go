@@ -74,10 +74,11 @@ func (this *Client) OrderBook(symbol string) ([]OrderBookItem, bool) {
 }
 
 // Query Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querykline)
-//   symbol    Required string  Symbol
-//   interval  Required string  Data refresh interval. Enum : 1 3 5 15 30 60 120 240 360 720 "D" "M" "W"
-//   from      Required integer From timestamp in seconds
-//   limit              integer Limit for data size per page, max size is 200. Default as showing 200 pieces of data per page
+//
+//	symbol    Required string  Symbol
+//	interval  Required string  Data refresh interval. Enum : 1 3 5 15 30 60 120 240 360 720 "D" "M" "W"
+//	from      Required integer From timestamp in seconds
+//	limit              integer Limit for data size per page, max size is 200. Default as showing 200 pieces of data per page
 type QueryKline struct {
 	Symbol   string        `param:"symbol"`
 	Interval KlineInterval `param:"interval"`
@@ -159,8 +160,9 @@ func (this *Client) OneSymbolLatestInformation(symbol string) (i LatestInformati
 }
 
 // Public Trading Records (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-publictradingrecords)
-//   symbol Required string  Symbol
-//   limit           integer Limit for data size, max size is 1000. Default size is 500
+//
+//	symbol Required string  Symbol
+//	limit           integer Limit for data size, max size is 1000. Default size is 500
 type PublicTradingRecords struct {
 	Symbol string `param:"symbol"`
 	Limit  *int   `param:"limit"`

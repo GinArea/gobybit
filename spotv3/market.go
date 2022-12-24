@@ -37,8 +37,9 @@ func (this *Client) QuerySymbolNames() ([]string, bool) {
 }
 
 // Order Book (https://bybit-exchange.github.io/docs/spot/v3/#t-orderbook)
-//   symbol Required string  Name of the trading pair
-//   limit           integer Default value is 100
+//
+//	symbol Required string  Name of the trading pair
+//	limit           integer Default value is 100
 type OrderBook struct {
 	Symbol string `param:"symbol"`
 	Limit  *int   `param:"limit"`
@@ -59,9 +60,10 @@ func (this *Client) OrderBook(v OrderBook) (OrderBookResult, bool) {
 }
 
 // Merged Order Book (https://bybit-exchange.github.io/docs/spot/v3/#t-mergedorderbook)
-//   symbol Required string  Name of the trading pair
-//   scale           int     Precision of the merged orderbook, 1 means 1 digit
-//   limit           integer Default value is 100
+//
+//	symbol Required string  Name of the trading pair
+//	scale           int     Precision of the merged orderbook, 1 means 1 digit
+//	limit           integer Default value is 100
 type MergedOrderBook struct {
 	Symbol string `param:"symbol"`
 	Scale  *int   `param:"scale"`
@@ -77,8 +79,9 @@ func (this *Client) MergedOrderBook(v MergedOrderBook) (OrderBookResult, bool) {
 }
 
 // Public Trading Records (https://bybit-exchange.github.io/docs/spot/v3/#t-publictradingrecords)
-//   symbol Required string  Name of the trading pair
-//   limit           integer Default value is 60, max 60
+//
+//	symbol Required string  Name of the trading pair
+//	limit           integer Default value is 60, max 60
 type PublicTradingRecords struct {
 	Symbol string `param:"symbol"`
 	Limit  *int   `param:"limit"`
@@ -104,11 +107,12 @@ func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradin
 }
 
 // Query Kline (https://bybit-exchange.github.io/docs/spot/v3/#t-querykline)
-//   symbol    Required string  Name of the trading pair
-//   interval  Required string  Chart interval
-//   limit              integer Default value is 1000, max 1000
-//   startTime          number  Start time, unit in millisecond
-//   endTime            number  End time, unit in millisecond
+//
+//	symbol    Required string  Name of the trading pair
+//	interval  Required string  Chart interval
+//	limit              integer Default value is 1000, max 1000
+//	startTime          number  Start time, unit in millisecond
+//	endTime            number  End time, unit in millisecond
 type QueryKline struct {
 	Symbol    string        `param:"symbol"`
 	Interval  KlineInterval `param:"interval"`

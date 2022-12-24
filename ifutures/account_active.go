@@ -64,13 +64,14 @@ func (this *Client) PlaceActiveOrder(v PlaceActiveOrder) (OrderCreated, bool) {
 }
 
 // Get Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-getactive)
-//   symbol       Required string  Name of the trading pair
-//   order_status          string  Queries orders of all statuses if order_status not provided.
-//                                 If you want to query orders with specific statuses, you can pass the
-//                                 order_status split by ',' (eg Filled,New).
-//   direction             string  Search direction. prev: prev page, next: next page. Defaults to next
-//   limit                 integer Limit for data size per page, max size is 50. Default as showing 20 pieces of data per page
-//   cursor                string  Page turning mark. Use return cursor. Sign using origin data, in request please use urlencode
+//
+//	symbol       Required string  Name of the trading pair
+//	order_status          string  Queries orders of all statuses if order_status not provided.
+//	                              If you want to query orders with specific statuses, you can pass the
+//	                              order_status split by ',' (eg Filled,New).
+//	direction             string  Search direction. prev: prev page, next: next page. Defaults to next
+//	limit                 integer Limit for data size per page, max size is 50. Default as showing 20 pieces of data per page
+//	cursor                string  Page turning mark. Use return cursor. Sign using origin data, in request please use urlencode
 type OrderList struct {
 	Symbol      string       `param:"symbol"`
 	OrderStatus *OrderStatus `param:"order_status"`

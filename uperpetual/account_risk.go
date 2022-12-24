@@ -28,8 +28,9 @@ func (this *Client) GetRiskLimit(symbol *string) ([]RiskLimitItem, bool) {
 }
 
 // Set Risk Limit (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-setrisklimit)
-//   symbol  Required string  Symbol
-//   risk_id Required integer Risk ID
+//
+//	symbol  Required string  Symbol
+//	risk_id Required integer Risk ID
 type SetRiskLimit struct {
 	Symbol      string       `param:"symbol"`
 	Side        Side         `param:"side"`
