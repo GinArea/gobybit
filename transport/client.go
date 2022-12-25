@@ -91,7 +91,6 @@ func (o *Client) Request(method string, path string, param any, ret any, sign bo
 		if err == nil {
 			o.log.Infof("%s[%s]: %s", method, path, m)
 		} else {
-			err = errors.New(m)
 			o.log.Errorf("%s[%s]: %s", method, path, m)
 		}
 	}
@@ -177,10 +176,11 @@ func (o *Client) Request(method string, path string, param any, ret any, sign bo
 			}
 			s := reflect.ValueOf(ret)
 			s = s.Elem()
-			RetCode := s.FieldByName("RetCode").Int()
-			RetMsg := s.FieldByName("RetMsg").String()
-			if RetCode != 0 {
-				err = errors.New(fmt.Sprintf("code[%d]: %s", RetCode, RetMsg))
+			var e Error
+			e.Code = int(s.FieldByName("RetCode").Int())
+			e.Text = s.FieldByName("RetMsg").String()
+			if !e.Empty() {
+				err = &e
 				m = fmt.Sprintf("%s %v", m, err)
 			}
 		} else {

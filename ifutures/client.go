@@ -22,11 +22,11 @@ func (this *Client) Transport() *transport.Client {
 }
 
 func (this *Client) Get(path string, param any, ret any) error {
-	return this.c.Get(this.url(path), param, ret)
+	return forwardError(this.c.Get(this.url(path), param, ret))
 }
 
 func (this *Client) Post(path string, param any, ret any) error {
-	return this.c.Post(this.url(path), param, ret)
+	return forwardError(this.c.Post(this.url(path), param, ret))
 }
 
 func Get[T any](c *Client, path string, param any) (T, error) {

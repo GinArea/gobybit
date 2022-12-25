@@ -21,23 +21,23 @@ func (this *Client) Transport() *transport.Client {
 }
 
 func (this *Client) GetPublic(path string, param any, ret any) error {
-	return this.c.GetPublic(this.url(path), param, ret)
+	return forwardError(this.c.GetPublic(this.url(path), param, ret))
 }
 
 func (this *Client) GetQuote(path string, param any, ret any) error {
-	return this.c.GetPublic(this.urlQuote(path), param, ret)
+	return forwardError(this.c.GetPublic(this.urlQuote(path), param, ret))
 }
 
 func (this *Client) Get(path string, param any, ret any) error {
-	return this.c.Get(this.url(path), param, ret)
+	return forwardError(this.c.Get(this.url(path), param, ret))
 }
 
 func (this *Client) Post(path string, param any, ret any) error {
-	return this.c.Post(this.url(path), param, ret)
+	return forwardError(this.c.Post(this.url(path), param, ret))
 }
 
 func (this *Client) Delete(path string, param any, ret any) error {
-	return this.c.Delete(this.url(path), param, ret)
+	return forwardError(this.c.Delete(this.url(path), param, ret))
 }
 
 func GetPublic[T any](c *Client, path string, param any) (T, error) {
