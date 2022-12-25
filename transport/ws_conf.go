@@ -11,7 +11,8 @@ type WsConf struct {
 	HandshakeTimeout time.Duration
 	ReadTimeout      time.Duration
 	WriteTimeout     time.Duration
-	LogIO            bool
+	LogRecv          bool
+	LogSent          bool
 }
 
 func NewWsConf() *WsConf {
@@ -19,13 +20,12 @@ func NewWsConf() *WsConf {
 		HandshakeTimeout: time.Second * 10,
 		ReadTimeout:      time.Second * 30,
 		WriteTimeout:     time.Second * 5,
-		LogIO:            false,
 	}
 }
 
-func (this *WsConf) SetProxy(proxy string) {
+func (o *WsConf) SetProxy(proxy string) {
 	var err error
-	this.Proxy, err = ParseProxy(proxy)
+	o.Proxy, err = ParseProxy(proxy)
 	if err != nil {
 		panic(fmt.Sprintf("set proxy fail: %v", err))
 	}

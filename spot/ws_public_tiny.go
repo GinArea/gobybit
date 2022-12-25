@@ -29,6 +29,11 @@ func (this *WsPublicTiny) Conf() *transport.WsConf {
 	return this.ws.Conf()
 }
 
+func (this *WsPublicTiny) WithLog(log *ulog.Log) *WsPublicTiny {
+	this.ws.WithLog(log)
+	return this
+}
+
 func (this *WsPublicTiny) WithProxy(proxy string) *WsPublicTiny {
 	this.ws.WithProxy(proxy)
 	return this

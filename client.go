@@ -8,6 +8,7 @@ import (
 	"github.com/ginarea/gobybit/spotv3"
 	"github.com/ginarea/gobybit/transport"
 	"github.com/ginarea/gobybit/uperpetual"
+	"github.com/msw-x/moon/ulog"
 )
 
 type Client struct {
@@ -37,6 +38,11 @@ func (this *Client) WithAuth(key, secret string) *Client {
 
 func (this *Client) WithProxy(proxy string) *Client {
 	this.c.WithProxy(proxy)
+	return this
+}
+
+func (this *Client) WithLog(log *ulog.Log) *Client {
+	this.c.WithLog(log)
 	return this
 }
 

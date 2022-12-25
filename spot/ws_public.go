@@ -1,6 +1,9 @@
 package spot
 
-import "github.com/ginarea/gobybit/transport"
+import (
+	"github.com/ginarea/gobybit/transport"
+	"github.com/msw-x/moon/ulog"
+)
 
 type WsPublic struct {
 	ws            *WsPublicTiny
@@ -20,6 +23,11 @@ func (this *WsPublic) Shutdown() {
 
 func (this *WsPublic) Conf() *transport.WsConf {
 	return this.ws.Conf()
+}
+
+func (this *WsPublic) WithLog(log *ulog.Log) *WsPublic {
+	this.ws.WithLog(log)
+	return this
 }
 
 func (this *WsPublic) WithProxy(proxy string) *WsPublic {

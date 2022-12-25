@@ -3,6 +3,8 @@ package transport
 import (
 	"bytes"
 	"time"
+
+	"github.com/msw-x/moon/ulog"
 )
 
 type WsClient struct {
@@ -18,77 +20,82 @@ func NewWsClient(url string) *WsClient {
 	}
 }
 
-func (this *WsClient) Shutdown() {
-	this.ws.Shutdown()
+func (o *WsClient) Shutdown() {
+	o.ws.Shutdown()
 }
 
-func (this *WsClient) Conf() *WsConf {
-	return this.ws.Conf()
+func (o *WsClient) WithLog(log *ulog.Log) *WsClient {
+	o.ws.WithLog(log)
+	return o
 }
 
-func (this *WsClient) WithProxy(proxy string) *WsClient {
-	this.Conf().SetProxy(proxy)
-	return this
+func (o *WsClient) Conf() *WsConf {
+	return o.ws.Conf()
 }
 
-func (this *WsClient) Connected() bool {
-	return this.ws.Connected()
+func (o *WsClient) WithProxy(proxy string) *WsClient {
+	o.Conf().SetProxy(proxy)
+	return o
 }
 
-func (this *WsClient) Run() {
-	this.ws.SetOnMessage(this.processMessage)
-	this.ws.Run()
+func (o *WsClient) Connected() bool {
+	return o.ws.Connected()
+}
+
+func (o *WsClient) Run() {
+	o.ws.SetOnMessage(o.processMessage)
+	o.ws.Run()
 	go func() {
-		for this.ws.Do() {
-			this.ws.Sleep(this.heartbeatTimeout)
-			if !this.ws.Do() {
+		for o.ws.Do() {
+			o.ws.Sleep(o.heartbeatTimeout)
+			if !o.ws.Do() {
 				break
 			}
-			if !this.ws.Connected() {
+			if !o.ws.Connected() {
 				continue
 			}
-			this.ping()
+			o.ping()
 		}
 	}()
 }
 
-func (this *WsClient) ID() string {
-	return this.ws.ID()
+func (o *WsClient) ID() string {
+	return o.ws.ID()
 }
 
-func (this *WsClient) SetOnMessage(onMessage func(string, []byte)) {
-	this.onMessage = onMessage
+func (o *WsClient) SetOnMessage(onMessage func(string, []byte)) {
+	o.onMessage = onMessage
 }
 
-func (this *WsClient) SetOnConnected(onConnected func()) {
-	this.ws.SetOnConnected(onConnected)
+func (o *WsClient) SetOnConnected(onConnected func()) {
+	o.ws.SetOnConnected(onConnected)
 }
 
-func (this *WsClient) SetOnDisconnected(onDisconnected func()) {
-	this.ws.SetOnDisconnected(onDisconnected)
+func (o *WsClient) SetOnDisconnected(onDisconnected func()) {
+	o.ws.SetOnDisconnected(onDisconnected)
 }
 
-func (this *WsClient) Send(cmd any) bool {
-	return this.ws.Send(cmd)
+func (o *WsClient) Send(cmd any) bool {
+	return o.ws.Send(cmd)
 }
 
-func (this *WsClient) ping() bool {
-	return this.ws.Send(struct {
+func (o *WsClient) ping() bool {
+	return o.ws.Send(struct {
 		Cmd string `json:"op"`
 	}{
 		Cmd: "ping",
 	})
 }
 
-func (this *WsClient) processMessage(msg []byte) {
+func (o *WsClient) processMessage(msg []byte) {
 	prefix := []byte(`{"`)
 	if bytes.HasPrefix(msg, prefix) {
 		m := bytes.TrimPrefix(msg, prefix)
 		i := bytes.IndexByte(m, '"')
 		if i > -1 {
 			name := string(m[:i])
-			if this.onMessage != nil {
-				this.onMessage(name, msg)
+			if o.onMessage != nil {
+				o.onMessage(name, msg)
 			}
 			return
 		}

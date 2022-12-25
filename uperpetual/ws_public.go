@@ -2,6 +2,7 @@ package uperpetual
 
 import (
 	"github.com/ginarea/gobybit/transport"
+	"github.com/msw-x/moon/ulog"
 )
 
 type WsPublic struct {
@@ -20,6 +21,11 @@ func (this *WsPublic) Shutdown() {
 
 func (this *WsPublic) Conf() *transport.WsConf {
 	return this.ws.Conf()
+}
+
+func (this *WsPublic) WithLog(log *ulog.Log) *WsPublic {
+	this.ws.WithLog(log)
+	return this
 }
 
 func (this *WsPublic) WithProxy(proxy string) *WsPublic {

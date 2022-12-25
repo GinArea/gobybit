@@ -28,200 +28,204 @@ type WsConn struct {
 }
 
 func NewWsConn(url string) *WsConn {
-	conn := &WsConn{
+	return &WsConn{
+		log:  ulog.Empty(),
 		do:   usync.NewDo(),
 		url:  url,
 		conf: NewWsConf(),
 	}
-	conn.log = ulog.New("ws-conn").WithID(conn.ID())
-	return conn
 }
 
-func (this *WsConn) Shutdown() {
-	this.log.Debug("shutdown...")
-	this.do.Cancel()
-	if this.Connected() {
-		this.ws.Close()
+func (o *WsConn) Shutdown() {
+	o.log.Debug("shutdown...")
+	o.do.Cancel()
+	if o.Connected() {
+		o.ws.Close()
 	}
-	this.log.Debug("stop")
-	this.do.Stop()
-	this.log.Debug("shutdown completed")
+	o.log.Debug("stop")
+	o.do.Stop()
+	o.log.Debug("shutdown completed")
 }
 
-func (this *WsConn) Connected() bool {
-	return this.ws != nil
+func (o *WsConn) WithLog(log *ulog.Log) *WsConn {
+	o.log = log
+	return o
 }
 
-func (this *WsConn) Conf() *WsConf {
-	return this.conf
+func (o *WsConn) Connected() bool {
+	return o.ws != nil
 }
 
-func (this *WsConn) Run() {
-	go this.run()
+func (o *WsConn) Conf() *WsConf {
+	return o.conf
 }
 
-func (this *WsConn) ID() string {
-	id := fmt.Sprintf("%p", this)
+func (o *WsConn) Run() {
+	go o.run()
+}
+
+func (o *WsConn) ID() string {
+	id := fmt.Sprintf("%p", o)
 	return id[5:]
 }
 
-func (this *WsConn) Do() bool {
-	return this.do.Do()
+func (o *WsConn) Do() bool {
+	return o.do.Do()
 }
 
-func (this *WsConn) Sleep(duration time.Duration) {
-	this.do.Sleep(duration)
+func (o *WsConn) Sleep(duration time.Duration) {
+	o.do.Sleep(duration)
 }
 
-func (this *WsConn) SetOnMessage(onMessage func([]byte)) {
-	this.onMessage = onMessage
+func (o *WsConn) SetOnMessage(onMessage func([]byte)) {
+	o.onMessage = onMessage
 }
 
-func (this *WsConn) SetOnConnected(onConnected func()) {
-	this.onConnected = onConnected
+func (o *WsConn) SetOnConnected(onConnected func()) {
+	o.onConnected = onConnected
 }
 
-func (this *WsConn) SetOnDisconnected(onDisconnected func()) {
-	this.onDisconnected = onDisconnected
+func (o *WsConn) SetOnDisconnected(onDisconnected func()) {
+	o.onDisconnected = onDisconnected
 }
 
-func (this *WsConn) Send(v any) bool {
-	if !this.do.Do() {
+func (o *WsConn) Send(v any) bool {
+	if !o.do.Do() {
 		return false
 	}
 	bin, err := json.Marshal(v)
 	if err != nil {
-		this.log.Errorf("json: %v", err)
+		o.log.Errorf("json: %v", err)
 		return false
 	}
-	err = this.write(bin)
+	err = o.write(bin)
 	if err != nil {
-		this.log.Errorf("send: %v", err)
-		this.setConnected(nil)
+		o.log.Errorf("send: %v", err)
+		o.setConnected(nil)
 		return false
 	}
 	return true
 }
 
-func (this *WsConn) run() {
-	if this.url == "" {
-		this.log.Warning("disabled")
-		this.do.Cancel()
+func (o *WsConn) run() {
+	if o.url == "" {
+		o.log.Warning("disabled")
+		o.do.Cancel()
 		return
 	}
 	defer moon.Recover(func(err string) {
-		this.log.Errorf(err)
+		o.log.Errorf(err)
 	})
-	defer this.log.Debug("completed")
-	defer this.do.Notify()
-	this.log.Debug("run")
-	for this.do.Do() {
-		this.connectAndRun()
+	defer o.log.Debug("completed")
+	defer o.do.Notify()
+	o.log.Debug("run")
+	for o.do.Do() {
+		o.connectAndRun()
 	}
 }
 
-func (this *WsConn) connectAndRun() {
-	this.log.Info("dial:", this.url)
+func (o *WsConn) connectAndRun() {
+	o.log.Info("dial:", o.url)
 	dialer := websocket.Dialer{
-		HandshakeTimeout: this.conf.HandshakeTimeout,
+		HandshakeTimeout: o.conf.HandshakeTimeout,
 	}
-	if this.conf.Proxy != nil {
-		this.log.Debug("proxy:", this.conf.Proxy)
-		dialer.Proxy = http.ProxyURL(this.conf.Proxy)
+	if o.conf.Proxy != nil {
+		o.log.Debug("proxy:", o.conf.Proxy)
+		dialer.Proxy = http.ProxyURL(o.conf.Proxy)
 	}
-	c, _, err := dialer.Dial(this.url, nil)
+	c, _, err := dialer.Dial(o.url, nil)
 	if err != nil {
-		this.log.Error("dial:", err)
-		this.do.Sleep(time.Second * 10)
+		o.log.Error("dial:", err)
+		o.do.Sleep(time.Second * 10)
 		return
 	}
 	defer c.Close()
-	defer this.setConnected(nil)
-	this.setConnected(c)
-	this.ws.SetPongHandler(func(text string) error {
-		this.log.Debug("pong")
+	defer o.setConnected(nil)
+	o.setConnected(c)
+	o.ws.SetPongHandler(func(text string) error {
+		o.log.Debug("pong")
 		return nil
 	})
-	for this.do.Do() {
-		if !this.Connected() {
+	for o.do.Do() {
+		if !o.Connected() {
 			break
 		}
 		var err error
-		this.msg, err = this.read()
+		o.msg, err = o.read()
 		if err != nil {
-			if this.do.Do() {
-				this.log.Error("read:", err)
+			if o.do.Do() {
+				o.log.Error("read:", err)
 			}
 			break
 		}
-		if len(this.msg) > 0 {
-			err = this.processMessage()
+		if len(o.msg) > 0 {
+			err = o.processMessage()
 			if err != nil {
-				this.log.Error("process message:", err)
+				o.log.Error("process message:", err)
 			}
 		}
 	}
 }
 
-func (this *WsConn) setConnected(ws *websocket.Conn) {
-	if this.ws != ws {
-		this.ws = ws
+func (o *WsConn) setConnected(ws *websocket.Conn) {
+	if o.ws != ws {
+		o.ws = ws
 		if ws == nil {
-			this.log.Info("disconnected")
-			if this.onDisconnected != nil {
-				this.onDisconnected()
+			o.log.Info("disconnected")
+			if o.onDisconnected != nil {
+				o.onDisconnected()
 			}
 		} else {
-			this.log.Info("connected")
-			if this.onConnected != nil {
-				this.onConnected()
+			o.log.Info("connected")
+			if o.onConnected != nil {
+				o.onConnected()
 			}
 		}
 	}
 }
 
-func (this *WsConn) ping() error {
-	ws := this.ws
+func (o *WsConn) ping() error {
+	ws := o.ws
 	if ws == nil {
 		return errors.New("empty socket")
 	}
-	return this.ws.WriteControl(websocket.PingMessage, []byte{}, time.Now().Add(this.conf.WriteTimeout))
+	return o.ws.WriteControl(websocket.PingMessage, []byte{}, time.Now().Add(o.conf.WriteTimeout))
 }
 
-func (this *WsConn) read() ([]byte, error) {
-	ws := this.ws
+func (o *WsConn) read() ([]byte, error) {
+	ws := o.ws
 	if ws == nil {
 		return []byte{}, errors.New("empty socket")
 	}
-	ws.SetReadDeadline(time.Now().Add(this.conf.ReadTimeout))
+	ws.SetReadDeadline(time.Now().Add(o.conf.ReadTimeout))
 	_, msg, err := ws.ReadMessage()
-	if this.conf.LogIO && this.do.Do() {
-		this.log.Debugf("recv: %d B: %s", len(msg), string(msg))
+	if o.conf.LogRecv && o.do.Do() {
+		o.log.Debugf("recv: %d B: %s", len(msg), string(msg))
 	}
 	return msg, err
 }
 
-func (this *WsConn) write(buf []byte) error {
-	this.mutex.Lock()
-	defer this.mutex.Unlock()
-	ws := this.ws
+func (o *WsConn) write(buf []byte) error {
+	o.mutex.Lock()
+	defer o.mutex.Unlock()
+	ws := o.ws
 	if ws == nil {
 		return errors.New("empty socket")
 	}
-	ws.SetWriteDeadline(time.Now().Add(this.conf.WriteTimeout))
+	ws.SetWriteDeadline(time.Now().Add(o.conf.WriteTimeout))
 	err := ws.WriteMessage(websocket.TextMessage, buf)
-	if this.conf.LogIO {
-		this.log.Debugf("sent: %d B: %s", len(buf), string(buf))
+	if o.conf.LogSent {
+		o.log.Debugf("sent: %d B: %s", len(buf), string(buf))
 	}
 	return err
 }
 
-func (this *WsConn) processMessage() (err error) {
+func (o *WsConn) processMessage() (err error) {
 	defer moon.Recover(func(err string) {
-		this.log.Error("process message:", err)
+		o.log.Error("process message:", err)
 	})
-	if this.onMessage != nil {
-		this.onMessage(this.msg)
+	if o.onMessage != nil {
+		o.onMessage(o.msg)
 	}
 	return nil
 }

@@ -32,66 +32,71 @@ type Client struct {
 
 func NewClient() *Client {
 	return &Client{
-		log: ulog.New("client"),
+		log: ulog.Empty(),
 		url: MainBaseUrl,
 	}
 }
 
-func (this *Client) WithUrl(url string) *Client {
-	this.url = url
-	return this
+func (o *Client) WithUrl(url string) *Client {
+	o.url = url
+	return o
 }
 
-func (this *Client) WithByTickUrl() *Client {
-	this.url = MainBaseByTickUrl
-	return this
+func (o *Client) WithByTickUrl() *Client {
+	o.url = MainBaseByTickUrl
+	return o
 }
 
-func (this *Client) WithAuth(key, secret string) *Client {
-	this.key = key
-	this.secret = secret
-	return this
+func (o *Client) WithAuth(key, secret string) *Client {
+	o.key = key
+	o.secret = secret
+	return o
 }
 
-func (this *Client) WithProxy(proxy string) *Client {
+func (o *Client) WithProxy(proxy string) *Client {
 	var err error
-	this.proxy, err = ParseProxy(proxy)
+	o.proxy, err = ParseProxy(proxy)
 	if err != nil {
 		panic(fmt.Sprintf("set proxy fail: %v", err))
 	}
-	return this
+	return o
 }
 
-func (this *Client) WithLogUri(logUri bool) *Client {
-	this.logUri = logUri
-	return this
+func (o *Client) WithLog(log *ulog.Log) *Client {
+	o.log = log
+	return o
 }
 
-func (this *Client) WithLogResponse(logResponse bool) *Client {
-	this.logResponse = logResponse
-	return this
+func (o *Client) WithLogUri(logUri bool) *Client {
+	o.logUri = logUri
+	return o
 }
 
-func (this *Client) Key() string {
-	return this.key
+func (o *Client) WithLogResponse(logResponse bool) *Client {
+	o.logResponse = logResponse
+	return o
 }
 
-func (this *Client) Secret() string {
-	return this.secret
+func (o *Client) Key() string {
+	return o.key
 }
 
-func (this *Client) Request(method string, path string, param any, ret any, sign bool) (err error) {
+func (o *Client) Secret() string {
+	return o.secret
+}
+
+func (o *Client) Request(method string, path string, param any, ret any, sign bool) (err error) {
 	logf := func(format string, a ...any) {
 		m := fmt.Sprintf(format, a...)
 		if err == nil {
-			this.log.Infof("%s[%s]: %s", method, path, m)
+			o.log.Infof("%s[%s]: %s", method, path, m)
 		} else {
 			err = errors.New(m)
-			this.log.Errorf("%s[%s]: %s", method, path, m)
+			o.log.Errorf("%s[%s]: %s", method, path, m)
 		}
 	}
 	timestamp := time.Now()
-	u, err := url.Parse(this.url)
+	u, err := url.Parse(o.url)
 	if err != nil {
 		logf("url fail: %v", err)
 		return
@@ -102,9 +107,9 @@ func (this *Client) Request(method string, path string, param any, ret any, sign
 	var signHeader func(http.Header)
 	if sign {
 		if p.HeaderSign {
-			signHeader = this.signQueryHeader(vals)
+			signHeader = o.signQueryHeader(vals)
 		} else {
-			vals = this.signQuery(vals)
+			vals = o.signQuery(vals)
 		}
 	}
 	var reqbody []byte
@@ -120,8 +125,8 @@ func (this *Client) Request(method string, path string, param any, ret any, sign
 		u.RawQuery = vals.Encode()
 		u.RawQuery = strings.Replace(u.RawQuery, "%2C", ",", -1)
 	}
-	if this.logUri {
-		this.log.Debug("uri:", u.String())
+	if o.logUri {
+		o.log.Debug("uri:", u.String())
 	}
 	req, err := http.NewRequest(method, u.String(), bytes.NewReader(reqbody))
 	if err != nil {
@@ -136,9 +141,9 @@ func (this *Client) Request(method string, path string, param any, ret any, sign
 		signHeader(req.Header)
 	}
 	client := &http.Client{}
-	if this.proxy != nil {
+	if o.proxy != nil {
 		client.Transport = &http.Transport{
-			Proxy: http.ProxyURL(this.proxy),
+			Proxy: http.ProxyURL(o.proxy),
 		}
 	}
 	resp, err := client.Do(req)
@@ -152,8 +157,8 @@ func (this *Client) Request(method string, path string, param any, ret any, sign
 	m := fmt.Sprintf("%s %s", resp.Status, elapsedTime.String())
 	if len(body) >= 0 {
 		m = fmt.Sprintf("%s %s", m, ufmt.ByteSizeDense(len(body)))
-		if this.logResponse {
-			this.log.Debug("response:", string(body))
+		if o.logResponse {
+			o.log.Debug("response:", string(body))
 		}
 	}
 	ok := resp.StatusCode == http.StatusOK
@@ -190,48 +195,48 @@ func (this *Client) Request(method string, path string, param any, ret any, sign
 	return
 }
 
-func (this *Client) RequestPublic(method string, path string, param any, ret any) error {
-	return this.Request(method, path, param, ret, false)
+func (o *Client) RequestPublic(method string, path string, param any, ret any) error {
+	return o.Request(method, path, param, ret, false)
 }
 
-func (this *Client) RequestPrivate(method string, path string, param any, ret any) error {
-	return this.Request(method, path, param, ret, true)
+func (o *Client) RequestPrivate(method string, path string, param any, ret any) error {
+	return o.Request(method, path, param, ret, true)
 }
 
-func (this *Client) GetPublic(path string, param any, ret any) error {
-	return this.RequestPublic(http.MethodGet, path, param, ret)
+func (o *Client) GetPublic(path string, param any, ret any) error {
+	return o.RequestPublic(http.MethodGet, path, param, ret)
 }
 
-func (this *Client) Get(path string, param any, ret any) error {
-	return this.RequestPrivate(http.MethodGet, path, param, ret)
+func (o *Client) Get(path string, param any, ret any) error {
+	return o.RequestPrivate(http.MethodGet, path, param, ret)
 }
 
-func (this *Client) Post(path string, param any, ret any) error {
-	return this.RequestPrivate(http.MethodPost, path, param, ret)
+func (o *Client) Post(path string, param any, ret any) error {
+	return o.RequestPrivate(http.MethodPost, path, param, ret)
 }
 
-func (this *Client) Delete(path string, param any, ret any) error {
-	return this.RequestPrivate(http.MethodDelete, path, param, ret)
+func (o *Client) Delete(path string, param any, ret any) error {
+	return o.RequestPrivate(http.MethodDelete, path, param, ret)
 }
 
-func (this *Client) signQuery(src url.Values) url.Values {
+func (o *Client) signQuery(src url.Values) url.Values {
 	i := int(time.Now().UTC().UnixNano() / int64(time.Millisecond))
 	ts := strconv.Itoa(i)
 	if src == nil {
 		src = url.Values{}
 	}
-	src.Add("api_key", this.key)
+	src.Add("api_key", o.key)
 	src.Add("timestamp", ts)
-	src.Add("sign", makeSignature(src, this.secret))
+	src.Add("sign", makeSignature(src, o.secret))
 	return src
 }
 
-func (this *Client) signQueryHeader(src url.Values) func(http.Header) {
+func (o *Client) signQueryHeader(src url.Values) func(http.Header) {
 	i := int(time.Now().UTC().UnixNano() / int64(time.Millisecond))
 	ts := strconv.Itoa(i)
-	sign := makeSignature(src, this.secret)
+	sign := makeSignature(src, o.secret)
 	return func(h http.Header) {
-		h.Set("X-BAPI-API-KEY", this.key)
+		h.Set("X-BAPI-API-KEY", o.key)
 		h.Set("X-BAPI-TIMESTAMP", ts)
 		h.Set("X-BAPI-SIGN", sign)
 	}

@@ -19,45 +19,45 @@ func JsonUnmarshal[V any](jsonBlob []byte) V {
 
 type Float64 float64
 
-func (this *Float64) UnmarshalJSON(b []byte) error {
+func (o *Float64) UnmarshalJSON(b []byte) error {
 	s := string(b)
 	s = strings.Trim(s, `"`)
 	if s == "" {
-		*this = 0
+		*o = 0
 		return nil
 	}
 	f, err := strconv.ParseFloat(s, 64)
-	*this = Float64(f)
+	*o = Float64(f)
 	return err
 }
 
-func (this Float64) Value() float64 {
-	return float64(this)
+func (o Float64) Value() float64 {
+	return float64(o)
 }
 
-func (this Float64) Ptr() *float64 {
-	v := this.Value()
+func (o Float64) Ptr() *float64 {
+	v := o.Value()
 	return &v
 }
 
-func (this Float64) IsZero() bool {
-	return this.Value() == 0
+func (o Float64) IsZero() bool {
+	return o.Value() == 0
 }
 
-func (this Float64) IsNotZero() bool {
-	return this.Value() != 0
+func (o Float64) IsNotZero() bool {
+	return o.Value() != 0
 }
 
 type Timestamp time.Time
 
-func (this *Timestamp) UnmarshalJSON(b []byte) error {
+func (o *Timestamp) UnmarshalJSON(b []byte) error {
 	// convert uint timestamp to time.Time
 	return nil
 }
 
 type Time time.Time
 
-func (this *Time) UnmarshalJSON(b []byte) error {
+func (o *Time) UnmarshalJSON(b []byte) error {
 	// convert tim to time.Time
 	return nil
 }

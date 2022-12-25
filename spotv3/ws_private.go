@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/ginarea/gobybit/transport"
+	"github.com/msw-x/moon/ulog"
 )
 
 type WsPrivate struct {
@@ -30,6 +31,11 @@ func (this *WsPrivate) Shutdown() {
 
 func (this *WsPrivate) Conf() *transport.WsConf {
 	return this.ws.Conf()
+}
+
+func (this *WsPrivate) WithLog(log *ulog.Log) *WsPrivate {
+	this.ws.WithLog(log)
+	return this
 }
 
 func (this *WsPrivate) WithProxy(proxy string) *WsPrivate {

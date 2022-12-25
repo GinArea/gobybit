@@ -39,6 +39,11 @@ func (this *WsPrivate) Conf() *transport.WsConf {
 	return this.ws.Conf()
 }
 
+func (this *WsPrivate) WithLog(log *ulog.Log) *WsPrivate {
+	this.ws.WithLog(log)
+	return this
+}
+
 func (this *WsPrivate) WithProxy(proxy string) *WsPrivate {
 	this.ws.WithProxy(proxy)
 	return this

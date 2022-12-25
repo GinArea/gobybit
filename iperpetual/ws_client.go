@@ -40,6 +40,11 @@ func (this *WsClient) Conf() *transport.WsConf {
 	return this.ws.Conf()
 }
 
+func (this *WsClient) WithLog(log *ulog.Log) *WsClient {
+	this.ws.WithLog(log)
+	return this
+}
+
 func (this *WsClient) WithProxy(proxy string) *WsClient {
 	this.Conf().SetProxy(proxy)
 	return this
