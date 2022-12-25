@@ -11,7 +11,7 @@ type Error struct {
 	transport.Err
 }
 
-func (o *Error) InvalidApiKey() bool {
+func (o *Error) ApiKeyInvalid() bool {
 	codes := []int{
 		10002, // Request not authorized
 		10003, // Invalid API key
