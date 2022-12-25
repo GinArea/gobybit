@@ -12,14 +12,14 @@ type SetRiskLimit struct {
 	PositionIdx *PositionIdx `param:"position_idx"`
 }
 
-func (this SetRiskLimit) Do(client *Client) (int, bool) {
+func (this SetRiskLimit) Do(client *Client) (int, error) {
 	type result struct {
 		RiskID int `json:"risk_id"`
 	}
-	r, ok := Post[result](client, "position/risk-limit", this)
-	return r.RiskID, ok
+	r, err := Post[result](client, "position/risk-limit", this)
+	return r.RiskID, err
 }
 
-func (this *Client) SetRiskLimit(v SetRiskLimit) (int, bool) {
+func (this *Client) SetRiskLimit(v SetRiskLimit) (int, error) {
 	return v.Do(this)
 }

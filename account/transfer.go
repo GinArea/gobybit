@@ -11,15 +11,15 @@ type CreateInternalTransfer struct {
 	ToAccountType   string `json:"to_account_type"`
 }
 
-func (this CreateInternalTransfer) Do(client *Client) (string, bool) {
+func (this CreateInternalTransfer) Do(client *Client) (string, error) {
 	type result struct {
 		TransferID string `json:"transfer_id"`
 	}
-	r, ok := Post[result](client, "transfer", this)
-	return r.TransferID, ok
+	r, err := Post[result](client, "transfer", this)
+	return r.TransferID, err
 }
 
-func (this *Client) CreateInternalTransfer(v CreateInternalTransfer) (string, bool) {
+func (this *Client) CreateInternalTransfer(v CreateInternalTransfer) (string, error) {
 	return v.Do(this)
 }
 
@@ -35,7 +35,7 @@ type QueryInternalTransferList struct {
 	Cursor     *string         `param:"cursor"`
 }
 
-func (this QueryInternalTransferList) Do(client *Client) (InternalTransfers, bool) {
+func (this QueryInternalTransferList) Do(client *Client) (InternalTransfers, error) {
 	return Get[InternalTransfers](client, "transfer/list", this)
 }
 
@@ -54,6 +54,6 @@ type InternalTransfer struct {
 	Status          TransferStatus `json:"status"`
 }
 
-func (this *Client) QueryInternalTransferList(v QueryInternalTransferList) (InternalTransfers, bool) {
+func (this *Client) QueryInternalTransferList(v QueryInternalTransferList) (InternalTransfers, error) {
 	return v.Do(this)
 }

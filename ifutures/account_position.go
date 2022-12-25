@@ -6,7 +6,7 @@ type GetPosition struct {
 	Symbol *string `param:"symbol"`
 }
 
-func (this GetPosition) Do(client *Client) ([]PositionItem, bool) {
+func (this GetPosition) Do(client *Client) ([]PositionItem, error) {
 	return Get[[]PositionItem](client, "position/list", this)
 }
 
@@ -57,7 +57,7 @@ type PositionItem struct {
 	IsValid bool         `json:"is_valid"`
 }
 
-func (this *Client) GetPosition(symbol *string) ([]PositionItem, bool) {
+func (this *Client) GetPosition(symbol *string) ([]PositionItem, error) {
 	return GetPosition{Symbol: symbol}.Do(this)
 }
 
@@ -68,11 +68,11 @@ type ChangeMargin struct {
 	Margin      string      `param:"margin"`
 }
 
-func (this ChangeMargin) Do(client *Client) (float64, bool) {
+func (this ChangeMargin) Do(client *Client) (float64, error) {
 	return Post[float64](client, "position/change-position-margin", this)
 }
 
-func (this *Client) ChangeMargin(v ChangeMargin) (float64, bool) {
+func (this *Client) ChangeMargin(v ChangeMargin) (float64, error) {
 	return v.Do(this)
 }
 
@@ -90,7 +90,7 @@ type SetTradingStop struct {
 	TpSize            *int          `param:"tp_size"`
 }
 
-func (this SetTradingStop) Do(client *Client) (SetTradingStopResult, bool) {
+func (this SetTradingStop) Do(client *Client) (SetTradingStopResult, error) {
 	return Post[SetTradingStopResult](client, "position/trading-stop", this)
 }
 
@@ -107,7 +107,7 @@ type SetTradingStopResult struct {
 	ExtFields     SetTradingStopExt `json:"ext_fields"`
 }
 
-func (this *Client) SetTradingStop(v SetTradingStop) (SetTradingStopResult, bool) {
+func (this *Client) SetTradingStop(v SetTradingStop) (SetTradingStopResult, error) {
 	return v.Do(this)
 }
 
@@ -118,11 +118,11 @@ type SetLeverage struct {
 	SellLeverage int    `param:"sell_leverage"`
 }
 
-func (this SetLeverage) Do(client *Client) (int, bool) {
+func (this SetLeverage) Do(client *Client) (int, error) {
 	return Post[int](client, "position/leverage/save", this)
 }
 
-func (this *Client) SetLeverage(v SetLeverage) (int, bool) {
+func (this *Client) SetLeverage(v SetLeverage) (int, error) {
 	return v.Do(this)
 }
 
@@ -140,12 +140,12 @@ const (
 	PositionHedge  PositionMode = 3
 )
 
-func (this PositionModeSwitch) Do(client *Client) bool {
-	_, ok := Post[struct{}](client, "position/switch-mode", this)
-	return ok
+func (this PositionModeSwitch) Do(client *Client) error {
+	_, err := Post[struct{}](client, "position/switch-mode", this)
+	return err
 }
 
-func (this *Client) PositionModeSwitch(v PositionModeSwitch) bool {
+func (this *Client) PositionModeSwitch(v PositionModeSwitch) error {
 	return v.Do(this)
 }
 
@@ -157,15 +157,15 @@ type TpSlModeSwitch struct {
 	TpSlMode *TpSlMode `param:"tp_sl_mode"`
 }
 
-func (this TpSlModeSwitch) Do(client *Client) (TpSlMode, bool) {
+func (this TpSlModeSwitch) Do(client *Client) (TpSlMode, error) {
 	type result struct {
 		TpSlMode TpSlMode `json:"tp_sl_mode"`
 	}
-	r, ok := Post[result](client, "tpsl/switch-mode", this)
-	return r.TpSlMode, ok
+	r, err := Post[result](client, "tpsl/switch-mode", this)
+	return r.TpSlMode, err
 }
 
-func (this *Client) TpSlModeSwitch(v TpSlModeSwitch) (TpSlMode, bool) {
+func (this *Client) TpSlModeSwitch(v TpSlModeSwitch) (TpSlMode, error) {
 	return v.Do(this)
 }
 
@@ -179,12 +179,12 @@ type MarginSwitch struct {
 	SellLeverage int    `param:"sell_leverage"`
 }
 
-func (this MarginSwitch) Do(client *Client) bool {
-	_, ok := Post[struct{}](client, "position/switch-isolated", this)
-	return ok
+func (this MarginSwitch) Do(client *Client) error {
+	_, err := Post[struct{}](client, "position/switch-isolated", this)
+	return err
 }
 
-func (this *Client) MarginSwitch(v MarginSwitch) bool {
+func (this *Client) MarginSwitch(v MarginSwitch) error {
 	return v.Do(this)
 }
 
@@ -200,7 +200,7 @@ type GetTradeRecords struct {
 	Order     *SortOrder `param:"order"`
 }
 
-func (this GetTradeRecords) Do(client *Client) (TradeRecords, bool) {
+func (this GetTradeRecords) Do(client *Client) (TradeRecords, error) {
 	return Get[TradeRecords](client, "execution/list", this)
 }
 
@@ -234,7 +234,7 @@ type TradeRecords struct {
 	TradeRecords []TradeRecord `json:"trade_list"`
 }
 
-func (this *Client) GetTradeRecords(v GetTradeRecords) (TradeRecords, bool) {
+func (this *Client) GetTradeRecords(v GetTradeRecords) (TradeRecords, error) {
 	return v.Do(this)
 }
 
@@ -248,7 +248,7 @@ type ClosedProfitLoss struct {
 	Limit     *int      `param:"limit"`
 }
 
-func (this ClosedProfitLoss) Do(client *Client) (ClosedProfitLossResult, bool) {
+func (this ClosedProfitLoss) Do(client *Client) (ClosedProfitLossResult, error) {
 	return Get[ClosedProfitLossResult](client, "trade/closed-pnl/list", this)
 }
 
@@ -278,6 +278,6 @@ type ClosedProfitLossResult struct {
 	Data        []ClosedData `json:"data"`
 }
 
-func (this *Client) ClosedProfitLoss(v ClosedProfitLoss) (ClosedProfitLossResult, bool) {
+func (this *Client) ClosedProfitLoss(v ClosedProfitLoss) (ClosedProfitLossResult, error) {
 	return v.Do(this)
 }

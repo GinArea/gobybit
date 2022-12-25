@@ -7,7 +7,7 @@ type WalletBalance struct {
 	Currency *string `param:"coin"`
 }
 
-func (this WalletBalance) Do(client *Client) (map[string]Balance, bool) {
+func (this WalletBalance) Do(client *Client) (map[string]Balance, error) {
 	return Get[map[string]Balance](client, "wallet/balance", this)
 }
 
@@ -27,6 +27,6 @@ type Balance struct {
 	ServiceCash      float64 `json:"service_cash"`
 }
 
-func (this *Client) WalletBalance(currency *string) (map[string]Balance, bool) {
+func (this *Client) WalletBalance(currency *string) (map[string]Balance, error) {
 	return WalletBalance{Currency: currency}.Do(this)
 }

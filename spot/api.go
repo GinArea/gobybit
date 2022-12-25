@@ -2,10 +2,10 @@
 package spot
 
 // Server Time (https://bybit-exchange.github.io/docs/spot/v1/#t-servertime)
-func (this *Client) ServerTime() (uint64, bool) {
+func (this *Client) ServerTime() (uint64, error) {
 	type result struct {
 		Time uint64 `json:"serverTime"`
 	}
-	r, ok := GetPublic[result](this, "time", nil)
-	return r.Time, ok
+	r, err := GetPublic[result](this, "time", nil)
+	return r.Time, err
 }

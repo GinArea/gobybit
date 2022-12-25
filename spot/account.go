@@ -37,7 +37,7 @@ type PlaceOrder struct {
 	OrderLinkID *string      `param:"orderLinkId"`
 }
 
-func (this PlaceOrder) Do(client *Client) (OrderCreated, bool) {
+func (this PlaceOrder) Do(client *Client) (OrderCreated, error) {
 	return Post[OrderCreated](client, "order", this)
 }
 
@@ -46,7 +46,7 @@ type OrderCreated struct {
 	TransactTime string `json:"transactTime"`
 }
 
-func (this *Client) PlaceOrder(v PlaceOrder) (OrderCreated, bool) {
+func (this *Client) PlaceOrder(v PlaceOrder) (OrderCreated, error) {
 	return v.Do(this)
 }
 
@@ -59,7 +59,7 @@ type GetOrder struct {
 	OrderLinkID *string `param:"orderLinkId"`
 }
 
-func (this GetOrder) Do(client *Client) (Order, bool) {
+func (this GetOrder) Do(client *Client) (Order, error) {
 	return Get[Order](client, "order", this)
 }
 
@@ -68,7 +68,7 @@ type Order struct {
 	Locked string `json:"locked"`
 }
 
-func (this *Client) GetOrder(v GetOrder) (Order, bool) {
+func (this *Client) GetOrder(v GetOrder) (Order, error) {
 	return v.Do(this)
 }
 
@@ -81,7 +81,7 @@ type CancelOrder struct {
 	OrderLinkID *string `param:"orderLinkId"`
 }
 
-func (this CancelOrder) Do(client *Client) (OrderCancelled, bool) {
+func (this CancelOrder) Do(client *Client) (OrderCancelled, error) {
 	return Delete[OrderCancelled](client, "order", this)
 }
 
@@ -90,7 +90,7 @@ type OrderCancelled struct {
 	Side string `json:"side"`
 }
 
-func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, bool) {
+func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, error) {
 	return v.Do(this)
 }
 
@@ -105,15 +105,15 @@ type FastCancelOrder struct {
 	OrderLinkID *string `param:"orderLinkId"`
 }
 
-func (this FastCancelOrder) Do(client *Client) (bool, bool) {
+func (this FastCancelOrder) Do(client *Client) (bool, error) {
 	type result struct {
 		IsCancelled bool `json:"isCancelled"`
 	}
-	r, ok := Delete[result](client, "order/fast", this)
-	return r.IsCancelled, ok
+	r, err := Delete[result](client, "order/fast", this)
+	return r.IsCancelled, err
 }
 
-func (this *Client) FastCancelOrder(v FastCancelOrder) (bool, bool) {
+func (this *Client) FastCancelOrder(v FastCancelOrder) (bool, error) {
 	return v.Do(this)
 }
 
@@ -128,15 +128,15 @@ type BatchCancelOrder struct {
 	Type   *OrderType `param:"orderTypes"`
 }
 
-func (this BatchCancelOrder) Do(client *Client) (bool, bool) {
+func (this BatchCancelOrder) Do(client *Client) (bool, error) {
 	type result struct {
 		Success bool `json:"success"`
 	}
-	r, ok := Delete[result](client, "order/batch-cancel", this)
-	return r.Success, ok
+	r, err := Delete[result](client, "order/batch-cancel", this)
+	return r.Success, err
 }
 
-func (this *Client) BatchCancelOrder(v BatchCancelOrder) (bool, bool) {
+func (this *Client) BatchCancelOrder(v BatchCancelOrder) (bool, error) {
 	return v.Do(this)
 }
 
@@ -147,15 +147,15 @@ type BatchFastCancelOrder struct {
 	Type   *OrderType `param:"orderTypes"`
 }
 
-func (this BatchFastCancelOrder) Do(client *Client) (bool, bool) {
+func (this BatchFastCancelOrder) Do(client *Client) (bool, error) {
 	type result struct {
 		Success bool `json:"success"`
 	}
-	r, ok := Delete[result](client, "order/batch-fast-cancel", this)
-	return r.Success, ok
+	r, err := Delete[result](client, "order/batch-fast-cancel", this)
+	return r.Success, err
 }
 
-func (this *Client) BatchFastCancelOrder(v BatchFastCancelOrder) (bool, bool) {
+func (this *Client) BatchFastCancelOrder(v BatchFastCancelOrder) (bool, error) {
 	return v.Do(this)
 }
 
@@ -166,7 +166,7 @@ type BatchCancelOrderByID struct {
 	ID []string `param:"orderIds"`
 }
 
-func (this BatchCancelOrderByID) Do(client *Client) ([]CancelOrderID, bool) {
+func (this BatchCancelOrderByID) Do(client *Client) ([]CancelOrderID, error) {
 	return Delete[[]CancelOrderID](client, "order/batch-cancel-by-ids", this)
 }
 
@@ -175,7 +175,7 @@ type CancelOrderID struct {
 	Code    int    `json:"code"`
 }
 
-func (this *Client) BatchCancelOrderByID(ID []string) ([]CancelOrderID, bool) {
+func (this *Client) BatchCancelOrderByID(ID []string) ([]CancelOrderID, error) {
 	return BatchCancelOrderByID{ID: ID}.Do(this)
 }
 
@@ -190,11 +190,11 @@ type OpenOrders struct {
 	Limit   *int    `param:"limit"`
 }
 
-func (this OpenOrders) Do(client *Client) ([]OrderBase, bool) {
+func (this OpenOrders) Do(client *Client) ([]OrderBase, error) {
 	return Get[[]OrderBase](client, "open-orders", this)
 }
 
-func (this *Client) OpenOrders(v OpenOrders) ([]OrderBase, bool) {
+func (this *Client) OpenOrders(v OpenOrders) ([]OrderBase, error) {
 	return v.Do(this)
 }
 
@@ -213,7 +213,7 @@ type OrderHistory struct {
 	EndTime   *uint64 `param:"endTime"`
 }
 
-func (this OrderHistory) Do(client *Client) ([]OrderHistoryResult, bool) {
+func (this OrderHistory) Do(client *Client) ([]OrderHistoryResult, error) {
 	return Get[[]OrderHistoryResult](client, "history-orders", this)
 }
 
@@ -229,7 +229,7 @@ type OrderHistoryResult struct {
 	IsWorking           bool   `json:"isWorking"`
 }
 
-func (this *Client) OrderHistory(v OrderHistory) ([]OrderHistoryResult, bool) {
+func (this *Client) OrderHistory(v OrderHistory) ([]OrderHistoryResult, error) {
 	return v.Do(this)
 }
 
@@ -252,7 +252,7 @@ type TradeHistory struct {
 	EndTime      *uint64 `param:"endTime"`
 }
 
-func (this TradeHistory) Do(client *Client) ([]Trade, bool) {
+func (this TradeHistory) Do(client *Client) ([]Trade, error) {
 	return Get[[]Trade](client, "myTrades", this)
 }
 
@@ -283,6 +283,6 @@ type TradeFee struct {
 	Fee       string `json:"fee"`
 }
 
-func (this *Client) TradeHistory(v TradeHistory) ([]Trade, bool) {
+func (this *Client) TradeHistory(v TradeHistory) ([]Trade, error) {
 	return v.Do(this)
 }

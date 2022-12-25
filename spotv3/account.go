@@ -39,7 +39,7 @@ type PlaceOrder struct {
 	TriggerPrice  *string      `json:"triggerPrice"`
 }
 
-func (this PlaceOrder) Do(client *Client) (OrderCreated, bool) {
+func (this PlaceOrder) Do(client *Client) (OrderCreated, error) {
 	return Post[OrderCreated](client, "order", this)
 }
 
@@ -49,7 +49,7 @@ type OrderCreated struct {
 	TriggerPrice  string `json:"triggerPrice"`
 }
 
-func (this *Client) PlaceOrder(v PlaceOrder) (OrderCreated, bool) {
+func (this *Client) PlaceOrder(v PlaceOrder) (OrderCreated, error) {
 	return v.Do(this)
 }
 
@@ -62,7 +62,7 @@ type GetOrder struct {
 	OrderLinkID *string `param:"orderLinkId"`
 }
 
-func (this GetOrder) Do(client *Client) (Order, bool) {
+func (this GetOrder) Do(client *Client) (Order, error) {
 	return Get[Order](client, "order", this)
 }
 
@@ -71,7 +71,7 @@ type Order struct {
 	Locked string `json:"locked"`
 }
 
-func (this *Client) GetOrder(v GetOrder) (Order, bool) {
+func (this *Client) GetOrder(v GetOrder) (Order, error) {
 	return v.Do(this)
 }
 
@@ -84,7 +84,7 @@ type CancelOrder struct {
 	OrderLinkID *string `param:"orderLinkId"`
 }
 
-func (this CancelOrder) Do(client *Client) (OrderCancelled, bool) {
+func (this CancelOrder) Do(client *Client) (OrderCancelled, error) {
 	return Post[OrderCancelled](client, "cancel-order", this)
 }
 
@@ -93,7 +93,7 @@ type OrderCancelled struct {
 	ExecQty string `json:"execQty"`
 }
 
-func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, bool) {
+func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, error) {
 	return v.Do(this)
 }
 
@@ -108,15 +108,15 @@ type BatchCancelOrder struct {
 	Type   *OrderType `param:"orderTypes"`
 }
 
-func (this BatchCancelOrder) Do(client *Client) (bool, bool) {
+func (this BatchCancelOrder) Do(client *Client) (bool, error) {
 	type result struct {
 		Success string `json:"success"`
 	}
-	r, ok := Post[result](client, "cancel-orders", this)
-	return r.Success == "1", ok
+	r, err := Post[result](client, "cancel-orders", this)
+	return r.Success == "1", err
 }
 
-func (this *Client) BatchCancelOrder(v BatchCancelOrder) (bool, bool) {
+func (this *Client) BatchCancelOrder(v BatchCancelOrder) (bool, error) {
 	return v.Do(this)
 }
 
@@ -127,12 +127,12 @@ type BatchCancelOrderByID struct {
 	ID []string `param:"orderIds"`
 }
 
-func (this BatchCancelOrderByID) Do(client *Client) ([]CancelOrderID, bool) {
+func (this BatchCancelOrderByID) Do(client *Client) ([]CancelOrderID, error) {
 	type result struct {
 		List []CancelOrderID `json:"list"`
 	}
-	r, ok := Post[result](client, "cancel-orders-by-ids", this)
-	return r.List, ok
+	r, err := Post[result](client, "cancel-orders-by-ids", this)
+	return r.List, err
 }
 
 type CancelOrderID struct {
@@ -140,7 +140,7 @@ type CancelOrderID struct {
 	Code    string `json:"code"`
 }
 
-func (this *Client) BatchCancelOrderByID(ID []string) ([]CancelOrderID, bool) {
+func (this *Client) BatchCancelOrderByID(ID []string) ([]CancelOrderID, error) {
 	return BatchCancelOrderByID{ID: ID}.Do(this)
 }
 
@@ -155,15 +155,15 @@ type OpenOrders struct {
 	Limit   *int    `param:"limit"`
 }
 
-func (this OpenOrders) Do(client *Client) ([]any, bool) {
+func (this OpenOrders) Do(client *Client) ([]any, error) {
 	type result struct {
 		List []any `json:"list"`
 	}
-	r, ok := Get[result](client, "open-orders", this)
-	return r.List, ok
+	r, err := Get[result](client, "open-orders", this)
+	return r.List, err
 }
 
-func (this *Client) OpenOrders(v OpenOrders) ([]any, bool) {
+func (this *Client) OpenOrders(v OpenOrders) ([]any, error) {
 	return v.Do(this)
 }
 
@@ -182,12 +182,12 @@ type OrderHistory struct {
 	EndTime   *uint64 `param:"endTime"`
 }
 
-func (this OrderHistory) Do(client *Client) ([]OpenedOrder, bool) {
+func (this OrderHistory) Do(client *Client) ([]OpenedOrder, error) {
 	type result struct {
 		List []OpenedOrder `json:"list"`
 	}
-	r, ok := Get[result](client, "history-orders", this)
-	return r.List, ok
+	r, err := Get[result](client, "history-orders", this)
+	return r.List, err
 }
 
 type OpenedOrder struct {
@@ -201,7 +201,7 @@ type OpenedOrder struct {
 	IsWorking           string `json:"isWorking"`
 }
 
-func (this *Client) OrderHistory(v OrderHistory) ([]OpenedOrder, bool) {
+func (this *Client) OrderHistory(v OrderHistory) ([]OpenedOrder, error) {
 	return v.Do(this)
 }
 
@@ -224,12 +224,12 @@ type TradeHistory struct {
 	EndTime      *uint64 `param:"endTime"`
 }
 
-func (this TradeHistory) Do(client *Client) ([]Trade, bool) {
+func (this TradeHistory) Do(client *Client) ([]Trade, error) {
 	type result struct {
 		List []Trade `json:"list"`
 	}
-	r, ok := Get[result](client, "my-trades", this)
-	return r.List, ok
+	r, err := Get[result](client, "my-trades", this)
+	return r.List, err
 }
 
 type Trade struct {
@@ -249,6 +249,6 @@ type Trade struct {
 	ExecutionTime string `json:"executionTime"`
 }
 
-func (this *Client) TradeHistory(v TradeHistory) ([]Trade, bool) {
+func (this *Client) TradeHistory(v TradeHistory) ([]Trade, error) {
 	return v.Do(this)
 }

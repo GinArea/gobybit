@@ -40,34 +40,34 @@ func (this *Client) Delete(path string, param any, ret any) error {
 	return this.c.Delete(this.url(path), param, ret)
 }
 
-func GetPublic[T any](c *Client, path string, param any) (T, bool) {
+func GetPublic[T any](c *Client, path string, param any) (T, error) {
 	resp := &Response[T]{}
 	err := c.GetPublic(path, param, resp)
-	return resp.Result, err == nil
+	return resp.Result, err
 }
 
-func GetQuote[T any](c *Client, path string, param any) (T, bool) {
+func GetQuote[T any](c *Client, path string, param any) (T, error) {
 	resp := &Response[T]{}
 	err := c.GetQuote(path, param, resp)
-	return resp.Result, err == nil
+	return resp.Result, err
 }
 
-func Get[T any](c *Client, path string, param any) (T, bool) {
+func Get[T any](c *Client, path string, param any) (T, error) {
 	resp := &Response[T]{}
 	err := c.Get(path, param, resp)
-	return resp.Result, err == nil
+	return resp.Result, err
 }
 
-func Post[T any](c *Client, path string, param any) (T, bool) {
+func Post[T any](c *Client, path string, param any) (T, error) {
 	resp := &Response[T]{}
 	err := c.Post(path, param, resp)
-	return resp.Result, err == nil
+	return resp.Result, err
 }
 
-func Delete[T any](c *Client, path string, param any) (T, bool) {
+func Delete[T any](c *Client, path string, param any) (T, error) {
 	resp := &Response[T]{}
 	err := c.Delete(path, param, resp)
-	return resp.Result, err == nil
+	return resp.Result, err
 }
 
 func (this *Client) url(uri string) string {

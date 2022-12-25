@@ -53,16 +53,16 @@ type ConditionalOrderCreated struct {
 	OrderLinkID  string  `json:"order_link_id"`
 }
 
-func (this *PlaceConditionalOrder) Do(client *Client) (ConditionalOrderCreated, bool) {
+func (this *PlaceConditionalOrder) Do(client *Client) (ConditionalOrderCreated, error) {
 	return Post[ConditionalOrderCreated](client, "stop-order/create", this)
 }
 
-func (this *Client) PlaceConditionalOrder(v PlaceConditionalOrder) (ConditionalOrderCreated, bool) {
+func (this *Client) PlaceConditionalOrder(v PlaceConditionalOrder) (ConditionalOrderCreated, error) {
 	return v.Do(this)
 }
 
 // Get Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getcond)
-func (this OrderList) DoConditional(client *Client) (ConditionalOrderListResult, bool) {
+func (this OrderList) DoConditional(client *Client) (ConditionalOrderListResult, error) {
 	return Get[ConditionalOrderListResult](client, "stop-order/list", this)
 }
 
@@ -80,25 +80,25 @@ type ConditionalOrderItem struct {
 	PositionIdx     PositionIdx `json:"position_idx"`
 }
 
-func (this *Client) ConditionalOrderList(v OrderList) (ConditionalOrderListResult, bool) {
+func (this *Client) ConditionalOrderList(v OrderList) (ConditionalOrderListResult, error) {
 	return v.DoConditional(this)
 }
 
 // Cancel Conditional Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-cancelcond)
-func (this CancelOrder) DoConditional(client *Client) (string, bool) {
+func (this CancelOrder) DoConditional(client *Client) (string, error) {
 	type result struct {
 		StopOrderID string `json:"stop_order_id"`
 	}
-	r, ok := Post[result](client, "stop-order/cancel", this)
-	return r.StopOrderID, ok
+	r, err := Post[result](client, "stop-order/cancel", this)
+	return r.StopOrderID, err
 }
 
-func (this *Client) CancelConditionalOrder(v CancelOrder) (string, bool) {
+func (this *Client) CancelConditionalOrder(v CancelOrder) (string, error) {
 	return v.DoConditional(this)
 }
 
 // Cancel All Conditional Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-cancelallcond)
-func (this CancelAllOrders) DoConditional(client *Client) ([]ConditionalCancelOrderItem, bool) {
+func (this CancelAllOrders) DoConditional(client *Client) ([]ConditionalCancelOrderItem, error) {
 	return Post[[]ConditionalCancelOrderItem](client, "stop-order/cancelAll", this)
 }
 
@@ -116,7 +116,7 @@ type ConditionalCancelOrderItem struct {
 	StopOrderType     StopOrder   `json:"stop_order_type"`
 }
 
-func (this *Client) CancelAllConditionalOrders(symbol string) ([]ConditionalCancelOrderItem, bool) {
+func (this *Client) CancelAllConditionalOrders(symbol string) ([]ConditionalCancelOrderItem, error) {
 	return CancelAllOrders{Symbol: symbol}.DoConditional(this)
 }
 
@@ -134,27 +134,27 @@ type ReplaceConditionalOrder struct {
 	SlTrigger    *TriggerPrice `param:"sl_trigger_by"`
 }
 
-func (this ReplaceConditionalOrder) Do(client *Client) (string, bool) {
+func (this ReplaceConditionalOrder) Do(client *Client) (string, error) {
 	type result struct {
 		StopOrderID string `json:"stop_order_id"`
 	}
-	r, ok := Post[result](client, "stop-order/replace", this)
-	return r.StopOrderID, ok
+	r, err := Post[result](client, "stop-order/replace", this)
+	return r.StopOrderID, err
 }
 
-func (this *Client) ReplaceConditionalOrder(v ReplaceConditionalOrder) (string, bool) {
+func (this *Client) ReplaceConditionalOrder(v ReplaceConditionalOrder) (string, error) {
 	return v.Do(this)
 }
 
 // Query Conditional Order (real-time) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querycond)
 //
 // When only symbol is passed, the response uses a different structure.
-func (this QueryOrder) DoConditional(client *Client) ([]ConditionalOrder, bool) {
+func (this QueryOrder) DoConditional(client *Client) ([]ConditionalOrder, error) {
 	if this.OnlySymbol() {
 		return Get[[]ConditionalOrder](client, "stop-order", this)
 	}
-	r, ok := Get[ConditionalOrder](client, "stop-order", this)
-	return []ConditionalOrder{r}, ok
+	r, err := Get[ConditionalOrder](client, "stop-order", this)
+	return []ConditionalOrder{r}, err
 }
 
 type ConditionalOrder struct {
@@ -177,6 +177,6 @@ type ConditionalOrderExtFields struct {
 	oreqNum int64 `json:"o_req_num"`
 }
 
-func (this *Client) QueryConditionalOrder(v QueryOrder) ([]ConditionalOrder, bool) {
+func (this *Client) QueryConditionalOrder(v QueryOrder) ([]ConditionalOrder, error) {
 	return v.DoConditional(this)
 }

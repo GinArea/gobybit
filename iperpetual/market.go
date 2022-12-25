@@ -2,6 +2,8 @@
 package iperpetual
 
 import (
+	"errors"
+
 	"github.com/ginarea/gobybit/transport"
 )
 
@@ -40,17 +42,17 @@ type LotSizeFilter struct {
 	PostOnlyMaxTradingQty transport.Float64 `json:"post_only_max_trading_qty"`
 }
 
-func (this *Client) QuerySymbol() ([]SymbolInfo, bool) {
+func (this *Client) QuerySymbol() ([]SymbolInfo, error) {
 	return GetPublic[[]SymbolInfo](this, "symbols", nil)
 }
 
-func (this *Client) QuerySymbolNames() ([]string, bool) {
-	result, ok := this.QuerySymbol()
+func (this *Client) QuerySymbolNames() ([]string, error) {
+	result, err := this.QuerySymbol()
 	names := make([]string, len(result))
 	for n, s := range result {
 		names[n] = s.Name
 	}
-	return names, ok
+	return names, err
 }
 
 // Order Book (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-orderbook)
@@ -58,7 +60,7 @@ type OrderBook struct {
 	Symbol string `param:"symbol"`
 }
 
-func (this OrderBook) Do(client *Client) ([]OrderBookItem, bool) {
+func (this OrderBook) Do(client *Client) ([]OrderBookItem, error) {
 	return GetPublic[[]OrderBookItem](client, "orderBook/L2", this)
 }
 
@@ -69,7 +71,7 @@ type OrderBookItem struct {
 	Side   Side   `json:"side"`
 }
 
-func (this *Client) OrderBook(symbol string) ([]OrderBookItem, bool) {
+func (this *Client) OrderBook(symbol string) ([]OrderBookItem, error) {
 	return OrderBook{Symbol: symbol}.Do(this)
 }
 
@@ -86,7 +88,7 @@ type QueryKline struct {
 	Limit    *int          `param:"limit"`
 }
 
-func (this QueryKline) Do(client *Client) ([]KlineItem, bool) {
+func (this QueryKline) Do(client *Client) ([]KlineItem, error) {
 	return GetPublic[[]KlineItem](client, "kline/list", this)
 }
 
@@ -102,7 +104,7 @@ type KlineItem struct {
 	Turnover string        `json:"turnover"`
 }
 
-func (this *Client) QueryKline(v QueryKline) ([]KlineItem, bool) {
+func (this *Client) QueryKline(v QueryKline) ([]KlineItem, error) {
 	return v.Do(this)
 }
 
@@ -111,7 +113,7 @@ type SymbolLatestInformation struct {
 	Symbol *string `param:"symbol"`
 }
 
-func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, bool) {
+func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, error) {
 	return GetPublic[[]LatestInformation](client, "tickers", this)
 }
 
@@ -144,16 +146,17 @@ type LatestInformation struct {
 	DeliveryTime           string            `json:"delivery_time"`
 }
 
-func (this *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation, bool) {
+func (this *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation, error) {
 	return SymbolLatestInformation{Symbol: symbol}.Do(this)
 }
 
-func (this *Client) OneSymbolLatestInformation(symbol string) (i LatestInformation, ok bool) {
-	ret, ok := this.SymbolLatestInformation(&symbol)
-	if ok {
-		ok = len(ret) == 1
-		if ok {
+func (this *Client) OneSymbolLatestInformation(symbol string) (i LatestInformation, err error) {
+	ret, err := this.SymbolLatestInformation(&symbol)
+	if err == nil {
+		if len(ret) == 1 {
 			i = ret[0]
+		} else {
+			err = errors.New("symbol latest len != 1")
 		}
 	}
 	return
@@ -168,7 +171,7 @@ type PublicTradingRecords struct {
 	Limit  *int   `param:"limit"`
 }
 
-func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, bool) {
+func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, error) {
 	return GetPublic[[]PublicTradingRecord](client, "trading-records", this)
 }
 
@@ -181,14 +184,14 @@ type PublicTradingRecord struct {
 	Time   string  `json:"time"`
 }
 
-func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradingRecord, bool) {
+func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradingRecord, error) {
 	return v.Do(this)
 }
 
 // Query Mark Price Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-markpricekline)
 //
 // Query mark price kline (like Query Kline but for mark price)
-func (this QueryKline) DoMark(client *Client) ([]MarkKlineItem, bool) {
+func (this QueryKline) DoMark(client *Client) ([]MarkKlineItem, error) {
 	return GetPublic[[]MarkKlineItem](client, "mark-price-kline", this)
 }
 
@@ -202,14 +205,14 @@ type MarkKlineItem struct {
 	Close    int           `json:"close"`
 }
 
-func (this *Client) QueryMarkKline(v QueryKline) ([]MarkKlineItem, bool) {
+func (this *Client) QueryMarkKline(v QueryKline) ([]MarkKlineItem, error) {
 	return v.DoMark(this)
 }
 
 // Query Index Price Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-queryindexpricekline)
 //
 // Index price kline. Tracks BTC spot prices, with a frequency of every second
-func (this QueryKline) DoIndex(client *Client) ([]IndexKlineItem, bool) {
+func (this QueryKline) DoIndex(client *Client) ([]IndexKlineItem, error) {
 	return GetPublic[[]IndexKlineItem](client, "index-price-kline", this)
 }
 
@@ -223,17 +226,17 @@ type IndexKlineItem struct {
 	Close    string        `json:"close"`
 }
 
-func (this *Client) QueryIndexKline(v QueryKline) ([]IndexKlineItem, bool) {
+func (this *Client) QueryIndexKline(v QueryKline) ([]IndexKlineItem, error) {
 	return v.DoIndex(this)
 }
 
 // Query Premium Index Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querypremiumindexkline)
 //
 // Premium index kline. Tracks the premium / discount of BTC perpetual contracts relative to the mark price per minute
-func (this QueryKline) DoPremium(client *Client) ([]IndexKlineItem, bool) {
+func (this QueryKline) DoPremium(client *Client) ([]IndexKlineItem, error) {
 	return GetPublic[[]IndexKlineItem](client, "premium-index-kline", this)
 }
 
-func (this *Client) QueryPremiumKline(v QueryKline) ([]IndexKlineItem, bool) {
+func (this *Client) QueryPremiumKline(v QueryKline) ([]IndexKlineItem, error) {
 	return v.DoPremium(this)
 }

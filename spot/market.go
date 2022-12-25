@@ -19,17 +19,17 @@ type SymbolInfo struct {
 	Innovation        bool   `json:"innovation"`
 }
 
-func (this *Client) QuerySymbol() ([]SymbolInfo, bool) {
+func (this *Client) QuerySymbol() ([]SymbolInfo, error) {
 	return GetPublic[[]SymbolInfo](this, "symbols", nil)
 }
 
-func (this *Client) QuerySymbolNames() ([]string, bool) {
-	result, ok := this.QuerySymbol()
+func (this *Client) QuerySymbolNames() ([]string, error) {
+	result, err := this.QuerySymbol()
 	names := make([]string, len(result))
 	for n, s := range result {
 		names[n] = s.Name
 	}
-	return names, ok
+	return names, err
 }
 
 // Order Book (https://bybit-exchange.github.io/docs/spot/v1/#t-orderbook)
@@ -41,7 +41,7 @@ type OrderBook struct {
 	Limit  *int   `param:"limit"`
 }
 
-func (this OrderBook) Do(client *Client) (OrderBookResult, bool) {
+func (this OrderBook) Do(client *Client) (OrderBookResult, error) {
 	return GetQuote[OrderBookResult](client, "depth", this)
 }
 
@@ -51,7 +51,7 @@ type OrderBookResult struct {
 	Asks [][]string
 }
 
-func (this *Client) OrderBook(v OrderBook) (OrderBookResult, bool) {
+func (this *Client) OrderBook(v OrderBook) (OrderBookResult, error) {
 	return v.Do(this)
 }
 
@@ -66,11 +66,11 @@ type MergedOrderBook struct {
 	Limit  *int   `param:"limit"`
 }
 
-func (this MergedOrderBook) Do(client *Client) (OrderBookResult, bool) {
+func (this MergedOrderBook) Do(client *Client) (OrderBookResult, error) {
 	return GetQuote[OrderBookResult](client, "depth/merged", this)
 }
 
-func (this *Client) MergedOrderBook(v MergedOrderBook) (OrderBookResult, bool) {
+func (this *Client) MergedOrderBook(v MergedOrderBook) (OrderBookResult, error) {
 	return v.Do(this)
 }
 
@@ -83,7 +83,7 @@ type PublicTradingRecords struct {
 	Limit  *int   `param:"limit"`
 }
 
-func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, bool) {
+func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, error) {
 	return GetQuote[[]PublicTradingRecord](client, "trades", this)
 }
 
@@ -94,7 +94,7 @@ type PublicTradingRecord struct {
 	IsBuyerMaker bool   `json:"isBuyerMaker"`
 }
 
-func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradingRecord, bool) {
+func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradingRecord, error) {
 	return v.Do(this)
 }
 
@@ -113,11 +113,11 @@ type QueryKline struct {
 	EndTime   *int          `param:"endTime"`
 }
 
-func (this QueryKline) Do(client *Client) ([][]any, bool) {
+func (this QueryKline) Do(client *Client) ([][]any, error) {
 	return GetQuote[[][]any](client, "kline", this)
 }
 
-func (this *Client) QueryKline(v QueryKline) ([][]any, bool) {
+func (this *Client) QueryKline(v QueryKline) ([][]any, error) {
 	return v.Do(this)
 }
 
@@ -126,13 +126,13 @@ type SymbolLatestInformation struct {
 	Symbol *string `param:"symbol"`
 }
 
-func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, bool) {
+func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, error) {
 	path := "ticker/24hr"
 	if this.Symbol == nil {
 		return GetQuote[[]LatestInformation](client, path, this)
 	}
-	r, ok := GetQuote[LatestInformation](client, path, this)
-	return []LatestInformation{r}, ok
+	r, err := GetQuote[LatestInformation](client, path, this)
+	return []LatestInformation{r}, err
 }
 
 type LatestInformation struct {
@@ -148,7 +148,7 @@ type LatestInformation struct {
 	OpenPrice    string `json:"openPrice"`
 }
 
-func (this *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation, bool) {
+func (this *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation, error) {
 	return SymbolLatestInformation{Symbol: symbol}.Do(this)
 }
 
@@ -157,7 +157,7 @@ type LastTradedPrice struct {
 	Symbol string `param:"symbol"`
 }
 
-func (this LastTradedPrice) Do(client *Client) (SymbolPrice, bool) {
+func (this LastTradedPrice) Do(client *Client) (SymbolPrice, error) {
 	return GetQuote[SymbolPrice](client, "ticker/price", this)
 }
 
@@ -166,7 +166,7 @@ type SymbolPrice struct {
 	Price  string `json:"price"`
 }
 
-func (this *Client) LastTradedPrice(symbol string) (SymbolPrice, bool) {
+func (this *Client) LastTradedPrice(symbol string) (SymbolPrice, error) {
 	return LastTradedPrice{Symbol: symbol}.Do(this)
 }
 
@@ -175,7 +175,7 @@ type BestBidAskPrice struct {
 	Symbol string `param:"symbol"`
 }
 
-func (this BestBidAskPrice) Do(client *Client) (BestBidAskPriceResult, bool) {
+func (this BestBidAskPrice) Do(client *Client) (BestBidAskPriceResult, error) {
 	return GetQuote[BestBidAskPriceResult](client, "ticker/book_ticker", this)
 }
 
@@ -188,6 +188,6 @@ type BestBidAskPriceResult struct {
 	Time     uint64 `json:"time"`
 }
 
-func (this *Client) BestBidAskPrice(symbol string) (BestBidAskPriceResult, bool) {
+func (this *Client) BestBidAskPrice(symbol string) (BestBidAskPriceResult, error) {
 	return BestBidAskPrice{Symbol: symbol}.Do(this)
 }

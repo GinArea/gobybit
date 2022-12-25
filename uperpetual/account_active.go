@@ -24,11 +24,11 @@ type OrderCreated struct {
 	PositionIdx PositionIdx `json:"position_idx"`
 }
 
-func (this *PlaceActiveOrder) Do(client *Client) (OrderCreated, bool) {
+func (this *PlaceActiveOrder) Do(client *Client) (OrderCreated, error) {
 	return Post[OrderCreated](client, "order/create", this)
 }
 
-func (this *Client) PlaceActiveOrder(v PlaceActiveOrder) (OrderCreated, bool) {
+func (this *Client) PlaceActiveOrder(v PlaceActiveOrder) (OrderCreated, error) {
 	return v.Do(this)
 }
 
@@ -43,7 +43,7 @@ type OrderList struct {
 	OrderStatus *OrderStatus `param:"order_status"`
 }
 
-func (this OrderList) Do(client *Client) (OrderListResult, bool) {
+func (this OrderList) Do(client *Client) (OrderListResult, error) {
 	return Get[OrderListResult](client, "order/list", this)
 }
 
@@ -52,7 +52,7 @@ type OrderListResult struct {
 	CurrentPage int     `json:"current_page"`
 }
 
-func (this *Client) OrderList(v OrderList) (OrderListResult, bool) {
+func (this *Client) OrderList(v OrderList) (OrderListResult, error) {
 	return v.Do(this)
 }
 
@@ -63,15 +63,15 @@ type CancelOrder struct {
 	OrderLinkID *string `param:"order_link_id"`
 }
 
-func (this CancelOrder) Do(client *Client) (string, bool) {
+func (this CancelOrder) Do(client *Client) (string, error) {
 	type result struct {
 		OrderID string `json:"order_id"`
 	}
-	r, ok := Post[result](client, "order/cancel", this)
-	return r.OrderID, ok
+	r, err := Post[result](client, "order/cancel", this)
+	return r.OrderID, err
 }
 
-func (this *Client) CancelOrder(v CancelOrder) (string, bool) {
+func (this *Client) CancelOrder(v CancelOrder) (string, error) {
 	return v.Do(this)
 }
 
@@ -80,11 +80,11 @@ type CancelAllOrders struct {
 	Symbol string `param:"symbol"`
 }
 
-func (this CancelAllOrders) Do(client *Client) ([]string, bool) {
+func (this CancelAllOrders) Do(client *Client) ([]string, error) {
 	return Post[[]string](client, "order/cancel-all", this)
 }
 
-func (this *Client) CancelAllOrders(symbol string) ([]string, bool) {
+func (this *Client) CancelAllOrders(symbol string) ([]string, error) {
 	return CancelAllOrders{Symbol: symbol}.Do(this)
 }
 
@@ -101,15 +101,15 @@ type ReplaceOrder struct {
 	SlTrigger   *TriggerPrice `param:"sl_trigger_by"`
 }
 
-func (this ReplaceOrder) Do(client *Client) (string, bool) {
+func (this ReplaceOrder) Do(client *Client) (string, error) {
 	type result struct {
 		OrderID string `json:"order_id"`
 	}
-	r, ok := Post[result](client, "order/replace", this)
-	return r.OrderID, ok
+	r, err := Post[result](client, "order/replace", this)
+	return r.OrderID, err
 }
 
-func (this *Client) ReplaceOrder(v ReplaceOrder) (string, bool) {
+func (this *Client) ReplaceOrder(v ReplaceOrder) (string, error) {
 	return v.Do(this)
 }
 
@@ -125,12 +125,12 @@ func (this QueryOrder) OnlySymbol() bool {
 }
 
 // When only symbol is passed, the response uses a different structure.
-func (this QueryOrder) Do(client *Client) ([]Order, bool) {
+func (this QueryOrder) Do(client *Client) ([]Order, error) {
 	if this.OnlySymbol() {
 		return Get[[]Order](client, "order/search", this)
 	}
-	r, ok := Get[Order](client, "order/search", this)
-	return []Order{r}, ok
+	r, err := Get[Order](client, "order/search", this)
+	return []Order{r}, err
 }
 
 type Order struct {
@@ -158,6 +158,6 @@ type Order struct {
 	SlTrigger      TriggerPrice `json:"sl_trigger_by"`
 }
 
-func (this *Client) QueryOrder(v QueryOrder) ([]Order, bool) {
+func (this *Client) QueryOrder(v QueryOrder) ([]Order, error) {
 	return v.Do(this)
 }

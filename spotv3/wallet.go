@@ -11,10 +11,10 @@ type Balance struct {
 	Locked   string `json:"locked"`
 }
 
-func (this *Client) WalletBalance() ([]Balance, bool) {
+func (this *Client) WalletBalance() ([]Balance, error) {
 	type result struct {
 		Balances []Balance `json:"balances"`
 	}
-	r, ok := Get[result](this, "account", nil)
-	return r.Balances, ok
+	r, err := Get[result](this, "account", nil)
+	return r.Balances, err
 }

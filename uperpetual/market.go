@@ -20,7 +20,7 @@ type QueryKline struct {
 	Limit    *int          `param:"limit"`
 }
 
-func (this QueryKline) Do(client *Client) ([]KlineItem, bool) {
+func (this QueryKline) Do(client *Client) ([]KlineItem, error) {
 	return GetPublic[[]KlineItem](client, "kline", this)
 }
 
@@ -39,7 +39,7 @@ type KlineItem struct {
 	Turnover string        `json:"turnover"`
 }
 
-func (this *Client) QueryKline(v QueryKline) ([]KlineItem, bool) {
+func (this *Client) QueryKline(v QueryKline) ([]KlineItem, error) {
 	return v.Do(this)
 }
 
@@ -55,7 +55,7 @@ type PublicTradingRecords struct {
 	Limit  *int   `param:"limit"`
 }
 
-func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, bool) {
+func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, error) {
 	return GetPublic[[]PublicTradingRecord](client, "recent-trading-records", this)
 }
 
@@ -70,7 +70,7 @@ type PublicTradingRecord struct {
 	IsBlockTrade bool    `json:"is_block_trade"`
 }
 
-func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradingRecord, bool) {
+func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradingRecord, error) {
 	return v.Do(this)
 }
 
@@ -84,7 +84,7 @@ type GetLastFundingRate struct {
 	Symbol string `param:"symbol"`
 }
 
-func (this GetLastFundingRate) Do(client *Client) (LastFundingRate, bool) {
+func (this GetLastFundingRate) Do(client *Client) (LastFundingRate, error) {
 	return GetPublic[LastFundingRate](client, "funding/prev-funding-rate", this)
 }
 
@@ -94,14 +94,14 @@ type LastFundingRate struct {
 	Timestamp   string  `json:"funding_rate_timestamp"`
 }
 
-func (this *Client) GetLastFundingRate(symbol string) (LastFundingRate, bool) {
+func (this *Client) GetLastFundingRate(symbol string) (LastFundingRate, error) {
 	return GetLastFundingRate{Symbol: symbol}.Do(this)
 }
 
 // Query Mark Price Kline (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-markpricekline)
 //
 // Query mark price kline (like Query Kline but for mark price)
-func (this QueryKline) DoMark(client *Client) ([]MarkKlineItem, bool) {
+func (this QueryKline) DoMark(client *Client) ([]MarkKlineItem, error) {
 	return GetPublic[[]MarkKlineItem](client, "mark-price-kline", this)
 }
 
@@ -115,14 +115,14 @@ type MarkKlineItem struct {
 	Close    int           `json:"close"`
 }
 
-func (this *Client) QueryMarkKline(v QueryKline) ([]MarkKlineItem, bool) {
+func (this *Client) QueryMarkKline(v QueryKline) ([]MarkKlineItem, error) {
 	return v.DoMark(this)
 }
 
 // Query Index Price Kline (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-queryindexpricekline)
 //
 // Index price kline. Tracks BTC spot prices, with a frequency of every second
-func (this QueryKline) DoIndex(client *Client) ([]IndexKlineItem, bool) {
+func (this QueryKline) DoIndex(client *Client) ([]IndexKlineItem, error) {
 	return GetPublic[[]IndexKlineItem](client, "index-price-kline", this)
 }
 
@@ -136,17 +136,17 @@ type IndexKlineItem struct {
 	Close    string        `json:"close"`
 }
 
-func (this *Client) QueryIndexKline(v QueryKline) ([]IndexKlineItem, bool) {
+func (this *Client) QueryIndexKline(v QueryKline) ([]IndexKlineItem, error) {
 	return v.DoIndex(this)
 }
 
 // Query Premium Index Kline (https://bybit-exchange.github.io/docs/futuresV2/linear/#t-querypremiumindexkline)
 //
 // Premium index kline. Tracks the premium / discount of BTC perpetual contracts relative to the mark price per minute
-func (this QueryKline) DoPremium(client *Client) ([]IndexKlineItem, bool) {
+func (this QueryKline) DoPremium(client *Client) ([]IndexKlineItem, error) {
 	return GetPublic[[]IndexKlineItem](client, "premium-index-kline", this)
 }
 
-func (this *Client) QueryPremiumKline(v QueryKline) ([]IndexKlineItem, bool) {
+func (this *Client) QueryPremiumKline(v QueryKline) ([]IndexKlineItem, error) {
 	return v.DoPremium(this)
 }

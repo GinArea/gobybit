@@ -14,7 +14,7 @@ type OpenInterest struct {
 	Limit  *int   `param:"limit"`
 }
 
-func (this OpenInterest) Do(client *Client) ([]InterestItem, bool) {
+func (this OpenInterest) Do(client *Client) ([]InterestItem, error) {
 	return GetPublic[[]InterestItem](client, "open-interest", this)
 }
 
@@ -24,7 +24,7 @@ type InterestItem struct {
 	OpenInterest uint64 `json:"open_interest"`
 }
 
-func (this *Client) OpenInterest(v OpenInterest) ([]InterestItem, bool) {
+func (this *Client) OpenInterest(v OpenInterest) ([]InterestItem, error) {
 	return v.Do(this)
 }
 
@@ -42,7 +42,7 @@ type LatestBigDeal struct {
 	Limit  *int   `param:"limit"`
 }
 
-func (this LatestBigDeal) Do(client *Client) ([]LatestBigDealItem, bool) {
+func (this LatestBigDeal) Do(client *Client) ([]LatestBigDealItem, error) {
 	return GetPublic[[]LatestBigDealItem](client, "big-deal", this)
 }
 
@@ -53,7 +53,7 @@ type LatestBigDealItem struct {
 	Value     float64 `json:"value"`
 }
 
-func (this *Client) LatestBigDeal(v LatestBigDeal) ([]LatestBigDealItem, bool) {
+func (this *Client) LatestBigDeal(v LatestBigDeal) ([]LatestBigDealItem, error) {
 	return v.Do(this)
 }
 
@@ -70,7 +70,7 @@ type LongShortRatio struct {
 	Limit  *int   `param:"limit"`
 }
 
-func (this LongShortRatio) Do(client *Client) ([]LongShortRatioItem, bool) {
+func (this LongShortRatio) Do(client *Client) ([]LongShortRatioItem, error) {
 	return GetPublic[[]LongShortRatioItem](client, "big-deal", this)
 }
 
@@ -81,6 +81,6 @@ type LongShortRatioItem struct {
 	Timestamp uint64  `json:"timestamp"`
 }
 
-func (this *Client) LongShortRatio(v LongShortRatio) ([]LongShortRatioItem, bool) {
+func (this *Client) LongShortRatio(v LongShortRatio) ([]LongShortRatioItem, error) {
 	return v.Do(this)
 }

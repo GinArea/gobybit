@@ -6,7 +6,7 @@ type GetRiskLimit struct {
 	Symbol *string `param:"symbol"`
 }
 
-func (this GetRiskLimit) Do(client *Client) ([]RiskLimitItem, bool) {
+func (this GetRiskLimit) Do(client *Client) ([]RiskLimitItem, error) {
 	return GetPublic[[]RiskLimitItem](client, "risk-limit/list", this)
 }
 
@@ -23,7 +23,7 @@ type RiskLimitItem struct {
 	MaxLeverage    string   `json:"max_leverage"`
 }
 
-func (this *Client) GetRiskLimit(symbol *string) ([]RiskLimitItem, bool) {
+func (this *Client) GetRiskLimit(symbol *string) ([]RiskLimitItem, error) {
 	return GetRiskLimit{Symbol: symbol}.Do(this)
 }
 
@@ -36,14 +36,14 @@ type SetRiskLimit struct {
 	RiskID int    `param:"risk_id"`
 }
 
-func (this SetRiskLimit) Do(client *Client) (int, bool) {
+func (this SetRiskLimit) Do(client *Client) (int, error) {
 	type result struct {
 		RiskID int `json:"risk_id"`
 	}
-	r, ok := Post[result](client, "position/risk-limit", this)
-	return r.RiskID, ok
+	r, err := Post[result](client, "position/risk-limit", this)
+	return r.RiskID, err
 }
 
-func (this *Client) SetRiskLimit(v SetRiskLimit) (int, bool) {
+func (this *Client) SetRiskLimit(v SetRiskLimit) (int, error) {
 	return v.Do(this)
 }

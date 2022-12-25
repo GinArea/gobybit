@@ -28,16 +28,16 @@ func (this *Client) Post(path string, param any, ret any) error {
 	return this.c.Post(this.urlPrivate(path), param, ret)
 }
 
-func Get[T any](c *Client, path string, param any) (T, bool) {
+func Get[T any](c *Client, path string, param any) (T, error) {
 	resp := &Response[T]{}
 	err := c.Get(path, param, resp)
-	return resp.Result, err == nil
+	return resp.Result, err
 }
 
-func Post[T any](c *Client, path string, param any) (T, bool) {
+func Post[T any](c *Client, path string, param any) (T, error) {
 	resp := &Response[T]{}
 	err := c.Post(path, param, resp)
-	return resp.Result, err == nil
+	return resp.Result, err
 }
 
 func (this *Client) url(access, path string) string {
