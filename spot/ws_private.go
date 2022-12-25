@@ -23,7 +23,7 @@ type WsPrivate struct {
 func NewWsPrivate(url string, key string, secret string) *WsPrivate {
 	ws := transport.NewWsClient(url)
 	return &WsPrivate{
-		log:    ulog.New(fmt.Sprintf("ws-private[%s]", ws.ID())),
+		log:    ulog.Empty(),
 		ws:     ws,
 		key:    key,
 		secret: secret,

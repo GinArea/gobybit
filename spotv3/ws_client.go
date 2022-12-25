@@ -1,7 +1,6 @@
 package spotv3
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/ginarea/gobybit/transport"
@@ -20,7 +19,7 @@ type WsClient struct {
 func NewWsClient(name string, url string) *WsClient {
 	ws := transport.NewWsClient(url)
 	return &WsClient{
-		log: ulog.New(fmt.Sprintf("ws-%s[%s]", name, ws.ID())),
+		log: ulog.Empty(),
 		ws:  ws,
 	}
 }

@@ -59,10 +59,6 @@ func (o *WsClient) Run() {
 	}()
 }
 
-func (o *WsClient) ID() string {
-	return o.ws.ID()
-}
-
 func (o *WsClient) SetOnMessage(onMessage func(string, []byte)) {
 	o.onMessage = onMessage
 }

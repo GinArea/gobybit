@@ -2,8 +2,6 @@
 package iperpetual
 
 import (
-	"fmt"
-
 	"github.com/ginarea/gobybit/transport"
 	"github.com/msw-x/moon"
 	"github.com/msw-x/moon/ufmt"
@@ -24,7 +22,7 @@ type WsClient struct {
 func NewWsClient() *WsClient {
 	ws := transport.NewWsClient("wss://stream.bybit.com/realtime")
 	c := &WsClient{
-		log: ulog.New(fmt.Sprintf("ws-iperpetual[%s]", ws.ID())),
+		log: ulog.Empty(),
 		ws:  ws,
 	}
 	c.public = NewWsPublic(c)
