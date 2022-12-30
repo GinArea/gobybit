@@ -10,6 +10,7 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/msw-x/moon"
+	"github.com/msw-x/moon/app"
 	"github.com/msw-x/moon/ulog"
 	"github.com/msw-x/moon/usync"
 )
@@ -61,7 +62,7 @@ func (o *WsConn) Conf() *WsConf {
 }
 
 func (o *WsConn) Run() {
-	go o.run()
+	app.Go(o.run)
 }
 
 func (o *WsConn) ID() string {

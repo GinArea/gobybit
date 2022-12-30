@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"time"
 
+	"github.com/msw-x/moon/app"
 	"github.com/msw-x/moon/ulog"
 )
 
@@ -45,7 +46,7 @@ func (o *WsClient) Connected() bool {
 func (o *WsClient) Run() {
 	o.ws.SetOnMessage(o.processMessage)
 	o.ws.Run()
-	go func() {
+	app.Go(func() {
 		for o.ws.Do() {
 			o.ws.Sleep(o.heartbeatTimeout)
 			if !o.ws.Do() {
@@ -56,7 +57,7 @@ func (o *WsClient) Run() {
 			}
 			o.ping()
 		}
-	}()
+	})
 }
 
 func (o *WsClient) SetOnMessage(onMessage func(string, []byte)) {
