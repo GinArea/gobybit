@@ -48,6 +48,16 @@ func (o *WsConn) Shutdown() {
 	o.log.Debug("shutdown completed")
 }
 
+func (o *WsConn) WithUrl(url string) *WsConn {
+	o.url = url
+	return o
+}
+
+func (o *WsConn) WithByTickUrl() *WsConn {
+	o.url = MainBaseByTickUrl
+	return o
+}
+
 func (o *WsConn) WithLog(log *ulog.Log) *WsConn {
 	o.log = log
 	return o

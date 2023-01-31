@@ -25,6 +25,16 @@ func (o *WsClient) Shutdown() {
 	o.ws.Shutdown()
 }
 
+func (o *WsClient) WithUrl(url string) *WsClient {
+	o.ws.WithUrl(url)
+	return o
+}
+
+func (o *WsClient) WithByTickUrl() *WsClient {
+	o.ws.WithByTickUrl()
+	return o
+}
+
 func (o *WsClient) WithLog(log *ulog.Log) *WsClient {
 	o.ws.WithLog(log)
 	return o
