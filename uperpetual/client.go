@@ -22,7 +22,7 @@ func (this *Client) Transport() *transport.Client {
 }
 
 func (this *Client) GetPublic(path string, param any, ret any) error {
-	return forwardError(this.c.Get(this.urlPublic(path), param, ret))
+	return forwardError(this.c.GetPublic(this.urlPublic(path), param, ret))
 }
 
 func (this *Client) Get(path string, param any, ret any) error {
