@@ -38,6 +38,16 @@ func (this *WsClient) Conf() *transport.WsConf {
 	return this.ws.Conf()
 }
 
+func (o *WsClient) WithUrl(url string) *WsClient {
+	o.ws.WithUrl(url)
+	return o
+}
+
+func (o *WsClient) WithByTickUrl() *WsClient {
+	o.ws.WithByTickUrl()
+	return o
+}
+
 func (this *WsClient) WithLog(log *ulog.Log) *WsClient {
 	this.ws.WithLog(log)
 	return this
