@@ -168,6 +168,7 @@ func (o *Client) Request(method string, path string, param any, ret any, sign bo
 			return
 		}
 		timestamp := time.Now()
+		body = []byte(strings.Replace(string(body), `"result":{}`, `"result":null`, 1))
 		err = json.Unmarshal(body, ret)
 		if err == nil {
 			elapsedTime := time.Since(timestamp).Truncate(time.Millisecond)
