@@ -21,69 +21,74 @@ func NewClient() *Client {
 	}
 }
 
-func (this *Client) WithUrl(url string) *Client {
-	this.c.WithUrl(url)
-	return this
+func (o *Client) WithUrl(url string) *Client {
+	o.c.WithUrl(url)
+	return o
 }
 
-func (this *Client) WithByTickUrl() *Client {
-	this.c.WithByTickUrl()
-	return this
+func (o *Client) WithByTickUrl() *Client {
+	o.c.WithByTickUrl()
+	return o
 }
 
-func (this *Client) WithAuth(key, secret string) *Client {
-	this.c.WithAuth(key, secret)
-	return this
+func (o *Client) WithAuth(key, secret string) *Client {
+	o.c.WithAuth(key, secret)
+	return o
 }
 
-func (this *Client) WithProxy(proxy string) *Client {
-	this.c.WithProxy(proxy)
-	return this
+func (o *Client) WithProxy(proxy string) *Client {
+	o.c.WithProxy(proxy)
+	return o
 }
 
-func (this *Client) WithLog(log *ulog.Log) *Client {
-	this.c.WithLog(log)
-	return this
+func (o *Client) WithLog(log *ulog.Log) *Client {
+	o.c.WithLog(log)
+	return o
 }
 
-func (this *Client) WithLogUri(logUri bool) *Client {
-	this.c.WithLogUri(logUri)
-	return this
+func (o *Client) WithLogUri(logUri bool) *Client {
+	o.c.WithLogUri(logUri)
+	return o
 }
 
-func (this *Client) WithLogResponse(logResponse bool) *Client {
-	this.c.WithLogResponse(logResponse)
-	return this
+func (o *Client) WithLogResponse(logResponse bool) *Client {
+	o.c.WithLogResponse(logResponse)
+	return o
 }
 
-func (this *Client) Key() string {
-	return this.c.Key()
+func (o *Client) WithOnHttpError(onHttpError func(err error, attempt int) bool) *Client {
+	o.c.WithOnHttpError(onHttpError)
+	return o
 }
 
-func (this *Client) Secret() string {
-	return this.c.Secret()
+func (o *Client) Key() string {
+	return o.c.Key()
 }
 
-func (this *Client) InversePerpetual() *iperpetual.Client {
-	return iperpetual.NewClient(this.c)
+func (o *Client) Secret() string {
+	return o.c.Secret()
 }
 
-func (this *Client) UsdtPerpetual() *uperpetual.Client {
-	return uperpetual.NewClient(this.c)
+func (o *Client) InversePerpetual() *iperpetual.Client {
+	return iperpetual.NewClient(o.c)
 }
 
-func (this *Client) InverseFutures() *ifutures.Client {
-	return ifutures.NewClient(this.c)
+func (o *Client) UsdtPerpetual() *uperpetual.Client {
+	return uperpetual.NewClient(o.c)
 }
 
-func (this *Client) Spot() *spot.Client {
-	return spot.NewClient(this.c)
+func (o *Client) InverseFutures() *ifutures.Client {
+	return ifutures.NewClient(o.c)
 }
 
-func (this *Client) Spotv3() *spotv3.Client {
-	return spotv3.NewClient(this.c)
+func (o *Client) Spot() *spot.Client {
+	return spot.NewClient(o.c)
 }
 
-func (this *Client) AccountAsset() *account.Client {
-	return account.NewClient(this.c)
+func (o *Client) Spotv3() *spotv3.Client {
+	return spotv3.NewClient(o.c)
+}
+
+func (o *Client) AccountAsset() *account.Client {
+	return account.NewClient(o.c)
 }
