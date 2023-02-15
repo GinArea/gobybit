@@ -28,6 +28,7 @@ type Client struct {
 	proxy       *url.URL
 	logUri      bool
 	logResponse bool
+	onHttpError func(err error, attempt int) bool
 }
 
 func NewClient() *Client {
@@ -77,6 +78,15 @@ func (o *Client) WithLogResponse(logResponse bool) *Client {
 	return o
 }
 
+func (o *Client) WithOnHttpError(onHttpError func(err error, attempt int) bool) *Client {
+	o.onHttpError = onHttpError
+	return o
+}
+
+func (o *Client) RestProxy() {
+	o.proxy = nil
+}
+
 func (o *Client) Key() string {
 	return o.key
 }
@@ -86,6 +96,46 @@ func (o *Client) Secret() string {
 }
 
 func (o *Client) Request(method string, path string, param any, ret any, sign bool) (err error) {
+	var httpError bool
+	var attempt int
+	for {
+		err, httpError = o.request(method, path, param, ret, sign)
+		if httpError && o.onHttpError != nil {
+			if o.onHttpError(err, attempt) {
+				continue
+			}
+			attempt++
+		}
+		break
+	}
+	return err
+}
+
+func (o *Client) RequestPublic(method string, path string, param any, ret any) error {
+	return o.Request(method, path, param, ret, false)
+}
+
+func (o *Client) RequestPrivate(method string, path string, param any, ret any) error {
+	return o.Request(method, path, param, ret, true)
+}
+
+func (o *Client) GetPublic(path string, param any, ret any) error {
+	return o.RequestPublic(http.MethodGet, path, param, ret)
+}
+
+func (o *Client) Get(path string, param any, ret any) error {
+	return o.RequestPrivate(http.MethodGet, path, param, ret)
+}
+
+func (o *Client) Post(path string, param any, ret any) error {
+	return o.RequestPrivate(http.MethodPost, path, param, ret)
+}
+
+func (o *Client) Delete(path string, param any, ret any) error {
+	return o.RequestPrivate(http.MethodDelete, path, param, ret)
+}
+
+func (o *Client) request(method string, path string, param any, ret any, sign bool) (err error, httpError bool) {
 	logf := func(format string, a ...any) {
 		m := fmt.Sprintf(format, a...)
 		if err == nil {
@@ -149,6 +199,7 @@ func (o *Client) Request(method string, path string, param any, ret any, sign bo
 	elapsedTime := time.Since(timestamp).Truncate(time.Millisecond)
 	if err != nil {
 		logf("request fail [%s]: %v", elapsedTime.String(), err)
+		httpError = true
 		return
 	}
 	defer resp.Body.Close()
@@ -190,34 +241,11 @@ func (o *Client) Request(method string, path string, param any, ret any, sign bo
 	} else {
 		err = errors.New(fmt.Sprintf("http status-code: %d", resp.StatusCode))
 		logf("%v", err)
+		httpError = true
 		return
 	}
 	logf("%s", m)
 	return
-}
-
-func (o *Client) RequestPublic(method string, path string, param any, ret any) error {
-	return o.Request(method, path, param, ret, false)
-}
-
-func (o *Client) RequestPrivate(method string, path string, param any, ret any) error {
-	return o.Request(method, path, param, ret, true)
-}
-
-func (o *Client) GetPublic(path string, param any, ret any) error {
-	return o.RequestPublic(http.MethodGet, path, param, ret)
-}
-
-func (o *Client) Get(path string, param any, ret any) error {
-	return o.RequestPrivate(http.MethodGet, path, param, ret)
-}
-
-func (o *Client) Post(path string, param any, ret any) error {
-	return o.RequestPrivate(http.MethodPost, path, param, ret)
-}
-
-func (o *Client) Delete(path string, param any, ret any) error {
-	return o.RequestPrivate(http.MethodDelete, path, param, ret)
 }
 
 func (o *Client) signQuery(src url.Values) url.Values {

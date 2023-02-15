@@ -26,6 +26,7 @@ type WsConn struct {
 	onMessage      func([]byte)
 	onConnected    func()
 	onDisconnected func()
+	onDialError    func(error) bool
 }
 
 func NewWsConn(url string) *WsConn {
@@ -100,6 +101,10 @@ func (o *WsConn) SetOnDisconnected(onDisconnected func()) {
 	o.onDisconnected = onDisconnected
 }
 
+func (o *WsConn) SetOnDialError(onDialError func(error) bool) {
+	o.onDialError = onDialError
+}
+
 func (o *WsConn) Send(v any) bool {
 	if !o.do.Do() {
 		return false
@@ -147,6 +152,11 @@ func (o *WsConn) connectAndRun() {
 	c, _, err := dialer.Dial(o.url, nil)
 	if err != nil {
 		o.log.Error("dial:", err)
+		if o.onDialError != nil {
+			if o.onDialError(err) {
+				return
+			}
+		}
 		o.do.Sleep(time.Second * 10)
 		return
 	}

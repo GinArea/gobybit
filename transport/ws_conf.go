@@ -30,3 +30,7 @@ func (o *WsConf) SetProxy(proxy string) {
 		panic(fmt.Sprintf("set proxy fail: %v", err))
 	}
 }
+
+func (o *WsConf) ResetProxy() {
+	o.Proxy = nil
+}
