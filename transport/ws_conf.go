@@ -24,13 +24,13 @@ func NewWsConf() *WsConf {
 }
 
 func (o *WsConf) SetProxy(proxy string) {
-	var err error
-	o.Proxy, err = ParseProxy(proxy)
-	if err != nil {
-		panic(fmt.Sprintf("set proxy fail: %v", err))
+	if proxy == "" {
+		o.Proxy = nil
+	} else {
+		var err error
+		o.Proxy, err = ParseProxy(proxy)
+		if err != nil {
+			panic(fmt.Sprintf("set proxy fail: %v", err))
+		}
 	}
-}
-
-func (o *WsConf) ResetProxy() {
-	o.Proxy = nil
 }

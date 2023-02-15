@@ -55,10 +55,14 @@ func (o *Client) WithAuth(key, secret string) *Client {
 }
 
 func (o *Client) WithProxy(proxy string) *Client {
-	var err error
-	o.proxy, err = ParseProxy(proxy)
-	if err != nil {
-		panic(fmt.Sprintf("set proxy fail: %v", err))
+	if proxy == "" {
+		o.proxy = nil
+	} else {
+		var err error
+		o.proxy, err = ParseProxy(proxy)
+		if err != nil {
+			panic(fmt.Sprintf("set proxy fail: %v", err))
+		}
 	}
 	return o
 }
@@ -81,10 +85,6 @@ func (o *Client) WithLogResponse(logResponse bool) *Client {
 func (o *Client) WithOnHttpError(onHttpError func(err error, attempt int) bool) *Client {
 	o.onHttpError = onHttpError
 	return o
-}
-
-func (o *Client) RestProxy() {
-	o.proxy = nil
 }
 
 func (o *Client) Key() string {
