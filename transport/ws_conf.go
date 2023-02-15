@@ -34,3 +34,7 @@ func (o *WsConf) SetProxy(proxy string) {
 		}
 	}
 }
+
+func (o *WsConf) HasProxy() bool {
+	return o.Proxy != nil
+}

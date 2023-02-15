@@ -61,6 +61,10 @@ func (o *Client) WithOnHttpError(onHttpError func(err error, attempt int) bool) 
 	return o
 }
 
+func (o *Client) HasProxy() bool {
+	return o.c.HasProxy()
+}
+
 func (o *Client) Key() string {
 	return o.c.Key()
 }
