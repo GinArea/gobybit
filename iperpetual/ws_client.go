@@ -29,13 +29,13 @@ func NewWsClient() *WsClient {
 	return c
 }
 
-func (this *WsClient) Shutdown() {
-	this.log.Debug("shutdown")
-	this.ws.Shutdown()
+func (o *WsClient) Shutdown() {
+	o.log.Debug("shutdown")
+	o.ws.Shutdown()
 }
 
-func (this *WsClient) Conf() *transport.WsConf {
-	return this.ws.Conf()
+func (o *WsClient) Conf() *transport.WsConf {
+	return o.ws.Conf()
 }
 
 func (o *WsClient) WithUrl(url string) *WsClient {
@@ -48,119 +48,123 @@ func (o *WsClient) WithByTickUrl() *WsClient {
 	return o
 }
 
-func (this *WsClient) WithLog(log *ulog.Log) *WsClient {
-	this.ws.WithLog(log)
-	return this
+func (o *WsClient) WithLog(log *ulog.Log) *WsClient {
+	o.ws.WithLog(log)
+	return o
 }
 
-func (this *WsClient) WithProxy(proxy string) *WsClient {
-	this.Conf().SetProxy(proxy)
-	return this
+func (o *WsClient) WithProxy(proxy string) *WsClient {
+	o.Conf().SetProxy(proxy)
+	return o
 }
 
-func (this *WsClient) WithAuth(key string, secret string) *WsClient {
-	this.private = NewWsPrivate(this, key, secret)
-	return this
+func (o *WsClient) WithAuth(key string, secret string) *WsClient {
+	o.private = NewWsPrivate(o, key, secret)
+	return o
 }
 
-func (this *WsClient) SetOnConnected(onConnected func()) {
-	this.onConnected = onConnected
+func (o *WsClient) SetOnConnected(onConnected func()) {
+	o.onConnected = onConnected
 }
 
-func (this *WsClient) SetOnDisconnected(onDisconnected func()) {
-	this.onDisconnected = onDisconnected
+func (o *WsClient) SetOnDisconnected(onDisconnected func()) {
+	o.onDisconnected = onDisconnected
 }
 
-func (this *WsClient) SetOnAuth(onAuth func(bool)) {
-	this.onAuth = onAuth
+func (o *WsClient) SetOnDialError(onDialError func(error) bool) {
+	o.ws.SetOnDialError(onDialError)
 }
 
-func (this *WsClient) Public() *WsPublic {
-	return this.public
+func (o *WsClient) SetOnAuth(onAuth func(bool)) {
+	o.onAuth = onAuth
 }
 
-func (this *WsClient) Private() *WsPrivate {
-	if this.private == nil {
+func (o *WsClient) Public() *WsPublic {
+	return o.public
+}
+
+func (o *WsClient) Private() *WsPrivate {
+	if o.private == nil {
 		moon.Panic("private methods are forbidden")
 	}
-	return this.private
+	return o.private
 }
 
-func (this *WsClient) Run() {
-	this.log.Debug("run")
-	this.ws.SetOnConnected(func() {
-		if this.onConnected != nil {
-			this.onConnected()
+func (o *WsClient) Run() {
+	o.log.Debug("run")
+	o.ws.SetOnConnected(func() {
+		if o.onConnected != nil {
+			o.onConnected()
 		}
-		if this.private == nil {
-			this.ready = true
+		if o.private == nil {
+			o.ready = true
 		} else {
-			this.log.Info("auth")
-			this.private.auth()
+			o.log.Info("auth")
+			o.private.auth()
 		}
-		this.public.subscribeAll()
+		o.public.subscribeAll()
 	})
-	this.ws.SetOnDisconnected(func() {
-		this.ready = false
-		if this.onDisconnected != nil {
-			this.onDisconnected()
+	o.ws.SetOnDisconnected(func() {
+		o.ready = false
+		if o.onDisconnected != nil {
+			o.onDisconnected()
 		}
 	})
-	this.ws.SetOnMessage(this.processMessage)
-	this.ws.Run()
+	o.ws.SetOnMessage(o.processMessage)
+	o.ws.Run()
 }
 
-func (this *WsClient) Connected() bool {
-	return this.ws.Connected()
+func (o *WsClient) Connected() bool {
+	return o.ws.Connected()
 }
 
-func (this *WsClient) Ready() bool {
-	return this.ready
+func (o *WsClient) Ready() bool {
+	return o.ready
 }
 
-func (this *WsClient) send(cmd any) bool {
-	return this.ws.Send(cmd)
+func (o *WsClient) send(cmd any) bool {
+	return o.ws.Send(cmd)
 }
 
-func (this *WsClient) subscribe(topic string) bool {
-	this.log.Infof("subscribe: topic[%s]", topic)
-	return this.send(Request{
+func (o *WsClient) subscribe(topic string) bool {
+	o.log.Infof("subscribe: topic[%s]", topic)
+	return o.send(Request{
 		Name: "subscribe",
 		Args: []string{topic},
 	})
 }
 
-func (this *WsClient) unsubscribe(topic string) bool {
-	this.log.Infof("unsubscribe: topic[%s]", topic)
-	return this.send(Request{
+func (o *WsClient) unsubscribe(topic string) bool {
+	o.log.Infof("unsubscribe: topic[%s]", topic)
+	return o.send(Request{
 		Name: "unsubscribe",
 		Args: []string{topic},
 	})
 }
 
-func (this *WsClient) processMessage(name string, msg []byte) {
+func (o *WsClient) processMessage(name string, msg []byte) {
 	switch name {
 	case "success":
 		v := transport.JsonUnmarshal[Responce](msg)
-		this.processResponce(v)
+		o.processResponce(v)
 	case "topic":
 		v := transport.JsonUnmarshal[struct {
 			Name string `json:"topic"`
 			Type string `json:"type"`
 		}](msg)
-		this.processTopic(TopicMessage{
+		o.processTopic(TopicMessage{
 			Topic: v.Name,
 			Delta: v.Type == "delta",
 			Bin:   msg,
 		})
 	default:
-		this.log.Error("unknown message:", name)
+		o.log.Error("unknown message:", name)
 	}
 }
 
-func (this *WsClient) processResponce(r Responce) {
+func (o *WsClient) processResponce(r Responce) {
 	if !r.Success {
-		this.log.Error(r.RetMsg)
+		o.log.Error(r.RetMsg)
 		return
 	}
 	name := r.RetMsg
@@ -170,30 +174,30 @@ func (this *WsClient) processResponce(r Responce) {
 	switch name {
 	case "pong":
 	case "auth":
-		this.log.Info("auth:", ufmt.SuccessFailure(r.Success))
-		if this.onAuth != nil {
-			this.onAuth(r.Success)
+		o.log.Info("auth:", ufmt.SuccessFailure(r.Success))
+		if o.onAuth != nil {
+			o.onAuth(r.Success)
 		}
-		if this.private != nil {
-			this.ready = true
-			this.private.subscribeAll()
+		if o.private != nil {
+			o.ready = true
+			o.private.subscribeAll()
 		}
 	case "subscribe":
-		this.log.Infof("topic%s subscribe: %s", r.Request.Args, ufmt.SuccessFailure(r.Success))
+		o.log.Infof("topic%s subscribe: %s", r.Request.Args, ufmt.SuccessFailure(r.Success))
 	case "unsubscribe":
-		this.log.Infof("topic%s unsubscribe: %s", r.Request.Args, ufmt.SuccessFailure(r.Success))
+		o.log.Infof("topic%s unsubscribe: %s", r.Request.Args, ufmt.SuccessFailure(r.Success))
 	default:
-		this.log.Error("unknown response:", name)
+		o.log.Error("unknown response:", name)
 	}
 }
 
-func (this *WsClient) processTopic(m TopicMessage) {
-	ok, err := this.public.processTopic(m)
-	if err == nil && this.private != nil && !ok {
-		_, err = this.private.processTopic(m)
+func (o *WsClient) processTopic(m TopicMessage) {
+	ok, err := o.public.processTopic(m)
+	if err == nil && o.private != nil && !ok {
+		_, err = o.private.processTopic(m)
 	}
 	if err != nil {
-		this.log.Errorf("process topic[%s]: %v", m.Topic, err)
+		o.log.Errorf("process topic[%s]: %v", m.Topic, err)
 	}
 	return
 }

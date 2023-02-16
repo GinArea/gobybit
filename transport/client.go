@@ -57,7 +57,9 @@ func (o *Client) WithAuth(key, secret string) *Client {
 func (o *Client) WithProxy(proxy string) *Client {
 	if proxy == "" {
 		o.proxy = nil
+		o.log.Info("proxy: not used")
 	} else {
+		o.log.Info("proxy:", proxy)
 		var err error
 		o.proxy, err = ParseProxy(proxy)
 		if err != nil {

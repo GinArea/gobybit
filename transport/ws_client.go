@@ -49,10 +49,6 @@ func (o *WsClient) WithProxy(proxy string) *WsClient {
 	return o
 }
 
-func (o *WsClient) SetOnDialError(onDialError func(error) bool) {
-	o.ws.SetOnDialError(onDialError)
-}
-
 func (o *WsClient) Connected() bool {
 	return o.ws.Connected()
 }
@@ -84,6 +80,10 @@ func (o *WsClient) SetOnConnected(onConnected func()) {
 
 func (o *WsClient) SetOnDisconnected(onDisconnected func()) {
 	o.ws.SetOnDisconnected(onDisconnected)
+}
+
+func (o *WsClient) SetOnDialError(onDialError func(error) bool) {
+	o.ws.SetOnDialError(onDialError)
 }
 
 func (o *WsClient) Send(cmd any) bool {
