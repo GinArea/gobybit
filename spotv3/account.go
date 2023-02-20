@@ -15,7 +15,7 @@ type OrderBase struct {
 	TimeInForce TimeInForce `json:"timeInForce"`
 }
 
-// Place Active Order (https://bybit-exchange.github.io/docs/spot/v1/#t-placeactive)
+// Place Active Order (https://bybit-exchange.github.io/docs/spot/v3/#t-placeactive)
 //
 //	symbol      Required string Name of the trading pair
 //	qty         Required number Order quantity (for market orders: when side is Buy, this is in the quote currency.
@@ -205,7 +205,7 @@ func (this *Client) OrderHistory(v OrderHistory) ([]OpenedOrder, error) {
 	return v.Do(this)
 }
 
-// Trade History (https://bybit-exchange.github.io/docs/spot/v1/#t-tradehistory)
+// Trade History (https://bybit-exchange.github.io/docs/spot/v3/#t-tradehistory)
 //
 //	symbol       string  Name of the trading pair
 //	limit        integer Default value is 50, max 50
