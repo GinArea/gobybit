@@ -34,7 +34,7 @@ const (
 	LimitMarket OrderType = "LIMIT_MAKER"
 )
 
-// Currency (currency/coin) https://bybit-exchange.github.io/docs/spot/v1/#currency-currency-coin
+// Currency (currency/coin) https://bybit-exchange.github.io/docs/spot/v3/#currency-currency-coin
 
 // Order status (status) (https://bybit-exchange.github.io/docs/spot/v3/#order-status-status)
 //
