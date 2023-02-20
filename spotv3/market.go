@@ -1,22 +1,28 @@
 // Market Data Endpoints (https://bybit-exchange.github.io/docs/spot/v3/#t-marketdata)
 package spotv3
 
+import (
+	"errors"
+
+	"github.com/ginarea/gobybit/transport"
+)
+
 // Query Symbol (https://bybit-exchange.github.io/docs/spot/v3/#t-spot_querysymbol)
 type SymbolInfo struct {
-	Name              string `json:"name"`
-	Alias             string `json:"alias"`
-	BaseCurrency      string `json:"baseCurrency"`
-	QuoteCurrency     string `json:"quoteCurrency"`
-	BasePrecision     string `json:"basePrecision"`
-	QuotePrecision    string `json:"quotePrecision"`
-	MinTradeQuantity  string `json:"minTradeQuantity"`
-	MinTradeAmount    string `json:"minTradeAmount"`
-	MaxTradeQuantity  string `json:"maxTradeQuantity"`
-	MaxTradeAmount    string `json:"maxTradeAmount"`
-	MinPricePrecision string `json:"minPricePrecision"`
-	Category          string `json:"category"`
-	ShowStatus        string `json:"showStatus"`
-	Innovation        string `json:"innovation"`
+	Name              string            `json:"name"`
+	Alias             string            `json:"alias"`
+	BaseCoin          string            `json:"baseCoin"`
+	QuoteCoin         string            `json:"quoteCoin"`
+	BasePrecision     transport.Float64 `json:"basePrecision"`
+	QuotePrecision    transport.Float64 `json:"quotePrecision"`
+	MinTradeQty       transport.Float64 `json:"minTradeQty"`
+	MinTradeAmt       transport.Float64 `json:"minTradeAmt"`
+	MaxTradeQty       transport.Float64 `json:"maxTradeQty"`
+	MaxTradeAmt       transport.Float64 `json:"maxTradeAmt"`
+	MinPricePrecision transport.Float64 `json:"minPricePrecision"`
+	Category          string            `json:"category"`
+	ShowStatus        string            `json:"showStatus"`
+	Innovation        string            `json:"innovation"`
 }
 
 func (this *Client) QuerySymbol() ([]SymbolInfo, error) {
@@ -163,20 +169,32 @@ func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, err
 }
 
 type LatestInformation struct {
-	Time               uint64 `json:"t"`
-	Symbol             string `json:"s"`
-	LastTradedPrice    string `json:"lp"`
-	HighPrice          string `json:"h"`
-	LowPrice           string `json:"l"`
-	OpenPrice          string `json:"o"`
-	BestBidPrice       string `json:"bp"`
-	BestAskPrice       string `json:"ap"`
-	TradingVolume      string `json:"v"`
-	TradingQuoteVolume string `json:"qv"`
+	Time               uint64            `json:"t"`
+	Symbol             string            `json:"s"`
+	LastTradedPrice    transport.Float64 `json:"lp"`
+	HighPrice          string            `json:"h"`
+	LowPrice           string            `json:"l"`
+	OpenPrice          string            `json:"o"`
+	BestBidPrice       transport.Float64 `json:"bp"`
+	BestAskPrice       transport.Float64 `json:"ap"`
+	TradingVolume      string            `json:"v"`
+	TradingQuoteVolume string            `json:"qv"`
 }
 
 func (this *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation, error) {
 	return SymbolLatestInformation{Symbol: symbol}.Do(this)
+}
+
+func (this *Client) OneSymbolLatestInformation(symbol string) (i LatestInformation, err error) {
+	ret, err := this.SymbolLatestInformation(&symbol)
+	if err == nil {
+		if len(ret) == 1 {
+			i = ret[0]
+		} else {
+			err = errors.New("symbol latest len != 1")
+		}
+	}
+	return
 }
 
 // Last Traded Price (https://bybit-exchange.github.io/docs/spot/v3/#t-lasttradedprice)
