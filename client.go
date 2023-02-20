@@ -8,6 +8,7 @@ import (
 	"github.com/ginarea/gobybit/spotv3"
 	"github.com/ginarea/gobybit/transport"
 	"github.com/ginarea/gobybit/uperpetual"
+	v5 "github.com/ginarea/gobybit/v5"
 	"github.com/msw-x/moon/ulog"
 )
 
@@ -95,4 +96,8 @@ func (o *Client) Spotv3() *spotv3.Client {
 
 func (o *Client) AccountAsset() *account.Client {
 	return account.NewClient(o.c)
+}
+
+func (o *Client) V5() *v5.Client {
+	return v5.NewClient(o.c)
 }
