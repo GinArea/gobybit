@@ -57,7 +57,6 @@ const (
 type Qty uint64
 
 // Price (price) (https://bybit-exchange.github.io/docs/spot/v3/#price-price)
-type Price float64
 
 // Kline interval (interval) (https://bybit-exchange.github.io/docs/spot/v3/#kline-interval-interval)
 //

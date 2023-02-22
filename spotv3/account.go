@@ -29,11 +29,11 @@ type OrderBase struct {
 //	orderLinkId          string User-generated order ID
 type PlaceOrder struct {
 	Symbol        string       `json:"symbol"`
-	Qty           int          `json:"orderQty"`
+	Qty           float64      `json:"orderQty"`
 	Side          Side         `json:"side"`
 	Type          OrderType    `json:"orderType"`
 	TimeInForce   *TimeInForce `json:"timeInForce"`
-	Price         *Price       `json:"orderPrice"`
+	Price         *float64     `json:"orderPrice"`
 	OrderLinkID   *string      `json:"orderLinkId"`
 	OrderCategory *int         `json:"orderCategory"`
 	TriggerPrice  *string      `json:"triggerPrice"`
