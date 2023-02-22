@@ -9,30 +9,30 @@ import (
 type GetKeyInfo struct {
 }
 
-func (this GetKeyInfo) Do(client *Client) (KeyInfo, error) {
-	return Get[KeyInfo](client, "user/query-api", this)
+func (o GetKeyInfo) Do(client *Client) (KeyInfo, error) {
+	return Get[KeyInfo](client, "user/query-api", o)
 }
 
 type KeyInfo struct {
-	Id            transport.Float64 `json:"id"`
-	Note          string            `json:"note"`
-	ApiKey        string            `json:"apiKey"`
-	ReadOnly      int               `json:"readOnly"`
-	Secret        string            `json:"secret"`
-	Permissions   Permissions       `json:"permissions"`
-	Ips           []string          `json:"ips"`
-	Type          int               `json:"type"`
-	DeadlineDay   int               `json:"deadlineDay"`
-	CreatedAt     time.Time         `json:"createdAt"`
-	ExpiredAt     time.Time         `json:"expiredAt"`
-	Unified       int               `json:"unified"`
-	Uta           int               `json:"uta"`
-	UserID        int               `json:"userID"`
-	InviterID     int               `json:"inviterID"`
-	VipLevel      string            `json:"vipLevel"`
-	MktMakerLevel string            `json:"mktMakerLevel"`
-	AffiliateID   int               `json:"affiliateID"`
-	RsaPublicKey  string            `json:"rsaPublicKey"`
+	Id            transport.Float64
+	Note          string
+	ApiKey        string
+	ReadOnly      int
+	Secret        string
+	Permissions   Permissions
+	Ips           []string
+	Type          int
+	DeadlineDay   int
+	CreatedAt     time.Time
+	ExpiredAt     time.Time
+	Unified       int
+	Uta           int
+	UserID        int
+	InviterID     int
+	VipLevel      string
+	MktMakerLevel string
+	AffiliateID   int
+	RsaPublicKey  string
 }
 
 type Permissions struct {
@@ -47,6 +47,6 @@ type Permissions struct {
 	NFT           []string
 }
 
-func (this *Client) GetKeyInfo() (KeyInfo, error) {
-	return GetKeyInfo{}.Do(this)
+func (o *Client) GetKeyInfo() (KeyInfo, error) {
+	return GetKeyInfo{}.Do(o)
 }

@@ -16,20 +16,20 @@ func NewClient(client *transport.Client) *Client {
 	return &Client{c: client}
 }
 
-func (this *Client) Transport() *transport.Client {
-	return this.c
+func (o *Client) Transport() *transport.Client {
+	return o.c
 }
 
-func (this *Client) GetPublic(path string, param any, ret any) error {
-	return forwardError(this.c.GetPublic(this.url(path), param, ret))
+func (o *Client) GetPublic(path string, param any, ret any) error {
+	return forwardError(o.c.GetPublic(o.url(path), param, ret))
 }
 
-func (this *Client) Get(path string, param any, ret any) error {
-	return forwardError(this.c.Get(this.url(path), param, ret))
+func (o *Client) Get(path string, param any, ret any) error {
+	return forwardError(o.c.Get(o.url(path), param, ret))
 }
 
-func (this *Client) Post(path string, param any, ret any) error {
-	return forwardError(this.c.Post(this.url(path), param, ret))
+func (o *Client) Post(path string, param any, ret any) error {
+	return forwardError(o.c.Post(o.url(path), param, ret))
 }
 
 func GetPublic[T any](c *Client, path string, param any) (T, error) {
@@ -50,6 +50,6 @@ func Post[T any](c *Client, path string, param any) (T, error) {
 	return resp.Result, err
 }
 
-func (this *Client) url(path string) string {
+func (o *Client) url(path string) string {
 	return fmt.Sprintf("v5/%s", path)
 }
