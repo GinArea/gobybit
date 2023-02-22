@@ -1,18 +1,24 @@
 // Account Data Endpoints (https://bybit-exchange.github.io/docs/spot/v3/#t-accountdata)
 package spotv3
 
+import (
+	"time"
+
+	"github.com/ginarea/gobybit/transport"
+)
+
 type OrderBase struct {
-	AccountID   string      `json:"accountId"`
-	OrderID     string      `json:"orderId"`
-	OrderLinkID string      `json:"orderLinkId"`
-	Symbol      string      `json:"symbol"`
-	CreatedTime uint64      `json:"createTime"`
-	Price       string      `json:"orderPrice"`
-	OrigQty     string      `json:"orderQty"`
-	OrderType   OrderType   `json:"orderType"`
-	Side        Side        `json:"side"`
-	OrderStatus OrderStatus `json:"status"`
-	TimeInForce TimeInForce `json:"timeInForce"`
+	AccountID   string            `json:"accountId"`
+	OrderID     string            `json:"orderId"`
+	OrderLinkID string            `json:"orderLinkId"`
+	Symbol      string            `json:"symbol"`
+	CreatedTime time.Time         `json:"createTime"`
+	Price       transport.Float64 `json:"orderPrice"`
+	OrderQty    transport.Float64 `json:"orderQty"`
+	OrderType   OrderType         `json:"orderType"`
+	Side        Side              `json:"side"`
+	OrderStatus OrderStatus       `json:"status"`
+	TimeInForce TimeInForce       `json:"timeInForce"`
 }
 
 // Place Active Order (https://bybit-exchange.github.io/docs/spot/v3/#t-placeactive)
