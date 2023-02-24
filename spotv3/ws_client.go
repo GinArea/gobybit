@@ -5,18 +5,16 @@ import (
 
 	"github.com/ginarea/gobybit/transport"
 	"github.com/msw-x/moon"
-	"github.com/msw-x/moon/ufmt"
 	"github.com/msw-x/moon/ulog"
 )
 
 type WsClient struct {
-	log         *ulog.Log
-	ws          *transport.WsClient
-	onConnected func()
-	onAuth      func(bool)
+	log    *ulog.Log
+	ws     *transport.WsClient
+	onAuth func(bool)
 }
 
-func NewWsClient(name string, url string) *WsClient {
+func NewWsClient(url string) *WsClient {
 	ws := transport.NewWsClient(url)
 	return &WsClient{
 		log: ulog.Empty(),
@@ -24,132 +22,108 @@ func NewWsClient(name string, url string) *WsClient {
 	}
 }
 
-func (this *WsClient) Shutdown() {
-	this.log.Debug("shutdown")
-	this.ws.Shutdown()
+func (o *WsClient) Shutdown() {
+	o.log.Debug("shutdown")
+	o.ws.Shutdown()
 }
 
-func (this *WsClient) Conf() *transport.WsConf {
-	return this.ws.Conf()
+func (o *WsClient) Conf() *transport.WsConf {
+	return o.ws.Conf()
 }
 
-func (this *WsClient) WithLog(log *ulog.Log) *WsClient {
-	this.ws.WithLog(log)
-	return this
+func (o *WsClient) WithUrl(url string) *WsClient {
+	o.ws.WithUrl(url)
+	return o
 }
 
-func (this *WsClient) WithProxy(proxy string) *WsClient {
-	this.Conf().SetProxy(proxy)
-	return this
+func (o *WsClient) WithByTickUrl() *WsClient {
+	o.ws.WithByTickUrl()
+	return o
 }
 
-func (this *WsClient) Connected() bool {
-	return this.ws.Connected()
+func (o *WsClient) WithLog(log *ulog.Log) *WsClient {
+	o.ws.WithLog(log)
+	return o
 }
 
-func (this *WsClient) Run() {
-	this.log.Debug("run")
-	this.ws.SetOnMessage(this.processMessage)
-	this.ws.Run()
+func (o *WsClient) WithProxy(proxy string) *WsClient {
+	o.Conf().SetProxy(proxy)
+	return o
 }
 
-func (this *WsClient) SetOnConnected(onConnected func()) {
-	this.ws.SetOnConnected(onConnected)
+func (o *WsClient) Connected() bool {
+	return o.ws.Connected()
 }
 
-func (this *WsClient) SetOnDisconnected(onConnected func()) {
-	this.ws.SetOnDisconnected(onConnected)
+func (o *WsClient) Run() {
+	o.log.Debug("run")
+	o.ws.SetOnMessage(o.processMessage)
+	o.ws.Run()
 }
 
-func (this *WsClient) SetOnAuth(onAuth func(bool)) {
-	this.onAuth = onAuth
+func (o *WsClient) SetOnConnected(onConnected func()) {
+	o.ws.SetOnConnected(onConnected)
 }
 
-func (this *WsClient) Send(cmd any) bool {
-	return this.ws.Send(cmd)
+func (o *WsClient) SetOnDisconnected(onConnected func()) {
+	o.ws.SetOnDisconnected(onConnected)
 }
 
-type Subscription struct {
-	Topic    TopicName
-	Interval string
-	Symbol   *string
+func (o *WsClient) SetOnDialError(onDialError func(error) bool) {
+	o.ws.SetOnDialError(onDialError)
 }
 
-func (this *Subscription) String() string {
-	s := []string{string(this.Topic)}
-	if this.Interval != "" {
-		s = append(s, this.Interval)
-	}
-	if this.Symbol != nil {
-		s = append(s, string(*this.Symbol))
-	}
-	return ufmt.JoinSliceWith(".", s)
+func (o *WsClient) SetOnAuth(onAuth func(bool)) {
+	o.onAuth = onAuth
 }
 
-func (this *Subscription) Request(operation string) Request {
+func (o *WsClient) Send(cmd any) bool {
+	return o.ws.Send(cmd)
+}
+
+func (o *Subscription) Request(operation string) Request {
 	return Request{
 		Operation: operation,
-		Args:      []string{this.String()},
+		Args:      []string{o.String()},
 	}
 }
 
-func (this *WsClient) Subscribe(s Subscription) bool {
-	this.log.Infof("subscribe: topic[%s]", s.Topic)
-	return this.ws.Send(s.Request("subscribe"))
+func (o *WsClient) Subscribe(s Subscription) bool {
+	o.log.Infof("subscribe: topic[%s]", s.Topic)
+	return o.ws.Send(s.Request("subscribe"))
 }
 
-func (this *WsClient) Unsubscribe(s Subscription) bool {
-	this.log.Infof("unsubscribe: topic[%s]", s.Topic)
-	return this.ws.Send(s.Request("unsubscribe"))
+func (o *WsClient) Unsubscribe(s Subscription) bool {
+	o.log.Infof("unsubscribe: topic[%s]", s.Topic)
+	return o.ws.Send(s.Request("unsubscribe"))
 }
 
-type Request struct {
-	Operation string   `json:"op"`
-	Args      []string `json:"args,omitempty"`
-	ReqID     string   `json:"req_id,omitempty"`
-}
-
-type Responce struct {
-	Operation string `json:"op"`
-	Args      []any  `json:"args"`
-	ReqID     string `json:"req_id"`
-	ConnID    string `json:"conn_id"`
-	Success   bool   `json:"success"`
-	RetMsg    string `json:"ret_msg"`
-	Topic     string `json:"topic"`
-	Type      string `json:"type"`
-}
-
-func (this *Responce) IsTopic() bool {
-	return this.Topic != ""
-}
-
-func (this *WsClient) processMessage(name string, msg []byte) {
+func (o *WsClient) processMessage(name string, msg []byte) {
 	v := transport.JsonUnmarshal[Responce](msg)
 	if v.IsTopic() {
 		s := strings.Split(v.Topic, ".")
 		name := s[0]
-		this.processTopic(TopicName(name), v.Type == "delta", msg)
+		o.processTopic(TopicName(name), v.Type == "delta", msg)
 	} else {
-		this.processResponce(v)
+		o.processResponce(v)
 	}
 }
 
-func (this *WsClient) processResponce(r Responce) {
+func (o *WsClient) processResponce(r Responce) {
 	name := r.RetMsg
 	if name == "" {
 		name = r.Operation
 	}
 	if !r.Success && name != "pong" {
-		this.log.Error(r.RetMsg)
+		o.log.Error(r.RetMsg)
 		return
 	}
-	this.log.Debug("response:", name)
+	o.log.Debug("response:", name)
 	switch name {
 	case "pong":
 	case "auth":
-		if this.onAuth != nil {
-			this.onAuth(r.Success)
+		if o.onAuth != nil {
+			o.onAuth(r.Success)
 		}
 	case "subscribe":
 	case "unsubscribe":
@@ -158,7 +132,7 @@ func (this *WsClient) processResponce(r Responce) {
 	}
 }
 
-func (this *WsClient) processTopic(topic TopicName, delta bool, msg []byte) {
+func (o *WsClient) processTopic(topic TopicName, delta bool, msg []byte) {
 	switch topic {
 	// public
 	case TopicDepth:
@@ -183,4 +157,25 @@ func (this *WsClient) processTopic(topic TopicName, delta bool, msg []byte) {
 	default:
 		moon.Panic("unknown topic:", topic)
 	}
+}
+
+type Request struct {
+	Operation string   `json:"op"`
+	Args      []string `json:"args,omitempty"`
+	ReqID     string   `json:"req_id,omitempty"`
+}
+
+type Responce struct {
+	Operation string `json:"op"`
+	Args      []any  `json:"args"`
+	ReqID     string `json:"req_id"`
+	ConnID    string `json:"conn_id"`
+	Success   bool   `json:"success"`
+	RetMsg    string `json:"ret_msg"`
+	Topic     string `json:"topic"`
+	Type      string `json:"type"`
+}
+
+func (o *Responce) IsTopic() bool {
+	return o.Topic != ""
 }
