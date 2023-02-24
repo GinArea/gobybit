@@ -10,10 +10,10 @@ const (
 	TopicTickers    TopicName = "tickers"
 	TopicBookTicker TopicName = "bookticker"
 	// private
-	TopicOutbound  TopicName = "outboundAccountInfo"
 	TopicOrder     TopicName = "order"
 	TopicStopOrder TopicName = "stopOrder"
 	TopicTicket    TopicName = "ticketInfo"
+	TopicOutbound  TopicName = "outboundAccountInfo"
 )
 
 type Topic[T any] struct {
@@ -69,22 +69,7 @@ type BookTickerShot struct {
 	Timestamp    uint64 `json:"t"`  // The time that message is sent out
 }
 
-type OutboundSnapshot struct {
-	EventType           string         `json:"e"` // Event type
-	Timestamp           string         `json:"E"` // Timestamp
-	AllowTrade          bool           `json:"T"` // Allow trade
-	AllowWithdraw       bool           `json:"W"` // Allow withdraw
-	AllowDeposit        bool           `json:"D"` // Allow deposit
-	WalletBalanceChange []OutboundItem `json:"B"` // Wallet balance change
-}
-
-type OutboundItem struct {
-	Coin              string `json:"a"` // Coin name
-	AvailableBalance  string `json:"f"` // Available balance
-	ReservedForOrders string `json:"l"` // Reserved for orders
-}
-
-type OrderSnapshot struct {
+type OrderShot struct {
 	EventType           string `json:"e"` // Event type
 	EventTime           string `json:"E"` // Event time
 	Symbol              string `json:"s"` // Trading pair
@@ -114,7 +99,7 @@ type OrderSnapshot struct {
 	TradeID             string `json:"t"` // Trade ID
 }
 
-type StopOrderSnapshot struct {
+type StopOrderShot struct {
 	EventType          string `json:"e"` // Event type
 	EventTime          string `json:"E"` // Event time
 	Symbol             string `json:"s"` // Trading pair
@@ -131,7 +116,7 @@ type StopOrderSnapshot struct {
 	OrderUpdatedTime   string `json:"C"` // Order updated time
 }
 
-type TicketSnapshot struct {
+type TicketShot struct {
 	EventType           string `json:"e"` // Event type
 	EventTime           string `json:"E"` // Event time
 	Symbol              string `json:"s"` // Trading pair
@@ -145,4 +130,19 @@ type TicketSnapshot struct {
 	AccountIDofOpponent string `json:"A"` // Account ID of the opponent trader
 	IsLimitMaker        bool   `json:"m"` // Is LIMIT_MAKER
 	Side                string `json:"S"` // BUY indicates buy order, SELL indicates sell order
+}
+
+type OutboundShot struct {
+	EventType           string         `json:"e"` // Event type
+	Timestamp           string         `json:"E"` // Timestamp
+	AllowTrade          bool           `json:"T"` // Allow trade
+	AllowWithdraw       bool           `json:"W"` // Allow withdraw
+	AllowDeposit        bool           `json:"D"` // Allow deposit
+	WalletBalanceChange []OutboundItem `json:"B"` // Wallet balance change
+}
+
+type OutboundItem struct {
+	Coin              string `json:"a"` // Coin name
+	AvailableBalance  string `json:"f"` // Available balance
+	ReservedForOrders string `json:"l"` // Reserved for orders
 }

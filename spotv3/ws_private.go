@@ -13,16 +13,20 @@ import (
 
 type WsPrivate struct {
 	ws     *WsClient
+	s      *WsSection
 	key    string
 	secret string
+	ready  bool
 }
 
 func NewWsPrivate(key string, secret string) *WsPrivate {
-	return &WsPrivate{
+	o := &WsPrivate{
 		ws:     NewWsClient("wss://stream.bybit.com/spot/private/v3"),
 		key:    key,
 		secret: secret,
 	}
+	o.s = NewWsSection(o)
+	return o
 }
 
 func (o *WsPrivate) Shutdown() {
@@ -47,15 +51,38 @@ func (o *WsPrivate) Connected() bool {
 	return o.ws.Connected()
 }
 
+func (o *WsPrivate) Ready() bool {
+	return o.ready
+}
+
 func (o *WsPrivate) Run() {
 	o.ws.SetOnConnected(func() {
 		o.auth()
 	})
+	o.ws.SetOnDisconnected(func() {
+		o.ready = false
+	})
+	o.ws.SetOnAuth(func(ok bool) {
+		o.ready = ok
+		o.s.subscribeAll()
+	})
 	o.ws.Run()
 }
 
-func (o *WsPrivate) SetOnAuth(onAuth func(bool)) {
-	o.ws.SetOnAuth(onAuth)
+func (o *WsPrivate) Order() *WsExecutor[[]OrderShot] {
+	return NewWsExecutor[[]OrderShot](o.s, Subscription{Topic: TopicOrder})
+}
+
+func (o *WsPrivate) StopOrder() *WsExecutor[[]StopOrderShot] {
+	return NewWsExecutor[[]StopOrderShot](o.s, Subscription{Topic: TopicStopOrder})
+}
+
+func (o *WsPrivate) Ticket() *WsExecutor[[]TicketShot] {
+	return NewWsExecutor[[]TicketShot](o.s, Subscription{Topic: TopicTicket})
+}
+
+func (o *WsPrivate) Outbound() *WsExecutor[[]OutboundShot] {
+	return NewWsExecutor[[]OutboundShot](o.s, Subscription{Topic: TopicOutbound})
 }
 
 func (o *WsPrivate) auth() {
@@ -78,30 +105,10 @@ func (o *WsPrivate) auth() {
 	o.ws.Send(cmd)
 }
 
-func (o *WsPrivate) SubscribeOutbound() bool {
-	return o.ws.Subscribe(Subscription{Topic: TopicOutbound})
-}
-func (o *WsPrivate) UnsubscribeOutbound() bool {
-	return o.ws.Unsubscribe(Subscription{Topic: TopicOutbound})
+func (o *WsPrivate) subscribe(topic string) bool {
+	return o.ws.subscribe(topic)
 }
 
-func (o *WsPrivate) SubscribeOrder() bool {
-	return o.ws.Subscribe(Subscription{Topic: TopicOrder})
-}
-func (o *WsPrivate) UnsubscribeOrder() bool {
-	return o.ws.Unsubscribe(Subscription{Topic: TopicOrder})
-}
-
-func (o *WsPrivate) SubscribeStopOrder() bool {
-	return o.ws.Subscribe(Subscription{Topic: TopicStopOrder})
-}
-func (o *WsPrivate) UnsubscribeStopOrder() bool {
-	return o.ws.Unsubscribe(Subscription{Topic: TopicStopOrder})
-}
-
-func (o *WsPrivate) SubscribeTicket() bool {
-	return o.ws.Subscribe(Subscription{Topic: TopicTicket})
-}
-func (o *WsPrivate) UnsubscribeTicket() bool {
-	return o.ws.Unsubscribe(Subscription{Topic: TopicTicket})
+func (o *WsPrivate) unsubscribe(topic string) bool {
+	return o.ws.unsubscribe(topic)
 }
