@@ -10,9 +10,10 @@ import (
 )
 
 type WsClient struct {
-	log    *ulog.Log
-	ws     *transport.WsClient
-	onAuth func(bool)
+	log            *ulog.Log
+	ws             *transport.WsClient
+	onAuth         func(bool)
+	onTopicMessage func(TopicMessage) error
 }
 
 func NewWsClient(url string) *WsClient {
@@ -68,6 +69,10 @@ func (o *WsClient) SetOnAuth(onAuth func(bool)) {
 	o.onAuth = onAuth
 }
 
+func (o *WsClient) SetOnTopicMessage(onTopicMessage func(TopicMessage) error) {
+	o.onTopicMessage = onTopicMessage
+}
+
 func (o *WsClient) Run() {
 	o.log.Debug("run")
 	o.ws.SetOnMessage(o.processMessage)
@@ -78,14 +83,35 @@ func (o *WsClient) Connected() bool {
 	return o.ws.Connected()
 }
 
+func (o *WsClient) send(cmd any) bool {
+	return o.ws.Send(cmd)
+}
+
+func (o *WsClient) subscribe(topic string) bool {
+	o.log.Infof("subscribe: topic[%s]", topic)
+	return o.send(Request{
+		Name: "subscribe",
+		Args: []string{topic},
+	})
+}
+
+func (o *WsClient) unsubscribe(topic string) bool {
+	o.log.Infof("unsubscribe: topic[%s]", topic)
+	return o.send(Request{
+		Name: "unsubscribe",
+		Args: []string{topic},
+	})
+}
+
+// /////
 func (o *WsClient) Send(cmd any) bool {
 	return o.ws.Send(cmd)
 }
 
 func (o *Subscription) Request(operation string) Request {
 	return Request{
-		Operation: operation,
-		Args:      []string{o.String()},
+		Name: operation,
+		Args: []string{o.String()},
 	}
 }
 
@@ -99,12 +125,16 @@ func (o *WsClient) Unsubscribe(s Subscription) bool {
 	return o.ws.Send(s.Request("unsubscribe"))
 }
 
+/////////
+
 func (o *WsClient) processMessage(name string, msg []byte) {
 	v := transport.JsonUnmarshal[Responce](msg)
 	if v.IsTopic() {
-		s := strings.Split(v.Topic, ".")
-		name := s[0]
-		o.processTopic(TopicName(name), v.Type == "delta", msg)
+		o.processTopic(TopicMessage{
+			Topic: v.Topic,
+			Delta: v.Type == "delta",
+			Bin:   msg,
+		})
 	} else {
 		o.processResponce(v)
 	}
@@ -113,7 +143,7 @@ func (o *WsClient) processMessage(name string, msg []byte) {
 func (o *WsClient) processResponce(r Responce) {
 	name := r.RetMsg
 	if name == "" {
-		name = r.Operation
+		name = r.Name
 	}
 	if !r.Success && name != "pong" {
 		o.log.Error(r.RetMsg)
@@ -136,50 +166,65 @@ func (o *WsClient) processResponce(r Responce) {
 	}
 }
 
-func (o *WsClient) processTopic(topic TopicName, delta bool, msg []byte) {
-	switch topic {
+func (o *WsClient) processTopic(topic TopicMessage) {
+	if o.onTopicMessage != nil {
+		err := o.onTopicMessage(topic)
+		if err != nil {
+			o.log.Error("process topic:", err)
+		}
+		return
+	}
+	s := strings.Split(topic.Topic, ".")
+	name := s[0]
+	switch TopicName(name) {
 	// public
 	case TopicDepth:
-		transport.JsonUnmarshal[Topic[DepthDelta]](msg)
+		transport.JsonUnmarshal[Topic[DepthShot]](topic.Bin)
 	case TopicTrade:
-		transport.JsonUnmarshal[Topic[TradeDelta]](msg)
+		transport.JsonUnmarshal[Topic[TradeShot]](topic.Bin)
 	case TopicKline:
-		transport.JsonUnmarshal[Topic[KlineDelta]](msg)
+		transport.JsonUnmarshal[Topic[KlineShot]](topic.Bin)
 	case TopicTickers:
-		transport.JsonUnmarshal[Topic[TickersDelta]](msg)
+		transport.JsonUnmarshal[Topic[TickersShot]](topic.Bin)
 	case TopicBookTicker:
-		transport.JsonUnmarshal[Topic[BookTickerDelta]](msg)
+		transport.JsonUnmarshal[Topic[BookTickerShot]](topic.Bin)
 	// private
 	case TopicOutbound:
-		transport.JsonUnmarshal[Topic[[]OutboundSnapshot]](msg)
+		transport.JsonUnmarshal[Topic[[]OutboundSnapshot]](topic.Bin)
 	case TopicOrder:
-		transport.JsonUnmarshal[Topic[[]OrderSnapshot]](msg)
+		transport.JsonUnmarshal[Topic[[]OrderSnapshot]](topic.Bin)
 	case TopicStopOrder:
-		transport.JsonUnmarshal[Topic[[]StopOrderSnapshot]](msg)
+		transport.JsonUnmarshal[Topic[[]StopOrderSnapshot]](topic.Bin)
 	case TopicTicket:
-		transport.JsonUnmarshal[Topic[[]TicketSnapshot]](msg)
+		transport.JsonUnmarshal[Topic[[]TicketSnapshot]](topic.Bin)
 	default:
-		moon.Panic("unknown topic:", topic)
+		moon.Panic("unknown topic:", topic.Topic)
 	}
 }
 
 type Request struct {
-	Operation string   `json:"op"`
-	Args      []string `json:"args,omitempty"`
-	ReqID     string   `json:"req_id,omitempty"`
+	Name  string   `json:"op"`
+	Args  []string `json:"args,omitempty"`
+	ReqID string   `json:"req_id,omitempty"`
 }
 
 type Responce struct {
-	Operation string `json:"op"`
-	Args      []any  `json:"args"`
-	ReqID     string `json:"req_id"`
-	ConnID    string `json:"conn_id"`
-	Success   bool   `json:"success"`
-	RetMsg    string `json:"ret_msg"`
-	Topic     string `json:"topic"`
-	Type      string `json:"type"`
+	Name    string `json:"op"`
+	Args    []any  `json:"args"`
+	ReqID   string `json:"req_id"`
+	ConnID  string `json:"conn_id"`
+	Success bool   `json:"success"`
+	RetMsg  string `json:"ret_msg"`
+	Topic   string `json:"topic"`
+	Type    string `json:"type"`
 }
 
 func (o *Responce) IsTopic() bool {
 	return o.Topic != ""
+}
+
+type TopicMessage struct {
+	Topic string
+	Delta bool
+	Bin   []byte
 }

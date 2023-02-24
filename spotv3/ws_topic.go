@@ -23,14 +23,14 @@ type Topic[T any] struct {
 	Timestamp uint64 `json:"ts"`
 }
 
-type DepthDelta struct {
+type DepthShot struct {
 	Timestamp uint64     `json:"t"` // Timestamp (last update time of the order book)
 	Symbol    string     `json:"s"` // Trading pair
 	Bids      [][]string `json:"b"` // Best bid price, quantity
 	Asks      [][]string `json:"a"` // Best ask price, quantity
 }
 
-type TradeDelta struct {
+type TradeShot struct {
 	TradeID   string `json:"v"` // Trade ID
 	Timestamp uint64 `json:"t"` // Timestamp (trading time in the match box)
 	Price     string `json:"p"` // Price
@@ -38,7 +38,7 @@ type TradeDelta struct {
 	M         bool   `json:"m"` // True indicates buy side is taker, false indicates sell side is taker
 }
 
-type KlineDelta struct {
+type KlineShot struct {
 	Timestamp     uint64 `json:"t"` // Starting time
 	Symbol        string `json:"s"` // Trading pair
 	ClosePrice    string `json:"c"` // Close price
@@ -48,7 +48,7 @@ type KlineDelta struct {
 	TradingVolume string `json:"v"` // Trading volume
 }
 
-type TickersDelta struct {
+type TickersShot struct {
 	Timestamp          uint64 `json:"t"`  // Starting time
 	Symbol             string `json:"s"`  // Trading pair
 	OpenPrice          string `json:"o"`  // Open price
@@ -60,7 +60,7 @@ type TickersDelta struct {
 	Change             string `json:"m"`  // Change
 }
 
-type BookTickerDelta struct {
+type BookTickerShot struct {
 	Symbol       string `json:"s"`  // Trading pair
 	BestBidPrice string `json:"bp"` // Best bid price
 	BidQuantity  string `json:"bq"` // Bid quantity
