@@ -11,71 +11,71 @@ type WsPublic struct {
 
 func NewWsPublic() *WsPublic {
 	return &WsPublic{
-		ws: NewWsClient("public", "wss://stream.bybit.com/spot/public/v3"),
+		ws: NewWsClient("wss://stream.bybit.com/spot/public/v3"),
 	}
 }
 
-func (this *WsPublic) Shutdown() {
-	this.ws.Shutdown()
+func (o *WsPublic) Shutdown() {
+	o.ws.Shutdown()
 }
 
-func (this *WsPublic) Conf() *transport.WsConf {
-	return this.ws.Conf()
+func (o *WsPublic) Conf() *transport.WsConf {
+	return o.ws.Conf()
 }
 
-func (this *WsPublic) WithLog(log *ulog.Log) *WsPublic {
-	this.ws.WithLog(log)
-	return this
+func (o *WsPublic) WithLog(log *ulog.Log) *WsPublic {
+	o.ws.WithLog(log)
+	return o
 }
 
-func (this *WsPublic) WithProxy(proxy string) *WsPublic {
-	this.Conf().SetProxy(proxy)
-	return this
+func (o *WsPublic) WithProxy(proxy string) *WsPublic {
+	o.Conf().SetProxy(proxy)
+	return o
 }
 
-func (this *WsPublic) Connected() bool {
-	return this.ws.Connected()
+func (o *WsPublic) Connected() bool {
+	return o.ws.Connected()
 }
 
-func (this *WsPublic) Run() {
-	this.ws.Run()
+func (o *WsPublic) Run() {
+	o.ws.Run()
 }
 
-func (this *WsPublic) SetOnConnected(onConnected func()) {
-	this.ws.SetOnConnected(onConnected)
+func (o *WsPublic) SetOnConnected(onConnected func()) {
+	o.ws.SetOnConnected(onConnected)
 }
 
-func (this *WsPublic) SubscribeDepth(symbol string) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicDepth, Interval: "40", Symbol: &symbol})
+func (o *WsPublic) SubscribeDepth(symbol string) bool {
+	return o.ws.Subscribe(Subscription{Topic: TopicDepth, Interval: "40", Symbol: symbol})
 }
-func (this *WsPublic) UnsubscribeDepth(symbol string) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicDepth, Interval: "40", Symbol: &symbol})
-}
-
-func (this *WsPublic) SubscribeTrade(symbol string) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicTrade, Symbol: &symbol})
-}
-func (this *WsPublic) UnsubscribeTrade(symbol string) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicTrade, Symbol: &symbol})
+func (o *WsPublic) UnsubscribeDepth(symbol string) bool {
+	return o.ws.Unsubscribe(Subscription{Topic: TopicDepth, Interval: "40", Symbol: symbol})
 }
 
-func (this *WsPublic) SubscribeKline(symbol string, interval KlineInterval) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: &symbol})
+func (o *WsPublic) SubscribeTrade(symbol string) bool {
+	return o.ws.Subscribe(Subscription{Topic: TopicTrade, Symbol: symbol})
 }
-func (this *WsPublic) UnsubscribeKline(symbol string, interval KlineInterval) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: &symbol})
-}
-
-func (this *WsPublic) SubscribeTickers(symbol string) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicTickers, Symbol: &symbol})
-}
-func (this *WsPublic) UnsubscribeTickers(symbol string) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicTickers, Symbol: &symbol})
+func (o *WsPublic) UnsubscribeTrade(symbol string) bool {
+	return o.ws.Unsubscribe(Subscription{Topic: TopicTrade, Symbol: symbol})
 }
 
-func (this *WsPublic) SubscribeBookTicker(symbol string) bool {
-	return this.ws.Subscribe(Subscription{Topic: TopicBookTicker, Symbol: &symbol})
+func (o *WsPublic) SubscribeKline(symbol string, interval KlineInterval) bool {
+	return o.ws.Subscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: symbol})
 }
-func (this *WsPublic) UnsubscribeBookTicker(symbol string) bool {
-	return this.ws.Unsubscribe(Subscription{Topic: TopicBookTicker, Symbol: &symbol})
+func (o *WsPublic) UnsubscribeKline(symbol string, interval KlineInterval) bool {
+	return o.ws.Unsubscribe(Subscription{Topic: TopicKline, Interval: string(interval), Symbol: symbol})
+}
+
+func (o *WsPublic) SubscribeTickers(symbol string) bool {
+	return o.ws.Subscribe(Subscription{Topic: TopicTickers, Symbol: symbol})
+}
+func (o *WsPublic) UnsubscribeTickers(symbol string) bool {
+	return o.ws.Unsubscribe(Subscription{Topic: TopicTickers, Symbol: symbol})
+}
+
+func (o *WsPublic) SubscribeBookTicker(symbol string) bool {
+	return o.ws.Subscribe(Subscription{Topic: TopicBookTicker, Symbol: symbol})
+}
+func (o *WsPublic) UnsubscribeBookTicker(symbol string) bool {
+	return o.ws.Unsubscribe(Subscription{Topic: TopicBookTicker, Symbol: symbol})
 }
