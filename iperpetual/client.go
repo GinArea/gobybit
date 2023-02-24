@@ -16,20 +16,20 @@ func NewClient(client *transport.Client) *Client {
 	return &Client{c: client}
 }
 
-func (this *Client) Transport() *transport.Client {
-	return this.c
+func (o *Client) Transport() *transport.Client {
+	return o.c
 }
 
-func (this *Client) GetPublic(path string, param any, ret any) error {
-	return forwardError(this.c.GetPublic(this.urlPublic(path), param, ret))
+func (o *Client) GetPublic(path string, param any, ret any) error {
+	return forwardError(o.c.GetPublic(o.urlPublic(path), param, ret))
 }
 
-func (this *Client) Get(path string, param any, ret any) error {
-	return forwardError(this.c.Get(this.urlPrivate(path), param, ret))
+func (o *Client) Get(path string, param any, ret any) error {
+	return forwardError(o.c.Get(o.urlPrivate(path), param, ret))
 }
 
-func (this *Client) Post(path string, param any, ret any) error {
-	return forwardError(this.c.Post(this.urlPrivate(path), param, ret))
+func (o *Client) Post(path string, param any, ret any) error {
+	return forwardError(o.c.Post(o.urlPrivate(path), param, ret))
 }
 
 func GetPublic[T any](c *Client, path string, param any) (T, error) {
@@ -50,14 +50,14 @@ func Post[T any](c *Client, path string, param any) (T, error) {
 	return resp.Result, err
 }
 
-func (this *Client) url(access, path string) string {
+func (o *Client) url(access, path string) string {
 	return fmt.Sprintf("v2/%s/%s", access, path)
 }
 
-func (this *Client) urlPublic(path string) string {
-	return this.url("public", path)
+func (o *Client) urlPublic(path string) string {
+	return o.url("public", path)
 }
 
-func (this *Client) urlPrivate(path string) string {
-	return this.url("private", path)
+func (o *Client) urlPrivate(path string) string {
+	return o.url("private", path)
 }

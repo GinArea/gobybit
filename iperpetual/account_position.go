@@ -13,11 +13,11 @@ type GetPosition struct {
 	Symbol *string `param:"symbol"`
 }
 
-func (this GetPosition) Do(client *Client) ([]PositionItem, error) {
-	if this.Symbol == nil {
-		return Get[[]PositionItem](client, "position/list", this)
+func (o GetPosition) Do(client *Client) ([]PositionItem, error) {
+	if o.Symbol == nil {
+		return Get[[]PositionItem](client, "position/list", o)
 	}
-	r, err := Get[PositionItem](client, "position/list", this)
+	r, err := Get[PositionItem](client, "position/list", o)
 	return []PositionItem{r}, err
 }
 
@@ -68,12 +68,12 @@ type PositionItem struct {
 	IsValid bool         `json:"is_valid"`
 }
 
-func (this *Client) GetPosition(symbol *string) ([]PositionItem, error) {
-	return GetPosition{Symbol: symbol}.Do(this)
+func (o *Client) GetPosition(symbol *string) ([]PositionItem, error) {
+	return GetPosition{Symbol: symbol}.Do(o)
 }
 
-func (this *Client) GetOnePosition(symbol string) (i PositionItem, err error) {
-	ret, err := GetPosition{Symbol: &symbol}.Do(this)
+func (o *Client) GetOnePosition(symbol string) (i PositionItem, err error) {
+	ret, err := GetPosition{Symbol: &symbol}.Do(o)
 	if err == nil {
 		if len(ret) == 1 {
 			i = ret[0]
@@ -84,8 +84,8 @@ func (this *Client) GetOnePosition(symbol string) (i PositionItem, err error) {
 	return
 }
 
-func (this *Client) GetAllPositions() ([]PositionItem, error) {
-	return GetPosition{}.Do(this)
+func (o *Client) GetAllPositions() ([]PositionItem, error) {
+	return GetPosition{}.Do(o)
 }
 
 // Change Margin (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-changemargin)
@@ -94,12 +94,12 @@ type ChangeMargin struct {
 	Margin string `param:"margin"`
 }
 
-func (this ChangeMargin) Do(client *Client) (float64, error) {
-	return Post[float64](client, "position/change-position-margin", this)
+func (o ChangeMargin) Do(client *Client) (float64, error) {
+	return Post[float64](client, "position/change-position-margin", o)
 }
 
-func (this *Client) ChangeMargin(v ChangeMargin) (float64, error) {
-	return v.Do(this)
+func (o *Client) ChangeMargin(v ChangeMargin) (float64, error) {
+	return v.Do(o)
 }
 
 // Set Trading-Stop (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-tradingstop)
@@ -115,8 +115,8 @@ type SetTradingStop struct {
 	TpSize            *int          `param:"tp_size"`
 }
 
-func (this SetTradingStop) Do(client *Client) (SetTradingStopResult, error) {
-	return Post[SetTradingStopResult](client, "position/trading-stop", this)
+func (o SetTradingStop) Do(client *Client) (SetTradingStopResult, error) {
+	return Post[SetTradingStopResult](client, "position/trading-stop", o)
 }
 
 type SetTradingStopExt struct {
@@ -133,8 +133,8 @@ type SetTradingStopResult struct {
 	ExtFields     SetTradingStopExt `json:"ext_fields"`
 }
 
-func (this *Client) SetTradingStop(v SetTradingStop) (SetTradingStopResult, error) {
-	return v.Do(this)
+func (o *Client) SetTradingStop(v SetTradingStop) (SetTradingStopResult, error) {
+	return v.Do(o)
 }
 
 // Set Leverage (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-setleverage)
@@ -144,12 +144,12 @@ type SetLeverage struct {
 	LeverageOnly *bool  `param:"leverage_only"`
 }
 
-func (this SetLeverage) Do(client *Client) (int, error) {
-	return Post[int](client, "position/leverage/save", this)
+func (o SetLeverage) Do(client *Client) (int, error) {
+	return Post[int](client, "position/leverage/save", o)
 }
 
-func (this *Client) SetLeverage(v SetLeverage) (int, error) {
-	return v.Do(this)
+func (o *Client) SetLeverage(v SetLeverage) (int, error) {
+	return v.Do(o)
 }
 
 // Full/Partial Position TP/SL Switch (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-switchmode)
@@ -160,16 +160,16 @@ type TpSlModeSwitch struct {
 	TpSlMode *TpSlMode `param:"tp_sl_mode"`
 }
 
-func (this TpSlModeSwitch) Do(client *Client) (TpSlMode, error) {
+func (o TpSlModeSwitch) Do(client *Client) (TpSlMode, error) {
 	type result struct {
 		TpSlMode TpSlMode `json:"tp_sl_mode"`
 	}
-	r, err := Post[result](client, "tpsl/switch-mode", this)
+	r, err := Post[result](client, "tpsl/switch-mode", o)
 	return r.TpSlMode, err
 }
 
-func (this *Client) TpSlModeSwitch(v TpSlModeSwitch) (TpSlMode, error) {
-	return v.Do(this)
+func (o *Client) TpSlModeSwitch(v TpSlModeSwitch) (TpSlMode, error) {
+	return v.Do(o)
 }
 
 // Cross/Isolated Margin Switch (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-marginswitch)
@@ -182,13 +182,13 @@ type MarginSwitch struct {
 	SellLeverage int    `param:"sell_leverage"`
 }
 
-func (this MarginSwitch) Do(client *Client) error {
-	_, err := Post[struct{}](client, "position/switch-isolated", this)
+func (o MarginSwitch) Do(client *Client) error {
+	_, err := Post[struct{}](client, "position/switch-isolated", o)
 	return err
 }
 
-func (this *Client) MarginSwitch(v MarginSwitch) error {
-	return v.Do(this)
+func (o *Client) MarginSwitch(v MarginSwitch) error {
+	return v.Do(o)
 }
 
 // Get User Trade Records (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-usertraderecords)
@@ -203,8 +203,8 @@ type GetTradeRecords struct {
 	Order     *SortOrder `param:"order"`
 }
 
-func (this GetTradeRecords) Do(client *Client) (TradeRecords, error) {
-	return Get[TradeRecords](client, "execution/list", this)
+func (o GetTradeRecords) Do(client *Client) (TradeRecords, error) {
+	return Get[TradeRecords](client, "execution/list", o)
 }
 
 type TradeRecord struct {
@@ -237,8 +237,8 @@ type TradeRecords struct {
 	TradeRecords []TradeRecord `json:"trade_list"`
 }
 
-func (this *Client) GetTradeRecords(v GetTradeRecords) (TradeRecords, error) {
-	return v.Do(this)
+func (o *Client) GetTradeRecords(v GetTradeRecords) (TradeRecords, error) {
+	return v.Do(o)
 }
 
 // Closed Profit and Loss (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-closedprofitandloss)
@@ -251,8 +251,8 @@ type ClosedProfitLoss struct {
 	Limit     *int      `param:"limit"`
 }
 
-func (this ClosedProfitLoss) Do(client *Client) (ClosedProfitLossResult, error) {
-	return Get[ClosedProfitLossResult](client, "trade/closed-pnl/list", this)
+func (o ClosedProfitLoss) Do(client *Client) (ClosedProfitLossResult, error) {
+	return Get[ClosedProfitLossResult](client, "trade/closed-pnl/list", o)
 }
 
 type ClosedData struct {
@@ -281,6 +281,6 @@ type ClosedProfitLossResult struct {
 	Data        []ClosedData `json:"data"`
 }
 
-func (this *Client) ClosedProfitLoss(v ClosedProfitLoss) (ClosedProfitLossResult, error) {
-	return v.Do(this)
+func (o *Client) ClosedProfitLoss(v ClosedProfitLoss) (ClosedProfitLossResult, error) {
+	return v.Do(o)
 }

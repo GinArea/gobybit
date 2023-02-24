@@ -10,39 +10,39 @@ type WsSection struct {
 	subscriptions Subscriptions
 }
 
-func (this *WsSection) init(client *WsClient) {
-	this.ws = client
-	this.subscriptions = make(Subscriptions)
+func (o *WsSection) init(client *WsClient) {
+	o.ws = client
+	o.subscriptions = make(Subscriptions)
 }
 
-func (this *WsSection) subscribe(topic string, f SubscriptionFunc) {
-	this.mutex.Lock()
-	defer this.mutex.Unlock()
-	if this.ws.Ready() {
-		this.ws.subscribe(topic)
+func (o *WsSection) subscribe(topic string, f SubscriptionFunc) {
+	o.mutex.Lock()
+	defer o.mutex.Unlock()
+	if o.ws.Ready() {
+		o.ws.subscribe(topic)
 	}
-	this.subscriptions[topic] = f
+	o.subscriptions[topic] = f
 }
 
-func (this *WsSection) unsubscribe(topic string) {
-	this.mutex.Lock()
-	defer this.mutex.Unlock()
-	if this.ws.Ready() {
-		this.ws.unsubscribe(topic)
+func (o *WsSection) unsubscribe(topic string) {
+	o.mutex.Lock()
+	defer o.mutex.Unlock()
+	if o.ws.Ready() {
+		o.ws.unsubscribe(topic)
 	}
-	delete(this.subscriptions, topic)
+	delete(o.subscriptions, topic)
 }
 
-func (this *WsSection) subscribeAll() {
-	this.mutex.Lock()
-	defer this.mutex.Unlock()
-	for topic, _ := range this.subscriptions {
-		this.ws.subscribe(topic)
+func (o *WsSection) subscribeAll() {
+	o.mutex.Lock()
+	defer o.mutex.Unlock()
+	for topic, _ := range o.subscriptions {
+		o.ws.subscribe(topic)
 	}
 }
 
-func (this *WsSection) processTopic(m TopicMessage) (ok bool, err error) {
-	f, _ := this.subscriptions[m.Topic]
+func (o *WsSection) processTopic(m TopicMessage) (ok bool, err error) {
+	f, _ := o.subscriptions[m.Topic]
 	ok = f != nil
 	if ok {
 		err = f(m.Bin, m.Delta)

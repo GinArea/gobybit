@@ -8,13 +8,13 @@ type Subscription struct {
 	Symbol   string
 }
 
-func (this *Subscription) String() string {
-	s := []string{string(this.Topic)}
-	if this.Interval != "" {
-		s = append(s, this.Interval)
+func (o *Subscription) String() string {
+	s := []string{string(o.Topic)}
+	if o.Interval != "" {
+		s = append(s, o.Interval)
 	}
-	if this.Symbol != "" {
-		s = append(s, this.Symbol)
+	if o.Symbol != "" {
+		s = append(s, o.Symbol)
 	}
 	return ufmt.JoinSliceWith(".", s)
 }

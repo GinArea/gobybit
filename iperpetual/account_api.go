@@ -8,8 +8,8 @@ import (
 type GetKeyInfo struct {
 }
 
-func (this GetKeyInfo) Do(client *Client) ([]KeyInfo, error) {
-	return Get[[]KeyInfo](client, "account/api-key", this)
+func (o GetKeyInfo) Do(client *Client) ([]KeyInfo, error) {
+	return Get[[]KeyInfo](client, "account/api-key", o)
 }
 
 type KeyInfo struct {
@@ -28,6 +28,6 @@ type KeyInfo struct {
 	AffiliateID   int       `json:"affiliate_id"`
 }
 
-func (this *Client) GetKeyInfo() ([]KeyInfo, error) {
-	return GetKeyInfo{}.Do(this)
+func (o *Client) GetKeyInfo() ([]KeyInfo, error) {
+	return GetKeyInfo{}.Do(o)
 }

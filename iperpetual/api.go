@@ -2,9 +2,9 @@
 package iperpetual
 
 // Server Time (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-servertime)
-func (this *Client) ServerTime() (string, error) {
+func (o *Client) ServerTime() (string, error) {
 	resp := &Response[struct{}]{}
-	err := this.GetPublic("time", nil, resp)
+	err := o.GetPublic("time", nil, resp)
 	return resp.TimeNow, err
 }
 
@@ -19,8 +19,8 @@ type Announcement struct {
 	CreatedAt string `json:"created_at"`
 }
 
-func (this *Client) Announcement() ([]Announcement, error) {
+func (o *Client) Announcement() ([]Announcement, error) {
 	resp := &Response[[]Announcement]{}
-	err := this.GetPublic("announcement", nil, resp)
+	err := o.GetPublic("announcement", nil, resp)
 	return resp.Result, err
 }

@@ -23,30 +23,30 @@ func NewWsPrivate(client *WsClient, key string, secret string) *WsPrivate {
 	return c
 }
 
-func (this WsPrivate) Position() *WsExecutor[[]PositionShot] {
-	return NewWsExecutor[[]PositionShot](&this.WsSection, Subscription{Topic: TopicPosition})
+func (o WsPrivate) Position() *WsExecutor[[]PositionShot] {
+	return NewWsExecutor[[]PositionShot](&o.WsSection, Subscription{Topic: TopicPosition})
 }
 
-func (this WsPrivate) Execution() *WsExecutor[[]ExecutionShot] {
-	return NewWsExecutor[[]ExecutionShot](&this.WsSection, Subscription{Topic: TopicExecution})
+func (o WsPrivate) Execution() *WsExecutor[[]ExecutionShot] {
+	return NewWsExecutor[[]ExecutionShot](&o.WsSection, Subscription{Topic: TopicExecution})
 }
 
-func (this WsPrivate) Order() *WsExecutor[[]OrderShot] {
-	return NewWsExecutor[[]OrderShot](&this.WsSection, Subscription{Topic: TopicOrder})
+func (o WsPrivate) Order() *WsExecutor[[]OrderShot] {
+	return NewWsExecutor[[]OrderShot](&o.WsSection, Subscription{Topic: TopicOrder})
 }
 
-func (this WsPrivate) StopOrder() *WsExecutor[[]StopOrderShot] {
-	return NewWsExecutor[[]StopOrderShot](&this.WsSection, Subscription{Topic: TopicStopOrder})
+func (o WsPrivate) StopOrder() *WsExecutor[[]StopOrderShot] {
+	return NewWsExecutor[[]StopOrderShot](&o.WsSection, Subscription{Topic: TopicStopOrder})
 }
 
-func (this WsPrivate) Wallet() *WsExecutor[[]WalletShot] {
-	return NewWsExecutor[[]WalletShot](&this.WsSection, Subscription{Topic: TopicWallet})
+func (o WsPrivate) Wallet() *WsExecutor[[]WalletShot] {
+	return NewWsExecutor[[]WalletShot](&o.WsSection, Subscription{Topic: TopicWallet})
 }
 
-func (this *WsPrivate) auth() {
+func (o *WsPrivate) auth() {
 	expires := time.Now().Unix()*1000 + 10000
 	req := fmt.Sprintf("GET/realtime%d", expires)
-	sig := hmac.New(sha256.New, []byte(this.secret))
+	sig := hmac.New(sha256.New, []byte(o.secret))
 	sig.Write([]byte(req))
 	signature := hex.EncodeToString(sig.Sum(nil))
 	cmd := struct {
@@ -55,10 +55,10 @@ func (this *WsPrivate) auth() {
 	}{
 		Name: "auth",
 		Args: []any{
-			this.key,
+			o.key,
 			expires,
 			signature,
 		},
 	}
-	this.ws.send(cmd)
+	o.ws.send(cmd)
 }

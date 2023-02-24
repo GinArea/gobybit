@@ -11,23 +11,23 @@ func NewWsExecutor[T any](section *WsSection, subscription Subscription) *WsExec
 	return e
 }
 
-func (this *WsExecutor[T]) Init(section *WsSection, subscription Subscription) {
-	this.section = section
-	this.topic = subscription.String()
+func (o *WsExecutor[T]) Init(section *WsSection, subscription Subscription) {
+	o.section = section
+	o.topic = subscription.String()
 }
 
-func (this *WsExecutor[T]) Subscribe(onShot func(T)) {
-	this.section.subscribe(this.topic, func(m []byte, delta bool) error {
+func (o *WsExecutor[T]) Subscribe(onShot func(T)) {
+	o.section.subscribe(o.topic, func(m []byte, delta bool) error {
 		return WsFunc(m, onShot)
 	})
 }
 
-func (this *WsExecutor[T]) Unsubscribe() {
-	this.section.unsubscribe(this.topic)
+func (o *WsExecutor[T]) Unsubscribe() {
+	o.section.unsubscribe(o.topic)
 }
 
-func (this *WsExecutor[T]) Instant() *WsInstant[T] {
-	return NewWsInstant[T](this)
+func (o *WsExecutor[T]) Instant() *WsInstant[T] {
+	return NewWsInstant[T](o)
 }
 
 type WsDeltaExecutor[T any] struct {
@@ -40,15 +40,15 @@ func NewWsDeltaExecutor[T any](section *WsSection, subscription Subscription) *W
 	return e
 }
 
-func (this *WsDeltaExecutor[T]) SubscribeWithDelta(onShot func(T), onDelta func(Delta)) {
-	this.section.subscribe(this.topic, func(m []byte, delta bool) error {
+func (o *WsDeltaExecutor[T]) SubscribeWithDelta(onShot func(T), onDelta func(Delta)) {
+	o.section.subscribe(o.topic, func(m []byte, delta bool) error {
 		return WsFuncDelta(m, onShot, delta, onDelta)
 	})
 }
 
-func (this *WsDeltaExecutor[T]) Subscribe(onShot func(T)) {
+func (o *WsDeltaExecutor[T]) Subscribe(onShot func(T)) {
 	var current T
-	this.SubscribeWithDelta(func(shot T) {
+	o.SubscribeWithDelta(func(shot T) {
 		current = shot
 		onShot(current)
 	}, func(delta Delta) {
@@ -59,6 +59,6 @@ func (this *WsDeltaExecutor[T]) Subscribe(onShot func(T)) {
 	})
 }
 
-func (this *WsDeltaExecutor[T]) Instant() *WsInstant[T] {
-	return NewWsInstant[T](this)
+func (o *WsDeltaExecutor[T]) Instant() *WsInstant[T] {
+	return NewWsInstant[T](o)
 }

@@ -19,24 +19,24 @@ func NewWsInstant[T any](executor WsExecutorInterface[T]) *WsInstant[T] {
 	return i
 }
 
-func (this *WsInstant[T]) Empty() bool {
-	return this.v == nil
+func (o *WsInstant[T]) Empty() bool {
+	return o.v == nil
 }
 
-func (this *WsInstant[T]) Has() bool {
-	return !this.Empty()
+func (o *WsInstant[T]) Has() bool {
+	return !o.Empty()
 }
 
-func (this *WsInstant[T]) Value() T {
-	return *this.v
+func (o *WsInstant[T]) Value() T {
+	return *o.v
 }
 
-func (this *WsInstant[T]) OnUpdate(onUpdate func(T)) {
-	this.onUpdate = onUpdate
+func (o *WsInstant[T]) OnUpdate(onUpdate func(T)) {
+	o.onUpdate = onUpdate
 }
 
-func (this *WsInstant[T]) Unsubscribe() {
-	this.executor.Unsubscribe()
+func (o *WsInstant[T]) Unsubscribe() {
+	o.executor.Unsubscribe()
 }
 
 type WsExecutorInterface[T any] interface {

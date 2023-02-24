@@ -42,12 +42,12 @@ type LotSizeFilter struct {
 	PostOnlyMaxTradingQty transport.Float64 `json:"post_only_max_trading_qty"`
 }
 
-func (this *Client) QuerySymbol() ([]SymbolInfo, error) {
-	return GetPublic[[]SymbolInfo](this, "symbols", nil)
+func (o *Client) QuerySymbol() ([]SymbolInfo, error) {
+	return GetPublic[[]SymbolInfo](o, "symbols", nil)
 }
 
-func (this *Client) QuerySymbolNames() ([]string, error) {
-	result, err := this.QuerySymbol()
+func (o *Client) QuerySymbolNames() ([]string, error) {
+	result, err := o.QuerySymbol()
 	names := make([]string, len(result))
 	for n, s := range result {
 		names[n] = s.Name
@@ -60,8 +60,8 @@ type OrderBook struct {
 	Symbol string `param:"symbol"`
 }
 
-func (this OrderBook) Do(client *Client) ([]OrderBookItem, error) {
-	return GetPublic[[]OrderBookItem](client, "orderBook/L2", this)
+func (o OrderBook) Do(client *Client) ([]OrderBookItem, error) {
+	return GetPublic[[]OrderBookItem](client, "orderBook/L2", o)
 }
 
 type OrderBookItem struct {
@@ -71,8 +71,8 @@ type OrderBookItem struct {
 	Side   Side   `json:"side"`
 }
 
-func (this *Client) OrderBook(symbol string) ([]OrderBookItem, error) {
-	return OrderBook{Symbol: symbol}.Do(this)
+func (o *Client) OrderBook(symbol string) ([]OrderBookItem, error) {
+	return OrderBook{Symbol: symbol}.Do(o)
 }
 
 // Query Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querykline)
@@ -88,8 +88,8 @@ type QueryKline struct {
 	Limit    *int          `param:"limit"`
 }
 
-func (this QueryKline) Do(client *Client) ([]KlineItem, error) {
-	return GetPublic[[]KlineItem](client, "kline/list", this)
+func (o QueryKline) Do(client *Client) ([]KlineItem, error) {
+	return GetPublic[[]KlineItem](client, "kline/list", o)
 }
 
 type KlineItem struct {
@@ -104,8 +104,8 @@ type KlineItem struct {
 	Turnover string        `json:"turnover"`
 }
 
-func (this *Client) QueryKline(v QueryKline) ([]KlineItem, error) {
-	return v.Do(this)
+func (o *Client) QueryKline(v QueryKline) ([]KlineItem, error) {
+	return v.Do(o)
 }
 
 // Latest Information for Symbol (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-latestsymbolinfo)
@@ -113,8 +113,8 @@ type SymbolLatestInformation struct {
 	Symbol *string `param:"symbol"`
 }
 
-func (this SymbolLatestInformation) Do(client *Client) ([]LatestInformation, error) {
-	return GetPublic[[]LatestInformation](client, "tickers", this)
+func (o SymbolLatestInformation) Do(client *Client) ([]LatestInformation, error) {
+	return GetPublic[[]LatestInformation](client, "tickers", o)
 }
 
 type LatestInformation struct {
@@ -146,12 +146,12 @@ type LatestInformation struct {
 	DeliveryTime           string            `json:"delivery_time"`
 }
 
-func (this *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation, error) {
-	return SymbolLatestInformation{Symbol: symbol}.Do(this)
+func (o *Client) SymbolLatestInformation(symbol *string) ([]LatestInformation, error) {
+	return SymbolLatestInformation{Symbol: symbol}.Do(o)
 }
 
-func (this *Client) OneSymbolLatestInformation(symbol string) (i LatestInformation, err error) {
-	ret, err := this.SymbolLatestInformation(&symbol)
+func (o *Client) OneSymbolLatestInformation(symbol string) (i LatestInformation, err error) {
+	ret, err := o.SymbolLatestInformation(&symbol)
 	if err == nil {
 		if len(ret) == 1 {
 			i = ret[0]
@@ -171,8 +171,8 @@ type PublicTradingRecords struct {
 	Limit  *int   `param:"limit"`
 }
 
-func (this PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, error) {
-	return GetPublic[[]PublicTradingRecord](client, "trading-records", this)
+func (o PublicTradingRecords) Do(client *Client) ([]PublicTradingRecord, error) {
+	return GetPublic[[]PublicTradingRecord](client, "trading-records", o)
 }
 
 type PublicTradingRecord struct {
@@ -184,15 +184,15 @@ type PublicTradingRecord struct {
 	Time   string  `json:"time"`
 }
 
-func (this *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradingRecord, error) {
-	return v.Do(this)
+func (o *Client) PublicTradingRecords(v PublicTradingRecords) ([]PublicTradingRecord, error) {
+	return v.Do(o)
 }
 
 // Query Mark Price Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-markpricekline)
 //
 // Query mark price kline (like Query Kline but for mark price)
-func (this QueryKline) DoMark(client *Client) ([]MarkKlineItem, error) {
-	return GetPublic[[]MarkKlineItem](client, "mark-price-kline", this)
+func (o QueryKline) DoMark(client *Client) ([]MarkKlineItem, error) {
+	return GetPublic[[]MarkKlineItem](client, "mark-price-kline", o)
 }
 
 type MarkKlineItem struct {
@@ -205,15 +205,15 @@ type MarkKlineItem struct {
 	Close    int           `json:"close"`
 }
 
-func (this *Client) QueryMarkKline(v QueryKline) ([]MarkKlineItem, error) {
-	return v.DoMark(this)
+func (o *Client) QueryMarkKline(v QueryKline) ([]MarkKlineItem, error) {
+	return v.DoMark(o)
 }
 
 // Query Index Price Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-queryindexpricekline)
 //
 // Index price kline. Tracks BTC spot prices, with a frequency of every second
-func (this QueryKline) DoIndex(client *Client) ([]IndexKlineItem, error) {
-	return GetPublic[[]IndexKlineItem](client, "index-price-kline", this)
+func (o QueryKline) DoIndex(client *Client) ([]IndexKlineItem, error) {
+	return GetPublic[[]IndexKlineItem](client, "index-price-kline", o)
 }
 
 type IndexKlineItem struct {
@@ -226,17 +226,17 @@ type IndexKlineItem struct {
 	Close    string        `json:"close"`
 }
 
-func (this *Client) QueryIndexKline(v QueryKline) ([]IndexKlineItem, error) {
-	return v.DoIndex(this)
+func (o *Client) QueryIndexKline(v QueryKline) ([]IndexKlineItem, error) {
+	return v.DoIndex(o)
 }
 
 // Query Premium Index Kline (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-querypremiumindexkline)
 //
 // Premium index kline. Tracks the premium / discount of BTC perpetual contracts relative to the mark price per minute
-func (this QueryKline) DoPremium(client *Client) ([]IndexKlineItem, error) {
-	return GetPublic[[]IndexKlineItem](client, "premium-index-kline", this)
+func (o QueryKline) DoPremium(client *Client) ([]IndexKlineItem, error) {
+	return GetPublic[[]IndexKlineItem](client, "premium-index-kline", o)
 }
 
-func (this *Client) QueryPremiumKline(v QueryKline) ([]IndexKlineItem, error) {
-	return v.DoPremium(this)
+func (o *Client) QueryPremiumKline(v QueryKline) ([]IndexKlineItem, error) {
+	return v.DoPremium(o)
 }

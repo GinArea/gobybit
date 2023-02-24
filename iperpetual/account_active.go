@@ -62,12 +62,12 @@ type OrderCreated struct {
 	LastExecPrice transport.Float64 `json:"last_exec_price"`
 }
 
-func (this *PlaceActiveOrder) Do(client *Client) (OrderCreated, error) {
-	return Post[OrderCreated](client, "order/create", this)
+func (o *PlaceActiveOrder) Do(client *Client) (OrderCreated, error) {
+	return Post[OrderCreated](client, "order/create", o)
 }
 
-func (this *Client) PlaceActiveOrder(v PlaceActiveOrder) (OrderCreated, error) {
-	return v.Do(this)
+func (o *Client) PlaceActiveOrder(v PlaceActiveOrder) (OrderCreated, error) {
+	return v.Do(o)
 }
 
 // Get Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-getactive)
@@ -79,8 +79,8 @@ type OrderList struct {
 	Cursor      *string      `param:"cursor"`
 }
 
-func (this OrderList) Do(client *Client) (OrderListResult, error) {
-	return Get[OrderListResult](client, "order/list", this)
+func (o OrderList) Do(client *Client) (OrderListResult, error) {
+	return Get[OrderListResult](client, "order/list", o)
 }
 
 type OrderListResult struct {
@@ -95,8 +95,8 @@ type OrderItem struct {
 	PositionIdx PositionIdx `json:"position_idx"`
 }
 
-func (this *Client) OrderList(v OrderList) (OrderListResult, error) {
-	return v.Do(this)
+func (o *Client) OrderList(v OrderList) (OrderListResult, error) {
+	return v.Do(o)
 }
 
 // Cancel Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse_futures/#t-cancelactive)
@@ -106,16 +106,16 @@ type CancelOrder struct {
 	OrderLinkId *string `param:"order_link_id"`
 }
 
-func (this CancelOrder) Do(client *Client) (OrderCancelled, error) {
-	return Post[OrderCancelled](client, "order/cancel", this)
+func (o CancelOrder) Do(client *Client) (OrderCancelled, error) {
+	return Post[OrderCancelled](client, "order/cancel", o)
 }
 
 type OrderCancelled struct {
 	OrderCreated
 }
 
-func (this *Client) CancelOrder(v CancelOrder) (OrderCancelled, error) {
-	return v.Do(this)
+func (o *Client) CancelOrder(v CancelOrder) (OrderCancelled, error) {
+	return v.Do(o)
 }
 
 // Cancel All Active Orders (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-cancelallactive)
@@ -123,8 +123,8 @@ type CancelAllOrders struct {
 	Symbol string `param:"symbol"`
 }
 
-func (this CancelAllOrders) Do(client *Client) ([]CancelOrderItem, error) {
-	return Post[[]CancelOrderItem](client, "order/cancelAll", this)
+func (o CancelAllOrders) Do(client *Client) ([]CancelOrderItem, error) {
+	return Post[[]CancelOrderItem](client, "order/cancelAll", o)
 }
 
 type CancelOrderItem struct {
@@ -138,8 +138,8 @@ type CancelOrderItem struct {
 	OrderLinkID string      `оыщт:"order_link_id"`
 }
 
-func (this *Client) CancelAllOrders(symbol string) ([]CancelOrderItem, error) {
-	return CancelAllOrders{Symbol: symbol}.Do(this)
+func (o *Client) CancelAllOrders(symbol string) ([]CancelOrderItem, error) {
+	return CancelAllOrders{Symbol: symbol}.Do(o)
 }
 
 // Replace Active Order (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-replaceactive)
@@ -155,16 +155,16 @@ type ReplaceOrder struct {
 	SlTrigger   *TriggerPrice `param:"sl_trigger_by"`
 }
 
-func (this ReplaceOrder) Do(client *Client) (string, error) {
+func (o ReplaceOrder) Do(client *Client) (string, error) {
 	type result struct {
 		OrderID string `json:"order_id"`
 	}
-	r, err := Post[result](client, "order/replace", this)
+	r, err := Post[result](client, "order/replace", o)
 	return r.OrderID, err
 }
 
-func (this *Client) ReplaceOrder(v ReplaceOrder) (string, error) {
-	return v.Do(this)
+func (o *Client) ReplaceOrder(v ReplaceOrder) (string, error) {
+	return v.Do(o)
 }
 
 // Query Active Order (real-time) (https://bybit-exchange.github.io/docs/futuresV2/inverse/#t-queryactive)
@@ -177,16 +177,16 @@ type QueryOrder struct {
 	OrderLinkID *string `param:"order_link_id"`
 }
 
-func (this QueryOrder) OnlySymbol() bool {
-	return this.OrderID == nil && this.OrderLinkID == nil
+func (o QueryOrder) OnlySymbol() bool {
+	return o.OrderID == nil && o.OrderLinkID == nil
 }
 
 // When only symbol is passed, the response uses a different structure.
-func (this QueryOrder) Do(client *Client) ([]Order, error) {
-	if this.OnlySymbol() {
-		return Get[[]Order](client, "order", this)
+func (o QueryOrder) Do(client *Client) ([]Order, error) {
+	if o.OnlySymbol() {
+		return Get[[]Order](client, "order", o)
 	}
-	r, err := Get[Order](client, "order", this)
+	r, err := Get[Order](client, "order", o)
 	return []Order{r}, err
 }
 
@@ -203,12 +203,12 @@ type OrderExtFields struct {
 	XreqType string `json:"xreq_type"`
 }
 
-func (this *Client) QueryOrder(v QueryOrder) ([]Order, error) {
-	return v.Do(this)
+func (o *Client) QueryOrder(v QueryOrder) ([]Order, error) {
+	return v.Do(o)
 }
 
-func (this *Client) QueryOrderByID(symbol string, orderID string) (i Order, err error) {
-	ret, err := this.QueryOrder(QueryOrder{
+func (o *Client) QueryOrderByID(symbol string, orderID string) (i Order, err error) {
+	ret, err := o.QueryOrder(QueryOrder{
 		Symbol:  symbol,
 		OrderID: &orderID,
 	})
