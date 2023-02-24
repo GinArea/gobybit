@@ -1,10 +1,7 @@
 package spotv3
 
 import (
-	"strings"
-
 	"github.com/ginarea/gobybit/transport"
-	"github.com/msw-x/moon"
 	"github.com/msw-x/moon/ufmt"
 	"github.com/msw-x/moon/ulog"
 )
@@ -172,33 +169,6 @@ func (o *WsClient) processTopic(topic TopicMessage) {
 		if err != nil {
 			o.log.Error("process topic:", err)
 		}
-		return
-	}
-	s := strings.Split(topic.Topic, ".")
-	name := s[0]
-	switch TopicName(name) {
-	// public
-	case TopicDepth:
-		transport.JsonUnmarshal[Topic[DepthShot]](topic.Bin)
-	case TopicTrade:
-		transport.JsonUnmarshal[Topic[TradeShot]](topic.Bin)
-	case TopicKline:
-		transport.JsonUnmarshal[Topic[KlineShot]](topic.Bin)
-	case TopicTickers:
-		transport.JsonUnmarshal[Topic[TickersShot]](topic.Bin)
-	case TopicBookTicker:
-		transport.JsonUnmarshal[Topic[BookTickerShot]](topic.Bin)
-	// private
-	case TopicOutbound:
-		transport.JsonUnmarshal[Topic[[]OutboundSnapshot]](topic.Bin)
-	case TopicOrder:
-		transport.JsonUnmarshal[Topic[[]OrderSnapshot]](topic.Bin)
-	case TopicStopOrder:
-		transport.JsonUnmarshal[Topic[[]StopOrderSnapshot]](topic.Bin)
-	case TopicTicket:
-		transport.JsonUnmarshal[Topic[[]TicketSnapshot]](topic.Bin)
-	default:
-		moon.Panic("unknown topic:", topic.Topic)
 	}
 }
 
