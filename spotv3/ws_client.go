@@ -5,6 +5,7 @@ import (
 
 	"github.com/ginarea/gobybit/transport"
 	"github.com/msw-x/moon"
+	"github.com/msw-x/moon/ufmt"
 	"github.com/msw-x/moon/ulog"
 )
 
@@ -51,16 +52,6 @@ func (o *WsClient) WithProxy(proxy string) *WsClient {
 	return o
 }
 
-func (o *WsClient) Connected() bool {
-	return o.ws.Connected()
-}
-
-func (o *WsClient) Run() {
-	o.log.Debug("run")
-	o.ws.SetOnMessage(o.processMessage)
-	o.ws.Run()
-}
-
 func (o *WsClient) SetOnConnected(onConnected func()) {
 	o.ws.SetOnConnected(onConnected)
 }
@@ -75,6 +66,16 @@ func (o *WsClient) SetOnDialError(onDialError func(error) bool) {
 
 func (o *WsClient) SetOnAuth(onAuth func(bool)) {
 	o.onAuth = onAuth
+}
+
+func (o *WsClient) Run() {
+	o.log.Debug("run")
+	o.ws.SetOnMessage(o.processMessage)
+	o.ws.Run()
+}
+
+func (o *WsClient) Connected() bool {
+	return o.ws.Connected()
 }
 
 func (o *WsClient) Send(cmd any) bool {
@@ -122,13 +123,16 @@ func (o *WsClient) processResponce(r Responce) {
 	switch name {
 	case "pong":
 	case "auth":
+		o.log.Info("auth:", ufmt.SuccessFailure(r.Success))
 		if o.onAuth != nil {
 			o.onAuth(r.Success)
 		}
 	case "subscribe":
+		o.log.Infof("topic%s subscribe: %s", r.Args, ufmt.SuccessFailure(r.Success))
 	case "unsubscribe":
+		o.log.Infof("topic%s unsubscribe: %s", r.Args, ufmt.SuccessFailure(r.Success))
 	default:
-		moon.Panic("unknown response:", name)
+		o.log.Error("unknown response:", name)
 	}
 }
 
