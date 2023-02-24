@@ -42,9 +42,18 @@ func (o *WsPrivate) WithLog(log *ulog.Log) *WsPrivate {
 	return o
 }
 
+func (o *WsPrivate) WithByTickUrl() *WsPrivate {
+	o.ws.WithByTickUrl()
+	return o
+}
+
 func (o *WsPrivate) WithProxy(proxy string) *WsPrivate {
 	o.Conf().SetProxy(proxy)
 	return o
+}
+
+func (o *WsPrivate) SetOnDialError(onDialError func(error) bool) {
+	o.ws.SetOnDialError(onDialError)
 }
 
 func (o *WsPrivate) Connected() bool {

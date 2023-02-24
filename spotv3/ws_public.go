@@ -28,6 +28,11 @@ func (o *WsPublic) Conf() *transport.WsConf {
 	return o.ws.Conf()
 }
 
+func (o *WsPublic) WithByTickUrl() *WsPublic {
+	o.ws.WithByTickUrl()
+	return o
+}
+
 func (o *WsPublic) WithLog(log *ulog.Log) *WsPublic {
 	o.ws.WithLog(log)
 	return o
@@ -36,6 +41,10 @@ func (o *WsPublic) WithLog(log *ulog.Log) *WsPublic {
 func (o *WsPublic) WithProxy(proxy string) *WsPublic {
 	o.Conf().SetProxy(proxy)
 	return o
+}
+
+func (o *WsPublic) SetOnDialError(onDialError func(error) bool) {
+	o.ws.SetOnDialError(onDialError)
 }
 
 func (o *WsPublic) Connected() bool {
