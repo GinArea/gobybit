@@ -55,9 +55,17 @@ func (o *Timestamp) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+func (o Timestamp) Std() time.Time {
+	return time.Time(o)
+}
+
 type Time time.Time
 
 func (o *Time) UnmarshalJSON(b []byte) error {
 	// convert tim to time.Time
 	return nil
+}
+
+func (o Time) Std() time.Time {
+	return time.Time(o)
 }
