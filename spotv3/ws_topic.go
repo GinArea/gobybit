@@ -1,5 +1,9 @@
 package spotv3
 
+import (
+	"github.com/ginarea/gobybit/transport"
+)
+
 type TopicName string
 
 const (
@@ -61,42 +65,42 @@ type TickersShot struct {
 }
 
 type BookTickerShot struct {
-	Symbol       string `json:"s"`  // Trading pair
-	BestBidPrice string `json:"bp"` // Best bid price
-	BidQuantity  string `json:"bq"` // Bid quantity
-	BestAskPrice string `json:"qp"` // Best ask price
-	AskQuantity  string `json:"qq"` // Ask quantity
-	Timestamp    uint64 `json:"t"`  // The time that message is sent out
+	Symbol       string            `json:"s"`  // Trading pair
+	BestBidPrice transport.Float64 `json:"bp"` // Best bid price
+	BidQuantity  transport.Float64 `json:"bq"` // Bid quantity
+	BestAskPrice transport.Float64 `json:"qp"` // Best ask price
+	AskQuantity  transport.Float64 `json:"qq"` // Ask quantity
+	Timestamp    uint64            `json:"t"`  // The time that message is sent out
 }
 
 type OrderShot struct {
-	EventType           string `json:"e"` // Event type
-	EventTime           string `json:"E"` // Event time
-	Symbol              string `json:"s"` // Trading pair
-	UserOrderID         string `json:"c"` // User-generated order ID
-	Side                string `json:"S"` // BUY indicates buy order, SELL indicates sell order
-	OrderType           string `json:"o"` // Order type, LIMIT/MARKET_OF_QUOTE/MARKET_OF_BASE
-	TimeInForce         string `json:"f"` // Time in force
-	Quantity            string `json:"q"` // Quantity
-	Price               string `json:"p"` // Price
-	OrderStatus         string `json:"X"` // Order status
-	OrderID             string `json:"i"` // Order ID
-	OrderIDofOpponent   string `json:"M"` // Order ID of the opponent trader
-	LastFilledQuantity  string `json:"l"` // Last filled quantity
-	TotalFilledQuantity string `json:"z"` // Total filled quantity
-	LastTradedPrice     string `json:"L"` // Last traded price
-	TradingFee          string `json:"n"` // Trading fee (for a single fill)
-	AssetType           string `json:"N"` // Asset type in which fee is paid
-	IsNormalTrade       bool   `json:"u"` // Is normal trade. False if self-trade.
-	IsWorking           bool   `json:"w"` // Is working
-	IsLimitMaker        bool   `json:"m"` // Is LIMIT_MAKER
-	OrderCreationTime   string `json:"O"` // Order creation time
-	TotalFilledValue    string `json:"Z"` // Total filled value
-	AccountID           string `json:"A"` // Account ID of the opponent trader
-	IsClose             bool   `json:"C"` // Is close
-	Leverage            string `json:"v"` // Leverage
-	Liquidation         string `json:"d"` // NO_LIQ indicates that it is not a liquidation order. IOC indicates that it is a liquidation order.
-	TradeID             string `json:"t"` // Trade ID
+	EventType           string              `json:"e"` // Event type
+	EventTime           transport.Timestamp `json:"E"` // Event time
+	Symbol              string              `json:"s"` // Trading pair
+	UserOrderID         string              `json:"c"` // User-generated order ID
+	Side                Side                `json:"S"` // BUY indicates buy order, SELL indicates sell order
+	OrderType           OrderType           `json:"o"` // Order type, LIMIT/MARKET_OF_QUOTE/MARKET_OF_BASE
+	TimeInForce         TimeInForce         `json:"f"` // Time in force
+	Quantity            transport.Float64   `json:"q"` // Quantity
+	Price               transport.Float64   `json:"p"` // Price
+	OrderStatus         OrderStatus         `json:"X"` // Order status
+	OrderID             string              `json:"i"` // Order ID
+	OrderIDofOpponent   string              `json:"M"` // Order ID of the opponent trader
+	LastFilledQuantity  string              `json:"l"` // Last filled quantity
+	TotalFilledQuantity string              `json:"z"` // Total filled quantity
+	LastTradedPrice     string              `json:"L"` // Last traded price
+	TradingFee          transport.Float64   `json:"n"` // Trading fee (for a single fill)
+	AssetType           string              `json:"N"` // Asset type in which fee is paid
+	IsNormalTrade       bool                `json:"u"` // Is normal trade. False if self-trade.
+	IsWorking           bool                `json:"w"` // Is working
+	IsLimitMaker        bool                `json:"m"` // Is LIMIT_MAKER
+	OrderCreationTime   transport.Timestamp `json:"O"` // Order creation time
+	TotalFilledValue    string              `json:"Z"` // Total filled value
+	AccountID           string              `json:"A"` // Account ID of the opponent trader
+	IsClose             bool                `json:"C"` // Is close
+	Leverage            string              `json:"v"` // Leverage
+	Liquidation         string              `json:"d"` // NO_LIQ indicates that it is not a liquidation order. IOC indicates that it is a liquidation order.
+	TradeID             string              `json:"t"` // Trade ID
 }
 
 type StopOrderShot struct {
@@ -142,7 +146,7 @@ type OutboundShot struct {
 }
 
 type OutboundItem struct {
-	Coin              string `json:"a"` // Coin name
-	AvailableBalance  string `json:"f"` // Available balance
-	ReservedForOrders string `json:"l"` // Reserved for orders
+	Coin      string            `json:"a"` // Coin name
+	Available transport.Float64 `json:"f"` // Available balance
+	Reserved  transport.Float64 `json:"l"` // Reserved for orders
 }
