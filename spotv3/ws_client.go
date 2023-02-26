@@ -41,6 +41,7 @@ func (o *WsClient) WithByTickUrl() *WsClient {
 }
 
 func (o *WsClient) WithLog(log *ulog.Log) *WsClient {
+	o.log = log
 	o.ws.WithLog(log)
 	return o
 }

@@ -24,7 +24,7 @@ type Topic[T any] struct {
 	Name      string `json:"topic"`
 	Type      string `json:"type"`
 	Data      T      `json:"data"`
-	Timestamp uint64 `json:"ts"`
+	Timestamp any    `json:"ts"`
 }
 
 type DepthShot struct {

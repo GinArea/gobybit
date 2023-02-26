@@ -75,6 +75,13 @@ func (o *WsPrivate) Run() {
 		o.ready = ok
 		o.s.subscribeAll()
 	})
+	o.ws.SetOnTopicMessage(func(topic TopicMessage) error {
+		ok, err := o.s.processTopic(topic)
+		if !ok && err == nil {
+			err = fmt.Errorf("unknown topic: %s", topic.Topic)
+		}
+		return err
+	})
 	o.ws.Run()
 }
 
