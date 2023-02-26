@@ -49,6 +49,7 @@ func (o *WsClient) WithByTickUrl() *WsClient {
 }
 
 func (o *WsClient) WithLog(log *ulog.Log) *WsClient {
+	o.log = log
 	o.ws.WithLog(log)
 	return o
 }
@@ -194,9 +195,13 @@ func (o *WsClient) processResponce(r Responce) {
 func (o *WsClient) processTopic(m TopicMessage) {
 	ok, err := o.public.processTopic(m)
 	if err == nil && o.private != nil && !ok {
-		_, err = o.private.processTopic(m)
+		ok, err = o.private.processTopic(m)
 	}
-	if err != nil {
+	if err == nil {
+		if !ok {
+			o.log.Warningf("process topic[%s]: not found", m.Topic)
+		}
+	} else {
 		o.log.Errorf("process topic[%s]: %v", m.Topic, err)
 	}
 	return

@@ -179,7 +179,7 @@ type OrderShot struct {
 	Symbol         string            `json:"symbol"`
 	Side           Side              `json:"side"`
 	OrderType      OrderType         `json:"order_type"`
-	Price          float64           `json:"price"`
+	Price          transport.Float64 `json:"price"`
 	Qty            transport.Float64 `json:"qty"`
 	TimeInForce    TimeInForce       `json:"time_in_force"`
 	CreateType     CreateType        `json:"create_type"`
@@ -190,10 +190,10 @@ type OrderShot struct {
 	CumExecValue   transport.Float64 `json:"cum_exec_value"`
 	CumExecFee     transport.Float64 `json:"cum_exec_fee"`
 	Timestamp      time.Time         `json:"timestamp"`
-	TakeProfit     float64           `json:"take_profit"`
+	TakeProfit     transport.Float64 `json:"take_profit"`
 	TpTrigger      TriggerPrice      `json:"tp_trigger_by"`
 	SlTrigger      TriggerPrice      `json:"sl_trigger_by"`
-	StopLoss       float64           `json:"stop_loss"`
+	StopLoss       string            `json:"stop_loss"`
 	TrailingStop   string            `json:"trailing_stop"`
 	LastExecPrice  transport.Float64 `json:"last_exec_price"`
 	ReduceOnly     bool              `json:"reduce_only"`
