@@ -17,20 +17,20 @@ func (o *WsSection) init(client *WsClient) {
 }
 
 func (o *WsSection) subscribe(topic string, f SubscriptionFunc) {
-	o.mutex.Lock()
-	defer o.mutex.Unlock()
 	if o.ws.Ready() {
 		o.ws.subscribe(topic)
 	}
+	o.mutex.Lock()
+	defer o.mutex.Unlock()
 	o.subscriptions[topic] = f
 }
 
 func (o *WsSection) unsubscribe(topic string) {
-	o.mutex.Lock()
-	defer o.mutex.Unlock()
 	if o.ws.Ready() {
 		o.ws.unsubscribe(topic)
 	}
+	o.mutex.Lock()
+	defer o.mutex.Unlock()
 	delete(o.subscriptions, topic)
 }
 
@@ -43,7 +43,6 @@ func (o *WsSection) subscribeAll() {
 }
 
 func (o *WsSection) processTopic(m TopicMessage) (ok bool, err error) {
-	//f, _ := o.subscriptions[m.Topic]
 	f := o.getFunc(m.Topic)
 	ok = f != nil
 	if ok {
@@ -53,6 +52,8 @@ func (o *WsSection) processTopic(m TopicMessage) (ok bool, err error) {
 }
 
 func (o *WsSection) getFunc(name string) (f SubscriptionFunc) {
+	o.mutex.Lock()
+	defer o.mutex.Unlock()
 	for topic, fn := range o.subscriptions {
 		if strings.HasPrefix(name, topic) {
 			f = fn
