@@ -29,12 +29,16 @@ type Client struct {
 	logUri      bool
 	logResponse bool
 	onHttpError func(err error, attempt int) bool
+	timeShift   int
+	recvWindow  int
 }
 
 func NewClient() *Client {
 	return &Client{
-		log: ulog.Empty(),
-		url: MainBaseUrl,
+		log:        ulog.Empty(),
+		url:        MainBaseUrl,
+		timeShift:  -10000,
+		recvWindow: 20000,
 	}
 }
 
@@ -254,25 +258,32 @@ func (o *Client) request(method string, path string, param any, ret any, sign bo
 	return
 }
 
+func (o *Client) timestamp() (ts, window string) {
+	i := int(time.Now().UTC().UnixNano()/int64(time.Millisecond)) + o.timeShift
+	ts = strconv.Itoa(i)
+	window = strconv.Itoa(o.recvWindow)
+	return
+}
+
 func (o *Client) signQuery(src url.Values) url.Values {
-	i := int(time.Now().UTC().UnixNano() / int64(time.Millisecond))
-	ts := strconv.Itoa(i)
+	ts, window := o.timestamp()
 	if src == nil {
 		src = url.Values{}
 	}
 	src.Add("api_key", o.key)
 	src.Add("timestamp", ts)
+	src.Add("recw_window", window)
 	src.Add("sign", makeSignature(src, o.secret))
 	return src
 }
 
 func (o *Client) signQueryHeader(src url.Values) func(http.Header) {
-	i := int(time.Now().UTC().UnixNano() / int64(time.Millisecond))
-	ts := strconv.Itoa(i)
+	ts, window := o.timestamp()
 	sign := makeSignature(src, o.secret)
 	return func(h http.Header) {
 		h.Set("X-BAPI-API-KEY", o.key)
 		h.Set("X-BAPI-TIMESTAMP", ts)
+		h.Set("X-BAPI-RECV-WINDOW", window)
 		h.Set("X-BAPI-SIGN", sign)
 	}
 }
