@@ -272,7 +272,7 @@ func (o *Client) signQuery(src url.Values) url.Values {
 	}
 	src.Add("api_key", o.key)
 	src.Add("timestamp", ts)
-	src.Add("recw_window", window)
+	src.Add("recv_window", window)
 	src.Add("sign", makeSignature(src, o.secret))
 	return src
 }
