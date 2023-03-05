@@ -2,23 +2,23 @@
 package spotv3
 
 import (
-	"time"
-
 	"github.com/ginarea/gobybit/transport"
 )
 
 type OrderBase struct {
-	AccountID   string            `json:"accountId"`
-	OrderID     string            `json:"orderId"`
-	OrderLinkID string            `json:"orderLinkId"`
-	Symbol      string            `json:"symbol"`
-	CreatedTime time.Time         `json:"createTime"`
-	Price       transport.Float64 `json:"orderPrice"`
-	OrderQty    transport.Float64 `json:"orderQty"`
-	OrderType   OrderType         `json:"orderType"`
-	Side        Side              `json:"side"`
-	OrderStatus OrderStatus       `json:"status"`
-	TimeInForce TimeInForce       `json:"timeInForce"`
+	AccountID     string            `json:"accountId"`
+	OrderID       string            `json:"orderId"`
+	OrderLinkID   string            `json:"orderLinkId"`
+	Symbol        string            `json:"symbol"`
+	CreatedTime   string            `json:"createTime"`
+	Price         transport.Float64 `json:"orderPrice"`
+	OrderQty      transport.Float64 `json:"orderQty"`
+	OrderType     OrderType         `json:"orderType"`
+	Side          Side              `json:"side"`
+	OrderStatus   OrderStatus       `json:"status"`
+	TimeInForce   TimeInForce       `json:"timeInForce"`
+	ExecQty       string            `json:"execQty"`
+	OrderCategory int               `json:"orderCategory"`
 }
 
 // Place Active Order (https://bybit-exchange.github.io/docs/spot/v3/#t-placeactive)

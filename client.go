@@ -52,6 +52,11 @@ func (o *Client) WithLogUri(logUri bool) *Client {
 	return o
 }
 
+func (o *Client) WithLogRequest(logRequest bool) *Client {
+	o.c.WithLogRequest(logRequest)
+	return o
+}
+
 func (o *Client) WithLogResponse(logResponse bool) *Client {
 	o.c.WithLogResponse(logResponse)
 	return o

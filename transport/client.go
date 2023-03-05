@@ -27,6 +27,7 @@ type Client struct {
 	secret      string
 	proxy       *url.URL
 	logUri      bool
+	logRequest  bool
 	logResponse bool
 	onHttpError func(err error, attempt int) bool
 	timeShift   int
@@ -80,6 +81,11 @@ func (o *Client) WithLog(log *ulog.Log) *Client {
 
 func (o *Client) WithLogUri(logUri bool) *Client {
 	o.logUri = logUri
+	return o
+}
+
+func (o *Client) WithLogRequest(logRequest bool) *Client {
+	o.logRequest = logRequest
 	return o
 }
 
@@ -184,8 +190,20 @@ func (o *Client) request(method string, path string, param any, ret any, sign bo
 		u.RawQuery = vals.Encode()
 		u.RawQuery = strings.Replace(u.RawQuery, "%2C", ",", -1)
 	}
+	var logMessage string
 	if o.logUri {
-		o.log.Debug("uri:", u.String())
+		logMessage = ufmt.Join("uri:", u.String())
+	}
+	if o.logRequest {
+		if len(reqbody) > 0 {
+			if logMessage != "" {
+				logMessage += "\n"
+			}
+			logMessage += ufmt.Join("request:", string(reqbody))
+		}
+	}
+	if logMessage != "" {
+		o.log.Debug(logMessage)
 	}
 	req, err := http.NewRequest(method, u.String(), bytes.NewReader(reqbody))
 	if err != nil {
