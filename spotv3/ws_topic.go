@@ -74,33 +74,33 @@ type BookTickerShot struct {
 }
 
 type OrderShot struct {
-	EventType           string              `json:"e"` // Event type
-	EventTime           transport.Timestamp `json:"E"` // Event time
-	Symbol              string              `json:"s"` // Trading pair
-	UserOrderID         string              `json:"c"` // User-generated order ID
-	Side                Side                `json:"S"` // BUY indicates buy order, SELL indicates sell order
-	OrderType           OrderType           `json:"o"` // Order type, LIMIT/MARKET_OF_QUOTE/MARKET_OF_BASE
-	TimeInForce         TimeInForce         `json:"f"` // Time in force
-	Quantity            transport.Float64   `json:"q"` // Quantity
-	Price               transport.Float64   `json:"p"` // Price
-	OrderStatus         OrderStatus         `json:"X"` // Order status
-	OrderID             string              `json:"i"` // Order ID
-	OrderIDofOpponent   string              `json:"M"` // Order ID of the opponent trader
-	LastFilledQuantity  string              `json:"l"` // Last filled quantity
-	TotalFilledQuantity string              `json:"z"` // Total filled quantity
-	LastTradedPrice     string              `json:"L"` // Last traded price
-	TradingFee          transport.Float64   `json:"n"` // Trading fee (for a single fill)
-	AssetType           string              `json:"N"` // Asset type in which fee is paid
-	IsNormalTrade       bool                `json:"u"` // Is normal trade. False if self-trade.
-	IsWorking           bool                `json:"w"` // Is working
-	IsLimitMaker        bool                `json:"m"` // Is LIMIT_MAKER
-	OrderCreationTime   transport.Timestamp `json:"O"` // Order creation time
-	TotalFilledValue    string              `json:"Z"` // Total filled value
-	AccountID           string              `json:"A"` // Account ID of the opponent trader
-	IsClose             bool                `json:"C"` // Is close
-	Leverage            string              `json:"v"` // Leverage
-	Liquidation         string              `json:"d"` // NO_LIQ indicates that it is not a liquidation order. IOC indicates that it is a liquidation order.
-	TradeID             string              `json:"t"` // Trade ID
+	EventType           string            `json:"e"` // Event type
+	EventTime           transport.TimeMs  `json:"E"` // Event time
+	Symbol              string            `json:"s"` // Trading pair
+	UserOrderID         string            `json:"c"` // User-generated order ID
+	Side                Side              `json:"S"` // BUY indicates buy order, SELL indicates sell order
+	OrderType           OrderType         `json:"o"` // Order type, LIMIT/MARKET_OF_QUOTE/MARKET_OF_BASE
+	TimeInForce         TimeInForce       `json:"f"` // Time in force
+	Quantity            transport.Float64 `json:"q"` // Quantity
+	Price               transport.Float64 `json:"p"` // Price
+	OrderStatus         OrderStatus       `json:"X"` // Order status
+	OrderID             string            `json:"i"` // Order ID
+	OrderIDofOpponent   string            `json:"M"` // Order ID of the opponent trader
+	LastFilledQuantity  string            `json:"l"` // Last filled quantity
+	TotalFilledQuantity string            `json:"z"` // Total filled quantity
+	LastTradedPrice     string            `json:"L"` // Last traded price
+	TradingFee          transport.Float64 `json:"n"` // Trading fee (for a single fill)
+	AssetType           string            `json:"N"` // Asset type in which fee is paid
+	IsNormalTrade       bool              `json:"u"` // Is normal trade. False if self-trade.
+	IsWorking           bool              `json:"w"` // Is working
+	IsLimitMaker        bool              `json:"m"` // Is LIMIT_MAKER
+	OrderCreationTime   transport.TimeMs  `json:"O"` // Order creation time
+	TotalFilledValue    string            `json:"Z"` // Total filled value
+	AccountID           string            `json:"A"` // Account ID of the opponent trader
+	IsClose             bool              `json:"C"` // Is close
+	Leverage            string            `json:"v"` // Leverage
+	Liquidation         string            `json:"d"` // NO_LIQ indicates that it is not a liquidation order. IOC indicates that it is a liquidation order.
+	TradeID             string            `json:"t"` // Trade ID
 }
 
 type StopOrderShot struct {

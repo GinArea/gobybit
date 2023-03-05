@@ -48,24 +48,21 @@ func (o Float64) IsNotZero() bool {
 	return o.Value() != 0
 }
 
-type Timestamp time.Time
+type TimeMs time.Time
 
-func (o *Timestamp) UnmarshalJSON(b []byte) error {
-	// convert uint timestamp to time.Time
-	return nil
+func (o *TimeMs) UnmarshalJSON(b []byte) error {
+	s := string(b)
+	s = strings.Trim(s, `"`)
+	if s == "" {
+		*o = TimeMs{}
+		return nil
+	}
+	i, err := strconv.ParseInt(s, 10, 64)
+	t := time.Unix(0, i*int64(time.Millisecond))
+	*o = TimeMs(t)
+	return err
 }
 
-func (o Timestamp) Std() time.Time {
-	return time.Time(o)
-}
-
-type Time time.Time
-
-func (o *Time) UnmarshalJSON(b []byte) error {
-	// convert tim to time.Time
-	return nil
-}
-
-func (o Time) Std() time.Time {
+func (o TimeMs) Std() time.Time {
 	return time.Time(o)
 }

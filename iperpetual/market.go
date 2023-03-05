@@ -139,7 +139,7 @@ type LatestInformation struct {
 	Volume24h              float64           `json:"volume_24h"`
 	FundingRate            transport.Float64 `json:"funding_rate"`
 	PredictedFundingRate   transport.Float64 `json:"predicted_funding_rate"`
-	NextFundingTime        transport.Time    `json:"next_funding_time"`
+	NextFundingTime        string            `json:"next_funding_time"`
 	CountdownHour          int               `json:"countdown_hour"`
 	DeliveryFeeRate        string            `json:"delivery_fee_rate"`
 	PredictedDeliveryPrice string            `json:"predicted_delivery_price"`
