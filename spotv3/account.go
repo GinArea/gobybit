@@ -10,7 +10,7 @@ type OrderBase struct {
 	OrderID       string            `json:"orderId"`
 	OrderLinkID   string            `json:"orderLinkId"`
 	Symbol        string            `json:"symbol"`
-	CreatedTime   string            `json:"createTime"`
+	CreatedTime   transport.TimeMs  `json:"createTime"`
 	Price         transport.Float64 `json:"orderPrice"`
 	OrderQty      transport.Float64 `json:"orderQty"`
 	OrderType     OrderType         `json:"orderType"`

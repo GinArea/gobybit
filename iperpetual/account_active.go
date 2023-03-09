@@ -2,38 +2,39 @@
 package iperpetual
 
 import (
-	"errors"
+	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/ginarea/gobybit/transport"
 )
 
 type OrderMain struct {
-	UserID      int         `json:"user_id"`
-	Symbol      string      `json:"symbol"`
-	Side        Side        `json:"side"`
-	OrderType   OrderType   `json:"order_type"`
-	Price       float64     `json:"price"`
-	Qty         int         `json:"qty"`
-	TimeInForce TimeInForce `json:"time_in_force"`
-	OrderStatus OrderStatus `json:"order_status"`
-	LeavesQty   float64     `json:"leaves_qty"`
-	CreatedAt   time.Time   `json:"created_at"`
-	UpdatedAt   time.Time   `json:"updated_at"`
+	UserID      int               `json:"user_id"`
+	Symbol      string            `json:"symbol"`
+	Side        Side              `json:"side"`
+	OrderType   OrderType         `json:"order_type"`
+	Price       transport.Float64 `json:"price"`
+	Qty         int               `json:"qty"`
+	TimeInForce TimeInForce       `json:"time_in_force"`
+	OrderStatus OrderStatus       `json:"order_status"`
+	LeavesQty   float64           `json:"leaves_qty"`
+	CreatedAt   time.Time         `json:"created_at"`
+	UpdatedAt   time.Time         `json:"updated_at"`
 }
 
 type OrderBase struct {
 	OrderMain
-	OrderID      string  `json:"order_id"`
-	OrderLinkID  string  `json:"order_link_id"`
-	CumExecQty   float64 `json:"cum_exec_qty"`
-	CumExecValue float64 `json:"cum_exec_value"`
-	CumExecFee   float64 `json:"cum_exec_fee"`
-	RejectReason string  `json:"reject_reason"`
+	OrderID      string            `json:"order_id"`
+	OrderLinkID  string            `json:"order_link_id"`
+	CumExecQty   transport.Float64 `json:"cum_exec_qty"`
+	CumExecValue transport.Float64 `json:"cum_exec_value"`
+	CumExecFee   transport.Float64 `json:"cum_exec_fee"`
+	RejectReason string            `json:"reject_reason"`
 }
 type OrderProfitLoss struct {
-	TakeProfit float64      `json:"take_profit"`
-	StopLoss   float64      `json:"stop_loss"`
+	TakeProfit string       `json:"take_profit"`
+	StopLoss   string       `json:"stop_loss"`
 	TpTrigger  TriggerPrice `json:"tp_trigger_by"`
 	SlTrigger  TriggerPrice `json:"sl_trigger_by"`
 }
@@ -58,11 +59,11 @@ type PlaceActiveOrder struct {
 type OrderCreated struct {
 	OrderBase
 	OrderProfitLoss
-	LastExecTime  string            `json:"last_exec_time"`
+	LastExecTime  transport.Float64 `json:"last_exec_time"`
 	LastExecPrice transport.Float64 `json:"last_exec_price"`
 }
 
-func (o *PlaceActiveOrder) Do(client *Client) (OrderCreated, error) {
+func (o PlaceActiveOrder) Do(client *Client) (OrderCreated, error) {
 	return Post[OrderCreated](client, "order/create", o)
 }
 
@@ -182,12 +183,16 @@ func (o QueryOrder) OnlySymbol() bool {
 }
 
 // When only symbol is passed, the response uses a different structure.
-func (o QueryOrder) Do(client *Client) ([]Order, error) {
-	if o.OnlySymbol() {
-		return Get[[]Order](client, "order", o)
+func (o QueryOrder) Do(client *Client) (l []Order, err error) {
+	var r json.RawMessage
+	r, err = Get[json.RawMessage](client, "order", o)
+	if len(r) > 0 && r[0] == '[' {
+		err = json.Unmarshal(r, &l)
+	} else {
+		l = make([]Order, 1)
+		err = json.Unmarshal(r, &l[0])
 	}
-	r, err := Get[Order](client, "order", o)
-	return []Order{r}, err
+	return
 }
 
 type Order struct {
@@ -216,7 +221,7 @@ func (o *Client) QueryOrderByID(symbol string, orderID string) (i Order, err err
 		if len(ret) == 1 {
 			i = ret[0]
 		} else {
-			err = errors.New("query order result len != 1")
+			err = fmt.Errorf("query order result len != 1 (%d)", len(ret))
 		}
 	}
 	return
