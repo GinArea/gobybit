@@ -26,6 +26,7 @@ type Client struct {
 	key         string
 	secret      string
 	proxy       *url.URL
+	client      *http.Client
 	logUri      bool
 	logRequest  bool
 	logResponse bool
@@ -36,12 +37,14 @@ type Client struct {
 }
 
 func NewClient() *Client {
-	return &Client{
+	o := &Client{
 		log:        ulog.Empty(),
 		url:        MainBaseUrl,
 		timeShift:  -10000,
 		recvWindow: 20000,
 	}
+	o.init()
+	return o
 }
 
 func (o *Client) WithUrl(url string) *Client {
@@ -72,11 +75,13 @@ func (o *Client) WithProxy(proxy string) *Client {
 			panic(fmt.Sprintf("set proxy fail: %v", err))
 		}
 	}
+	o.init()
 	return o
 }
 
 func (o *Client) WithTimeout(timeout time.Duration) *Client {
 	o.timeout = timeout
+	o.init()
 	return o
 }
 
@@ -103,6 +108,18 @@ func (o *Client) WithLogResponse(logResponse bool) *Client {
 func (o *Client) WithOnHttpError(onHttpError func(err error, attempt int) bool) *Client {
 	o.onHttpError = onHttpError
 	return o
+}
+
+func (o *Client) init() {
+	o.client = new(http.Client)
+	if o.proxy != nil {
+		o.client.Transport = &http.Transport{
+			Proxy: http.ProxyURL(o.proxy),
+		}
+	}
+	if o.timeout != 0 {
+		o.client.Timeout = o.timeout
+	}
 }
 
 func (o *Client) HasProxy() bool {
@@ -223,16 +240,7 @@ func (o *Client) request(method string, path string, param any, ret any, sign bo
 	if signHeader != nil {
 		signHeader(req.Header)
 	}
-	client := &http.Client{}
-	if o.proxy != nil {
-		client.Transport = &http.Transport{
-			Proxy: http.ProxyURL(o.proxy),
-		}
-	}
-	if o.timeout != 0 {
-		client.Timeout = o.timeout
-	}
-	resp, err := client.Do(req)
+	resp, err := o.client.Do(req)
 	elapsedTime := time.Since(timestamp).Truncate(time.Millisecond)
 	if err != nil {
 		logf("request fail [%s]: %v", elapsedTime.String(), err)
