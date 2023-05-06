@@ -29,6 +29,7 @@ type Client struct {
 	logUri      bool
 	logRequest  bool
 	logResponse bool
+	timeout     time.Duration
 	onHttpError func(err error, attempt int) bool
 	timeShift   int
 	recvWindow  int
@@ -71,6 +72,11 @@ func (o *Client) WithProxy(proxy string) *Client {
 			panic(fmt.Sprintf("set proxy fail: %v", err))
 		}
 	}
+	return o
+}
+
+func (o *Client) WithTimeout(timeout time.Duration) *Client {
+	o.timeout = timeout
 	return o
 }
 
@@ -222,6 +228,9 @@ func (o *Client) request(method string, path string, param any, ret any, sign bo
 		client.Transport = &http.Transport{
 			Proxy: http.ProxyURL(o.proxy),
 		}
+	}
+	if o.timeout != 0 {
+		client.Timeout = o.timeout
 	}
 	resp, err := client.Do(req)
 	elapsedTime := time.Since(timestamp).Truncate(time.Millisecond)

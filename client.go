@@ -1,6 +1,8 @@
 package gobybit
 
 import (
+	"time"
+
 	"github.com/ginarea/gobybit/account"
 	"github.com/ginarea/gobybit/ifutures"
 	"github.com/ginarea/gobybit/iperpetual"
@@ -39,6 +41,11 @@ func (o *Client) WithAuth(key, secret string) *Client {
 
 func (o *Client) WithProxy(proxy string) *Client {
 	o.c.WithProxy(proxy)
+	return o
+}
+
+func (o *Client) WithTimeout(timeout time.Duration) *Client {
+	o.c.WithTimeout(timeout)
 	return o
 }
 
