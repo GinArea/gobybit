@@ -20,7 +20,7 @@ type WsClient struct {
 }
 
 func NewWsClient() *WsClient {
-	ws := transport.NewWsClient("wss://stream.bybit.com/realtime")
+	ws := transport.NewWsClient("realtime")
 	c := &WsClient{
 		log: ulog.Empty(),
 		ws:  ws,

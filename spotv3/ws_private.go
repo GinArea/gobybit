@@ -21,7 +21,7 @@ type WsPrivate struct {
 
 func NewWsPrivate(key string, secret string) *WsPrivate {
 	o := &WsPrivate{
-		ws:     NewWsClient("wss://stream.bybit.com/spot/private/v3"),
+		ws:     NewWsClient("spot/private/v3"),
 		key:    key,
 		secret: secret,
 	}

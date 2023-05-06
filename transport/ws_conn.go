@@ -19,6 +19,7 @@ type WsConn struct {
 	log            *ulog.Log
 	do             *usync.Do
 	url            string
+	method         string
 	ws             *websocket.Conn
 	mutex          sync.Mutex
 	msg            []byte
@@ -29,12 +30,13 @@ type WsConn struct {
 	onDialError    func(error) bool
 }
 
-func NewWsConn(url string) *WsConn {
+func NewWsConn(method string) *WsConn {
 	return &WsConn{
-		log:  ulog.Empty(),
-		do:   usync.NewDo(),
-		url:  url,
-		conf: NewWsConf(),
+		log:    ulog.Empty(),
+		do:     usync.NewDo(),
+		url:    MainBaseWsUrl,
+		method: method,
+		conf:   NewWsConf(),
 	}
 }
 
@@ -55,7 +57,7 @@ func (o *WsConn) WithUrl(url string) *WsConn {
 }
 
 func (o *WsConn) WithByTickUrl() *WsConn {
-	o.url = MainBaseByTickUrl
+	o.url = MainBaseByTickWsUrl
 	return o
 }
 
@@ -124,7 +126,7 @@ func (o *WsConn) Send(v any) bool {
 }
 
 func (o *WsConn) run() {
-	if o.url == "" {
+	if o.url == "" || o.method == "" {
 		o.log.Warning("disabled")
 		o.do.Cancel()
 		return
@@ -141,7 +143,8 @@ func (o *WsConn) run() {
 }
 
 func (o *WsConn) connectAndRun() {
-	o.log.Info("dial:", o.url)
+	url := fmt.Sprintf("%s/%s", o.url, o.method)
+	o.log.Info("dial:", url)
 	dialer := websocket.Dialer{
 		HandshakeTimeout: o.conf.HandshakeTimeout,
 	}
@@ -149,7 +152,7 @@ func (o *WsConn) connectAndRun() {
 		o.log.Debug("proxy:", o.conf.Proxy)
 		dialer.Proxy = http.ProxyURL(o.conf.Proxy)
 	}
-	c, _, err := dialer.Dial(o.url, nil)
+	c, _, err := dialer.Dial(url, nil)
 	if err != nil {
 		o.log.Error("dial:", err)
 		if o.onDialError != nil {

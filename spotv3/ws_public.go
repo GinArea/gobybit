@@ -14,7 +14,7 @@ type WsPublic struct {
 
 func NewWsPublic() *WsPublic {
 	o := &WsPublic{
-		ws: NewWsClient("wss://stream.bybit.com/spot/public/v3"),
+		ws: NewWsClient("spot/public/v3"),
 	}
 	o.s = NewWsSection(o)
 	return o
