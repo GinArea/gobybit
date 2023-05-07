@@ -33,6 +33,10 @@ func (o *Error) UnmatchedIp() bool {
 	return o.Code == 10010
 }
 
+func (o *Error) KycNeeded() bool {
+	return o.Code == 131004
+}
+
 func (o *Error) InsufficientBalance() bool {
 	codes := []int{
 		110004, // Wallet balance is insufficient
