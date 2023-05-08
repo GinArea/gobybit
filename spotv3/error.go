@@ -19,6 +19,10 @@ func forwardError(err error) error {
 	return err
 }
 
+func (o *Error) Timeout() bool {
+	return o.Code == 10016
+}
+
 func (o *Error) InsufficientBalance() bool {
 	codes := []int{
 		12131, // Insufficient balance
