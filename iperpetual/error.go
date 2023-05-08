@@ -39,6 +39,10 @@ func (o *Error) KycNeeded() bool {
 	return o.Code == 131004
 }
 
+func (o *Error) Timeout() bool {
+	return o.Code == 10016
+}
+
 func (o *Error) InsufficientBalance() bool {
 	codes := []int{
 		30010, // Insufficient wallet balance
