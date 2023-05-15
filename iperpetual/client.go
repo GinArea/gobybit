@@ -9,11 +9,17 @@ import (
 
 // Inverse Perpetual HTTP client
 type Client struct {
-	c *transport.Client
+	c         *transport.Client
+	rateLimit int
 }
 
 func NewClient(client *transport.Client) *Client {
 	return &Client{c: client}
+}
+
+func (o *Client) WithRateLimit(rateLimit int) *Client {
+	o.rateLimit = rateLimit
+	return o
 }
 
 func (o *Client) Transport() *transport.Client {
@@ -41,12 +47,18 @@ func GetPublic[T any](c *Client, path string, param any) (T, error) {
 func Get[T any](c *Client, path string, param any) (T, error) {
 	resp := &Response[T]{}
 	err := c.Get(path, param, resp)
+	if err == nil {
+		err = c.checkRateLimit(resp.RateLimit, resp.RateLimitStatus)
+	}
 	return resp.Result, err
 }
 
 func Post[T any](c *Client, path string, param any) (T, error) {
 	resp := &Response[T]{}
 	err := c.Post(path, param, resp)
+	if err == nil {
+		err = c.checkRateLimit(resp.RateLimit, resp.RateLimitStatus)
+	}
 	return resp.Result, err
 }
 
@@ -60,4 +72,14 @@ func (o *Client) urlPublic(path string) string {
 
 func (o *Client) urlPrivate(path string) string {
 	return o.url("private", path)
+}
+
+func (o *Client) checkRateLimit(limit, status int) error {
+	if limit > 0 && status < o.rateLimit {
+		return &transport.RateLimitError{
+			Limit:  limit,
+			Status: status,
+		}
+	}
+	return nil
 }
