@@ -9,16 +9,16 @@ import (
 
 // Inverse Perpetual HTTP client
 type Client struct {
-	c         *transport.Client
-	rateLimit int
+	c            *transport.Client
+	preRateLimit int
 }
 
 func NewClient(client *transport.Client) *Client {
 	return &Client{c: client}
 }
 
-func (o *Client) WithRateLimit(rateLimit int) *Client {
-	o.rateLimit = rateLimit
+func (o *Client) WithPreRateLimit(preRateLimit int) *Client {
+	o.preRateLimit = preRateLimit
 	return o
 }
 
@@ -75,8 +75,8 @@ func (o *Client) urlPrivate(path string) string {
 }
 
 func (o *Client) checkRateLimit(limit, status int) error {
-	if limit > 0 && status < o.rateLimit {
-		return &transport.RateLimitError{
+	if limit > 0 && status < o.preRateLimit {
+		return &transport.PreRateLimitError{
 			Limit:  limit,
 			Status: status,
 		}
