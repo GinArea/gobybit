@@ -203,7 +203,7 @@ type OpenedOrder struct {
 	AvgPrice            string `json:"avgPrice"`
 	StopPrice           string `json:"stopPrice"`
 	IcebergQty          string `json:"icebergQty"`
-	UpdateTime          uint64 `json:"updateTime"`
+	UpdateTime          string `json:"updateTime"`
 	IsWorking           string `json:"isWorking"`
 }
 
