@@ -2,14 +2,14 @@ package gobybit
 
 import "fmt"
 
-// Get Kline (https://bybit-exchange.github.io/docs/v5/market/kline)
+// Get Kline https://bybit-exchange.github.io/docs/v5/market/kline
 //
-// category Required string  Product type. spot,linear,inverse
-// symbol   Required string  Symbol name
-// interval Required string  Kline interval. 1,3,5,15,30,60,120,240,360,720,D,M,W
-// start             integer The start timestamp (ms)
-// end               integer The end timestamp (ms)
-// limit             integer Limit for data size per page. [1, 200]. Default: 200
+//	category Required string  Product type. spot,linear,inverse
+//	symbol   Required string  Symbol name
+//	interval Required string  Kline interval. 1,3,5,15,30,60,120,240,360,720,D,M,W
+//	start             integer The start timestamp (ms)
+//	end               integer The end timestamp (ms)
+//	limit             integer Limit for data size per page. [1, 200]. Default: 200
 type GetKline struct {
 	Category Category
 	Symbol   string
@@ -112,12 +112,12 @@ func (o *Client) GetPremiumIndexPriceKline(v GetKline) Response[[]Kline] {
 
 // Get Instruments Info (https://bybit-exchange.github.io/docs/v5/market/instrument)
 //
-// category Required string  Product type. spot,linear,inverse
-// symbol            string  Symbol name
-// status            string  Symbol status filter, spot/linear/inverse has Trading only
-// baseCoin          string  Base coin. linear,inverse,option only
-// limit             integer Limit for data size per page. [1, 1000]. Default: 500
-// cursor            string  Cursor. Used for pagination
+//	category Required string  Product type. spot,linear,inverse
+//	symbol            string  Symbol name
+//	status            string  Symbol status filter, spot/linear/inverse has Trading only
+//	baseCoin          string  Base coin. linear,inverse,option only
+//	limit             integer Limit for data size per page. [1, 1000]. Default: 500
+//	cursor            string  Cursor. Used for pagination
 type GetInstruments struct {
 	Category Category
 	Symbol   *string
