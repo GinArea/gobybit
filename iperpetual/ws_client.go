@@ -3,7 +3,7 @@ package iperpetual
 
 import (
 	"github.com/ginarea/gobybit/transport"
-	"github.com/msw-x/moon"
+	"github.com/msw-x/moon/uerr"
 	"github.com/msw-x/moon/ufmt"
 	"github.com/msw-x/moon/ulog"
 )
@@ -86,7 +86,7 @@ func (o *WsClient) Public() *WsPublic {
 
 func (o *WsClient) Private() *WsPrivate {
 	if o.private == nil {
-		moon.Panic("private methods are forbidden")
+		uerr.Panic("private methods are forbidden")
 	}
 	return o.private
 }

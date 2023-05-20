@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/msw-x/moon"
 	"github.com/msw-x/moon/app"
+	"github.com/msw-x/moon/uerr"
 	"github.com/msw-x/moon/ulog"
 	"github.com/msw-x/moon/usync"
 )
@@ -131,7 +131,7 @@ func (o *WsConn) run() {
 		o.do.Cancel()
 		return
 	}
-	defer moon.Recover(func(err string) {
+	defer uerr.Recover(func(err string) {
 		o.log.Errorf(err)
 	})
 	defer o.log.Debug("completed")
@@ -245,7 +245,7 @@ func (o *WsConn) write(buf []byte) error {
 }
 
 func (o *WsConn) processMessage() (err error) {
-	defer moon.Recover(func(err string) {
+	defer uerr.Recover(func(err string) {
 		o.log.Error("process message:", err)
 	})
 	if o.onMessage != nil {

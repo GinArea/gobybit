@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/ginarea/gobybit/transport"
-	"github.com/msw-x/moon"
+	"github.com/msw-x/moon/uerr"
 	"github.com/msw-x/moon/ufmt"
 	"github.com/msw-x/moon/ulog"
 )
@@ -140,7 +140,7 @@ func (this *WsClient) processMessage(name string, msg []byte) {
 		name := s[0]
 		this.processTopic(TopicName(name), v.Type == "delta", msg)
 	default:
-		moon.Panic("unknown message:", name)
+		uerr.Panic("unknown message:", name)
 	}
 }
 
@@ -163,7 +163,7 @@ func (this *WsClient) processResponce(r Responce) {
 	case "subscribe":
 	case "unsubscribe":
 	default:
-		moon.Panic("unknown response:", name)
+		uerr.Panic("unknown response:", name)
 	}
 }
 
@@ -209,6 +209,6 @@ func (this *WsClient) processTopic(topic TopicName, delta bool, msg []byte) {
 	case TopicWallet:
 		transport.JsonUnmarshal[Topic[[]WalletSnapshot]](msg)
 	default:
-		moon.Panic("unknown topic:", topic)
+		uerr.Panic("unknown topic:", topic)
 	}
 }

@@ -101,3 +101,40 @@ const (
 	StatusDelivering Status = "Delivering"
 	StatusClosed     Status = "Closed"
 )
+
+// triggerBy (https://bybit-exchange.github.io/docs/v5/enum#triggerby)
+type TriggerBy string
+
+const (
+	TriggerByLastPrice  TriggerBy = "LastPrice"
+	TriggerByIndexPrice TriggerBy = "IndexPrice"
+	TriggerByMarkPrice  TriggerBy = "MarkPrice"
+)
+
+// timeInForce (https://bybit-exchange.github.io/docs/v5/enum#timeinforce)
+type TimeInForce string
+
+const (
+	GoodTillCancel    TimeInForce = "GTC"
+	ImmediateOrCancel TimeInForce = "IOC"
+	FillOrKill        TimeInForce = "FOK"
+)
+
+// smpType (https://bybit-exchange.github.io/docs/v5/enum#smptype)
+type SmpType string
+
+const (
+	SmpTypeNone SmpType = "None"
+	CancelMaker SmpType = "CancelMaker"
+	CancelTaker SmpType = "CancelTaker"
+	CancelBoth  SmpType = "CancelBoth"
+)
+
+// positionIdx (https://bybit-exchange.github.io/docs/v5/enum#positionidx)
+type PositionIdx int
+
+const (
+	OneWayMode          PositionIdx = 0
+	BuySideOfHedgeMode  PositionIdx = 1
+	SellSideOfHedgeMode PositionIdx = 2
+)

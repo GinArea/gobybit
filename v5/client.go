@@ -20,7 +20,7 @@ func (o *Client) Transport() *transport.Client {
 	return o.c
 }
 
-func (o *Client) GetPublic(path string, param any, ret any) error {
+func (o *Client) GetPub(path string, param any, ret any) error {
 	return forwardError(o.c.GetPublic(o.url(path), param, ret))
 }
 
@@ -32,9 +32,9 @@ func (o *Client) Post(path string, param any, ret any) error {
 	return forwardError(o.c.Post(o.url(path), param, ret))
 }
 
-func GetPublic[T any](c *Client, path string, param any) (T, error) {
+func GetPub[T any](c *Client, path string, param any) (T, error) {
 	resp := &Response[T]{}
-	err := c.GetPublic(path, param, resp)
+	err := c.GetPub(path, param, resp)
 	return resp.Result, err
 }
 
