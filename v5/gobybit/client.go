@@ -9,37 +9,46 @@ import (
 )
 
 type Client struct {
-	c          *uhttp.Client
-	key        string
-	secret     string
-	timeShift  int
-	recvWindow int
+	c *uhttp.Client
+	s *Sign
 }
 
 func NewClient() *Client {
 	o := new(Client)
-	o.timeShift = -10000
-	o.recvWindow = 20000
+	o.c = uhttp.NewClient()
+	o.WithBaseUrl(transport.MainBaseUrl)
+	o.WithPath("v5")
 	return o
 }
 
-func (o *Client) WithUrl(url string) *Client {
-	o.c.WithUrl(url)
+func (o *Client) Clone() *Client {
+	r := new(Client)
+	r.c = o.c.Clone()
+	r.s = o.s
+	return r
+}
+
+func (o *Client) WithBaseUrl(url string) *Client {
+	o.c.WithBase(url)
 	return o
 }
 
 func (o *Client) WithByTickUrl() *Client {
-	return o.WithUrl(transport.MainBaseByTickUrl)
+	return o.WithBaseUrl(transport.MainBaseByTickUrl)
 }
 
 func (o *Client) WithPath(path string) *Client {
-	o.c = o.c.WithPath(path)
+	o.c.WithPath(path)
+	return o
+}
+
+func (o *Client) WithAppendPath(path string) *Client {
+	o.c.WithAppendPath(path)
 	return o
 }
 
 func (o *Client) WithAuth(key, secret string) *Client {
-	o.key = key
-	o.secret = secret
+	o.s = NewSign(key, secret)
 	return o
 }
 
@@ -58,10 +67,25 @@ func (o *Client) WithTraceFormat(log *ulog.Log, f uhttp.Format) *Client {
 	return o
 }
 
-func (o *Client) GetPub(path string, request any, response any) error {
-	r := o.c.Get(path).Params(request).Do()
-	if r.BodyExists() {
-		r.Json(response)
+func (o *Client) market() *Client {
+	return o.Clone().WithAppendPath("market")
+}
+
+func GetPub[R, T any](c *Client, path string, request any, transform func(R) (T, error)) (r Response[T]) {
+	h := c.c.Get(path).Params(request).Do()
+	if h.Error == nil {
+		if h.BodyExists() {
+			raw := new(response[R])
+			h.Json(raw)
+			r.Time = raw.Time
+			r.Error = raw.Error()
+			if r.Ok() {
+				r.Data, r.Error = transform(raw.Result)
+			}
+		}
+		r.SetErrorIfNil(h.HeaderTo(&r.Limit))
+	} else {
+		r.Error = h.Error
 	}
-	return r.Error
+	return
 }
