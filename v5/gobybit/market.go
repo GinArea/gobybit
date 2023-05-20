@@ -2,7 +2,8 @@ package gobybit
 
 import "fmt"
 
-// Get Kline https://bybit-exchange.github.io/docs/v5/market/kline
+// Get Kline
+// https://bybit-exchange.github.io/docs/v5/market/kline
 //
 //	category Required string  Product type. spot,linear,inverse
 //	symbol   Required string  Symbol name
@@ -83,7 +84,8 @@ func (o *Client) GetKline(v GetKline) Response[[]KlineExt] {
 	return v.Do(o)
 }
 
-// Get Mark Price Kline (https://bybit-exchange.github.io/docs/v5/market/mark-kline)
+// Get Mark Price Kline
+// https://bybit-exchange.github.io/docs/v5/market/mark-kline
 func (o GetKline) DoMarkPrice(c *Client) Response[[]Kline] {
 	return getKline(c, "mark-price-kline", o, UnmarshalKline)
 }
@@ -110,7 +112,7 @@ func (o *Client) GetPremiumIndexPriceKline(v GetKline) Response[[]Kline] {
 	return v.DoPremiumIndexPrice(o)
 }
 
-// Get Instruments Info (https://bybit-exchange.github.io/docs/v5/market/instrument)
+// Get Instruments Info https://bybit-exchange.github.io/docs/v5/market/instrument
 //
 //	category Required string  Product type. spot,linear,inverse
 //	symbol            string  Symbol name
@@ -178,15 +180,14 @@ func (o *Client) GetInstruments(v GetInstruments) Response[[]Instrument] {
 	return v.Do(o)
 }
 
-// Get Orderbook (https://bybit-exchange.github.io/docs/v5/market/orderbook)
+// Get Orderbook https://bybit-exchange.github.io/docs/v5/market/orderbook
 //
-// category Required string  Product type. spot,linear,inverse,option
-// symbol   Required string  Symbol name
-// limit             integer Limit size for each bid and ask
-//
-//	spot: [1, 50]. Default: 1.
-//	linear&inverse: [1, 200]. Default: 25.
-//	option: [1, 25]. Default: 1.
+//	category Required string  Product type. spot,linear,inverse,option
+//	symbol   Required string  Symbol name
+//	limit             integer Limit size for each bid and ask
+//	                  spot: [1, 50]. Default: 1.
+//	                  linear&inverse: [1, 200]. Default: 25.
+//	                  option: [1, 25]. Default: 1.
 type GetOrderbook struct {
 	Category Category
 	Symbol   string
