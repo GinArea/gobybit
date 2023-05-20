@@ -3,7 +3,7 @@ package gobybit
 import (
 	"crypto/hmac"
 	"crypto/sha256"
-	"fmt"
+	"encoding/hex"
 	"io"
 	"net/http"
 	"net/url"
@@ -28,7 +28,7 @@ func NewSign(key, secret string) *Sign {
 	return o
 }
 
-func (o *Sign) Query(v url.Values) url.Values {
+func (o *Sign) Params(v url.Values) {
 	ts, window := o.timestamp()
 	if v == nil {
 		v = make(url.Values)
@@ -36,18 +36,23 @@ func (o *Sign) Query(v url.Values) url.Values {
 	v.Add("api_key", o.key)
 	v.Add("timestamp", ts)
 	v.Add("recv_window", window)
-	v.Add("sign", sign(v, o.secret))
-	return v
+	v.Add("sign", signParams(v, o.secret))
 }
 
-func (o *Sign) Header(v url.Values) func(http.Header) {
+func (o *Sign) HeaderGet(h http.Header, v url.Values) {
+	o.header(h, encodeSortParams(v))
+}
+
+func (o *Sign) HeaderPost(h http.Header, body []byte) {
+	o.header(h, string(body[:]))
+}
+
+func (o *Sign) header(h http.Header, s string) {
 	ts, window := o.timestamp()
-	return func(h http.Header) {
-		h.Set("X-BAPI-API-KEY", o.key)
-		h.Set("X-BAPI-TIMESTAMP", ts)
-		h.Set("X-BAPI-RECV-WINDOW", window)
-		h.Set("X-BAPI-SIGN", sign(v, o.secret))
-	}
+	h.Set("X-BAPI-API-KEY", o.key)
+	h.Set("X-BAPI-TIMESTAMP", ts)
+	h.Set("X-BAPI-RECV-WINDOW", window)
+	h.Set("X-BAPI-SIGN", signHmac(ts+o.key+window+s, o.secret))
 }
 
 func (o *Sign) timestamp() (ts, window string) {
@@ -57,7 +62,16 @@ func (o *Sign) timestamp() (ts, window string) {
 	return
 }
 
-func sign(src url.Values, key string) string {
+func signHmac(s, secret string) string {
+	h := hmac.New(sha256.New, []byte(secret))
+	io.WriteString(h, s)
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+func encodeSortParams(src url.Values) (s string) {
+	if len(src) == 0 {
+		return
+	}
 	keys := make([]string, len(src))
 	i := 0
 	for k := range src {
@@ -65,15 +79,13 @@ func sign(src url.Values, key string) string {
 		i++
 	}
 	sort.Strings(keys)
-	s := ""
 	for _, k := range keys {
 		s += k + "=" + src.Get(k) + "&"
 	}
 	s = s[0 : len(s)-1]
-	h := hmac.New(sha256.New, []byte(key))
-	_, err := io.WriteString(h, s)
-	if err != nil {
-		panic(err)
-	}
-	return fmt.Sprintf("%x", h.Sum(nil))
+	return
+}
+
+func signParams(v url.Values, secret string) string {
+	return signHmac(encodeSortParams(v), secret)
 }
