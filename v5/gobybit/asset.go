@@ -1,6 +1,9 @@
 package gobybit
 
-import "github.com/ginarea/gobybit/transport"
+import (
+	"github.com/google/uuid"
+	"github.com/msw-x/moon/ujson"
+)
 
 // Get Coin Exchange Records
 // https://bybit-exchange.github.io/docs/v5/asset/exchange
@@ -120,6 +123,41 @@ func (o *Client) GetSettlement(v GetSettlement) Response[[]Settlement] {
 	return v.Do(o)
 }
 
+// Get Asset Info
+// https://bybit-exchange.github.io/docs/v5/asset/asset-info
+//
+//	accountType Required string Account type. SPOT
+//	coin                 string Coin name
+type GetAssetInfo struct {
+	AccountType AccountType
+	Coin        *string
+}
+
+func (o GetAssetInfo) Do(c *Client) Response[SpotAssetInfo] {
+	type result struct {
+		Spot SpotAssetInfo
+	}
+	return Get(c.asset(), "transfer/query-asset-info", o, func(r result) (SpotAssetInfo, error) {
+		return r.Spot, nil
+	})
+}
+
+type SpotAssetInfo struct {
+	Status string
+	Assets []AssetInfo
+}
+
+type AssetInfo struct {
+	Coin     string
+	Frozen   string
+	Free     string
+	Withdraw string
+}
+
+func (o *Client) GetAssetInfo(v GetAssetInfo) Response[SpotAssetInfo] {
+	return v.Do(o)
+}
+
 // Get All Coins Balance
 // https://bybit-exchange.github.io/docs/v5/asset/all-balance
 //
@@ -146,8 +184,8 @@ type CoinsBalance struct {
 
 type CoinBalance struct {
 	Coin            string
-	TransferBalance transport.Float64
-	WalletBalance   transport.Float64
+	TransferBalance ujson.Float64
+	WalletBalance   ujson.Float64
 	Bonus           string
 }
 
@@ -159,4 +197,96 @@ func (o *Client) GetAccountCoinsBalance(accountType AccountType) Response[CoinsB
 	return o.GetCoinsBalance(GetCoinsBalance{
 		AccountType: accountType,
 	})
+}
+
+// Get Single Coin Balance
+// https://bybit-exchange.github.io/docs/v5/asset/account-coin-balance
+//
+//	accountType            Required string  Account type
+//	coin                   Required string  Coin name
+//	memberId                        string  User Id. It is required when you use master api key to check sub account coin balance
+//	withBonus                       integer Whether query bonus or not. 0(default)：false; 1：true
+//	withTransferSafeAmount          integer Whether query delay withdraw/transfer safe amount
+type GetCoinBalance struct {
+	AccountType            AccountType
+	Coin                   string
+	MemberId               *string
+	WithBonus              *int
+	WithTransferSafeAmount *int
+}
+
+func (o GetCoinBalance) Do(c *Client) Response[SingleCoinBalance] {
+	return Get(c.asset(), "transfer/query-account-coin-balance", o, forward[SingleCoinBalance])
+}
+
+type SingleCoinBalance struct {
+	AccountType AccountType
+	MemberId    string
+	BizType     int
+	AccountId   string
+	Balance     CoinBalanceExt
+}
+
+type CoinBalanceExt struct {
+	CoinBalance
+	TransferSafeAmount string
+}
+
+func (o *Client) GetCoinBalance(v GetCoinBalance) Response[SingleCoinBalance] {
+	return v.Do(o)
+}
+
+// Get Transferable Coin
+// https://bybit-exchange.github.io/docs/v5/asset/transferable-coin
+//
+//	fromAccountType Required string From account type
+//	toAccountType   Required string To account type
+type GetTransferableCoin struct {
+	FromAccountType AccountType
+	ToAccountType   AccountType
+}
+
+func (o GetTransferableCoin) Do(c *Client) Response[[]string] {
+	type result struct {
+		List []string
+	}
+	return Get(c.asset(), "transfer/query-transfer-coin-list", o, func(r result) ([]string, error) {
+		return r.List, nil
+	})
+}
+
+func (o *Client) GetTransferableCoin(v GetTransferableCoin) Response[[]string] {
+	return v.Do(o)
+}
+
+// Create Internal Transfer
+// https://bybit-exchange.github.io/docs/v5/asset/create-inter-transfer
+//
+//	transferId      Required string UUID. Please manually generate a UUID
+//	coin            Required string Coin
+//	amount          Required string Amount
+//	fromAccountType Required string From account type
+//	toAccountType   Required string To account type
+type CreateInternalTransfer struct {
+	TransferId      uuid.UUID
+	Coin            string
+	Amount          ujson.Float64
+	FromAccountType AccountType
+	ToAccountType   AccountType
+}
+
+func (o CreateInternalTransfer) Do(c *Client) Response[uuid.UUID] {
+	if o.TransferId == uuid.Nil {
+		o.TransferId = uuid.New()
+	}
+	type result struct {
+		TransferId uuid.UUID
+	}
+	return Post(c.asset(), "transfer/inter-transfer", o, func(r result) (uuid.UUID, error) {
+		return r.TransferId, nil
+	})
+}
+
+func (o *Client) CreateInternalTransfer(v CreateInternalTransfer) Response[uuid.UUID] {
+	return v.Do(o)
 }
