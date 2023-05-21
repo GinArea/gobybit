@@ -14,7 +14,8 @@ const (
 	Market OrderType = "Market"
 )
 
-// Place Order (https://bybit-exchange.github.io/docs/v5/order/create-order)
+// Place Order
+// https://bybit-exchange.github.io/docs/v5/order/create-order
 type PlaceActiveOrder struct {
 	Category         Category
 	Symbol           string
