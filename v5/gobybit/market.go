@@ -94,7 +94,8 @@ func (o *Client) GetMarkPriceKline(v GetKline) Response[[]Kline] {
 	return v.DoMarkPrice(o)
 }
 
-// Get Index Price Kline (https://bybit-exchange.github.io/docs/v5/market/index-kline)
+// Get Index Price Kline
+// https://bybit-exchange.github.io/docs/v5/market/index-kline
 func (o GetKline) DoIndexPrice(c *Client) Response[[]Kline] {
 	return getKline(c, "index-price-kline", o, UnmarshalKline)
 }
@@ -103,7 +104,8 @@ func (o *Client) GetIndexPriceKline(v GetKline) Response[[]Kline] {
 	return v.DoIndexPrice(o)
 }
 
-// Get Premium Index Price Kline (https://bybit-exchange.github.io/docs/v5/market/preimum-index-kline)
+// Get Premium Index Price Kline
+// https://bybit-exchange.github.io/docs/v5/market/preimum-index-kline
 func (o GetKline) DoPremiumIndexPrice(c *Client) Response[[]Kline] {
 	return getKline(c, "premium-index-price-kline", o, UnmarshalKline)
 }
@@ -112,7 +114,8 @@ func (o *Client) GetPremiumIndexPriceKline(v GetKline) Response[[]Kline] {
 	return v.DoPremiumIndexPrice(o)
 }
 
-// Get Instruments Info https://bybit-exchange.github.io/docs/v5/market/instrument
+// Get Instruments Info
+// https://bybit-exchange.github.io/docs/v5/market/instrument
 //
 //	category Required string  Product type. spot,linear,inverse
 //	symbol            string  Symbol name
@@ -180,7 +183,8 @@ func (o *Client) GetInstruments(v GetInstruments) Response[[]Instrument] {
 	return v.Do(o)
 }
 
-// Get Orderbook https://bybit-exchange.github.io/docs/v5/market/orderbook
+// Get Orderbook
+// https://bybit-exchange.github.io/docs/v5/market/orderbook
 //
 //	category Required string  Product type. spot,linear,inverse,option
 //	symbol   Required string  Symbol name
@@ -210,12 +214,13 @@ func (o *Client) GetOrderbook(v GetOrderbook) Response[Orderbook] {
 	return v.Do(o)
 }
 
-// Get Tickers (https://bybit-exchange.github.io/docs/v5/market/tickers)
+// Get Tickers
+// https://bybit-exchange.github.io/docs/v5/market/tickers
 //
-// category Required string Product type. spot,linear,inverse,option
-// symbol            string Symbol name
-// baseCoin          string Base coin. For option only
-// expDate           string Expiry date. e.g., 25DEC22. For option only
+//	category Required string Product type. spot,linear,inverse,option
+//	symbol            string Symbol name
+//	baseCoin          string Base coin. For option only
+//	expDate           string Expiry date. e.g., 25DEC22. For option only
 type GetTickers struct {
 	Category Category
 	Symbol   *string
@@ -264,13 +269,14 @@ func (o *Client) GetTickers(v GetTickers) Response[[]Ticker] {
 	return v.Do(o)
 }
 
-// Get Funding Rate History (https://bybit-exchange.github.io/docs/v5/market/history-fund-rate)
+// Get Funding Rate History
+// https://bybit-exchange.github.io/docs/v5/market/history-fund-rate
 //
-// category  Required string  Product type. linear,inverse
-// symbol    Required string  Symbol name
-// startTime          integer The start timestamp (ms)
-// endTime            integer The end timestamp (ms)
-// limit              integer Limit for data size per page. [1, 200]. Default: 200
+//	category  Required string  Product type. linear,inverse
+//	symbol    Required string  Symbol name
+//	startTime          integer The start timestamp (ms)
+//	endTime            integer The end timestamp (ms)
+//	limit              integer Limit for data size per page. [1, 200]. Default: 200
 type GetFundingRateHistory struct {
 	Category  Category
 	Symbol    string
@@ -299,13 +305,14 @@ func (o *Client) GetFundingRateHistory(v GetFundingRateHistory) Response[[]Fundi
 	return v.Do(o)
 }
 
-// Get Public Trading History (https://bybit-exchange.github.io/docs/v5/market/recent-trade)
+// Get Public Trading History
+// https://bybit-exchange.github.io/docs/v5/market/recent-trade
 //
-// category   Required string  Product type. spot,linear,inverse,option
-// symbol              string  Symbol name
-// baseCoin            string  Base coin. For option only. If not passed, return BTC data by default
-// optionType          string  Option type. Call or Put. For option only
-// limit               integer
+//	category   Required string  Product type. spot,linear,inverse,option
+//	symbol              string  Symbol name
+//	baseCoin            string  Base coin. For option only. If not passed, return BTC data by default
+//	optionType          string  Option type. Call or Put. For option only
+//	limit               integer
 type GetPublicTradingHistory struct {
 	Category   Category
 	Symbol     *string
@@ -338,15 +345,16 @@ func (o *Client) GetPublicTradingHistory(v GetPublicTradingHistory) Response[[]P
 	return v.Do(o)
 }
 
-// Get Open Interest (https://bybit-exchange.github.io/docs/v5/market/open-interest)
+// Get Open Interest
+// https://bybit-exchange.github.io/docs/v5/market/open-interest
 //
-// category     Required string  Product type. linear,inverse
-// symbol       Required string  Symbol name
-// intervalTime Required string  Interval. 5min,15min,30min,1h,4h,1d
-// startTime             integer The start timestamp (ms)
-// endTime               integer The end timestamp (ms)
-// limit                 integer Limit for data size per page. [1, 200]. Default: 50
-// cursor                string  Cursor. Used for pagination
+//	category     Required string  Product type. linear,inverse
+//	symbol       Required string  Symbol name
+//	intervalTime Required string  Interval. 5min,15min,30min,1h,4h,1d
+//	startTime             integer The start timestamp (ms)
+//	endTime               integer The end timestamp (ms)
+//	limit                 integer Limit for data size per page. [1, 200]. Default: 50
+//	cursor                string  Cursor. Used for pagination
 type GetOpenInterest struct {
 	Category     Category
 	Symbol       string
@@ -377,13 +385,14 @@ func (o *Client) GetOpenInterest(v GetOpenInterest) Response[[]OpenInterest] {
 	return v.Do(o)
 }
 
-// Get Historical Volatility (https://bybit-exchange.github.io/docs/v5/market/iv)
+// Get Historical Volatility
+// https://bybit-exchange.github.io/docs/v5/market/iv
 //
-// category  Required string  Product type. option
-// baseCoin           string  Base coin. Default: return BTC data
-// period             integer Period
-// startTime          integer The start timestamp (ms)
-// endTime            integer The end timestamp (ms)
+//	category  Required string  Product type. option
+//	baseCoin           string  Base coin. Default: return BTC data
+//	period             integer Period
+//	startTime          integer The start timestamp (ms)
+//	endTime            integer The end timestamp (ms)
 type GetHistoricalVolatility struct {
 	Category  Category
 	BaseCoin  *string
@@ -406,9 +415,10 @@ func (o *Client) GetHistoricalVolatility(v GetHistoricalVolatility) Response[[]H
 	return v.Do(o)
 }
 
-// Get Insurance (https://bybit-exchange.github.io/docs/v5/market/insurance)
+// Get Insurance
+// https://bybit-exchange.github.io/docs/v5/market/insurance
 //
-// coin string coin. Default: return all insurance coins
+//	coin string coin. Default: return all insurance coins
 type GetInsurance struct {
 	Coin *string
 }
@@ -433,10 +443,11 @@ func (o *Client) GetInsurance(v GetInsurance) Response[[]Insurance] {
 	return v.Do(o)
 }
 
-// Get Risk Limit (https://bybit-exchange.github.io/docs/v5/market/risk-limit)
+// Get Risk Limit
+// https://bybit-exchange.github.io/docs/v5/market/risk-limit
 //
-// category Required string  Product type. linear,inverse
-// symbol            string  Symbol name
+//	category Required string Product type. linear,inverse
+//	symbol            string Symbol name
 type GetRiskLimit struct {
 	Category Category
 	Symbol   *string
@@ -466,13 +477,14 @@ func (o *Client) GetRiskLimit(v GetRiskLimit) Response[[]RiskLimit] {
 	return v.Do(o)
 }
 
-// Get Delivery Price (https://bybit-exchange.github.io/docs/v5/market/delivery-price)
+// Get Delivery Price
+// https://bybit-exchange.github.io/docs/v5/market/delivery-price
 //
-// category Required string  Product type. spot,linear,inverse
-// symbol            string  Symbol name
-// baseCoin          string  Base coin. Default: BTC. valid for option only
-// limit             integer Limit for data size per page. [1, 200]. Default: 50
-// cursor            string  Cursor. Used for pagination
+//	category Required string  Product type. spot,linear,inverse
+//	symbol            string  Symbol name
+//	baseCoin          string  Base coin. Default: BTC. valid for option only
+//	limit             integer Limit for data size per page. [1, 200]. Default: 50
+//	cursor            string  Cursor. Used for pagination
 type GetDeliveryPrice struct {
 	Category Category
 	Symbol   *string
