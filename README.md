@@ -22,9 +22,37 @@ documentation.
 ```
 package main
 
-import "github.com/ginarea/gobybit/bybitv5"
+import (
+    "fmt"
+    "reflect"
+
+    "github.com/ginarea/gobybit/bybitv5"
+    "github.com/gotidy/ptr"
+)
 
 func main() {
-    // todo
+    apiKey := "XXXXX"
+    apiSecret := "XXXXX"
+
+    client := bybitv5.NewClient().WithAuth(apiKey, apiSecret)
+
+    responce(client.GetInstruments(bybitv5.GetInstruments{
+        Category: bybitv5.Inverse,
+        Symbol:   ptr.Of("BTCUSD"),
+    }))
+
+    responce(client.GetTickers(bybitv5.GetTickers{
+        Category: bybitv5.Inverse,
+        Symbol:   ptr.Of("ETHUSD"),
+    }))
+
+    responce(client.GetOrderbook(bybitv5.GetOrderbook{
+        Category: bybitv5.Spot,
+        Symbol:   "ETHUSDT",
+    }))
+}
+
+func responce[T any](r bybitv5.Response[T]) {
+    fmt.Printf("%v: %+v\n", reflect.TypeOf(r), r)
 }
 ```
