@@ -70,6 +70,18 @@ func (o *Client) market() *Client {
 	return o.Clone().WithAppendPath("market")
 }
 
+func (o *Client) order() *Client {
+	return o.Clone().WithAppendPath("order")
+}
+
+func (o *Client) position() *Client {
+	return o.Clone().WithAppendPath("position")
+}
+
 func (o *Client) asset() *Client {
 	return o.Clone().WithAppendPath("asset")
+}
+
+func (o *Client) user() *Client {
+	return o.Clone().WithAppendPath("user")
 }
