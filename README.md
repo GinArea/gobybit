@@ -1,6 +1,6 @@
 # gobybit
 
-gobybit is a [Go](http://golang.org/) module for using the [ByBit's](https://www.bybit.com/) Rest & Websocket API
+gobybit is a [Go](https://go.dev) module for using the [ByBit's](https://bybit.com) Rest & Websocket API
 
 
 ### Documentation
@@ -16,21 +16,15 @@ documentation.
 
 ### Import
 
-    import "github.com/ginarea/gobybit"
+    import "github.com/ginarea/gobybit/bybitv5"
 
 ### Example
 ```
 package main
 
-import "github.com/ginarea/gobybit"
+import "github.com/ginarea/gobybit/bybitv5"
 
 func main() {
-    client := gobybit.NewClient()
-    client.InversePerpetual().ServerTime()
-    client.UsdtPerpetual().ServerTime()
-    client.InverseFutures().ServerTime()
-    client.Spot().ServerTime()
-    client.Spotv3().ServerTime()
-    client.AccountAsset()
+    // todo
 }
 ```
