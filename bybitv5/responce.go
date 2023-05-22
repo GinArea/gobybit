@@ -1,4 +1,4 @@
-package gobybit
+package bybitv5
 
 type Response[T any] struct {
 	Time  uint64

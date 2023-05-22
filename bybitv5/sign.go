@@ -1,4 +1,4 @@
-package gobybit
+package bybitv5
 
 import (
 	"crypto/hmac"

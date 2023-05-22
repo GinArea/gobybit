@@ -1,5 +1,5 @@
 // Enums Definitions (https://bybit-exchange.github.io/docs/v5/enum)
-package gobybit
+package bybitv5
 
 // accountType (https://bybit-exchange.github.io/docs/v5/enum#accounttype)
 type AccountType string

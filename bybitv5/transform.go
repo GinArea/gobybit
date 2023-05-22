@@ -1,4 +1,4 @@
-package gobybit
+package bybitv5
 
 func forward[T any](v T) (T, error) {
 	return v, nil

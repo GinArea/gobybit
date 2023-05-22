@@ -1,4 +1,4 @@
-package gobybit
+package bybitv5
 
 type RateLimit struct {
 	Limit          int   `http:"X-Bapi-Limit"`
