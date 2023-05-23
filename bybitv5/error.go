@@ -50,7 +50,11 @@ func (o *Error) UnmatchedIp() bool {
 }
 
 func (o *Error) KycNeeded() bool {
-	return o.Code == 131004
+	codes := []int{
+		10024,  // Compliance rules triggered
+		131004, // KYC needed
+	}
+	return slices.Contains(codes, o.Code)
 }
 
 func (o *Error) InsufficientBalance() bool {
