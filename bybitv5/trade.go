@@ -46,3 +46,16 @@ type PlaceActiveOrder struct {
 	TpOrderType      *string      `json:",omitempty"`
 	SlOrderType      *string      `json:",omitempty"`
 }
+
+func (o PlaceActiveOrder) Do(c *Client) Response[OrderId] {
+	return Post(c.order(), "create", o, forward[OrderId])
+}
+
+type OrderId struct {
+	OrderId     string
+	OrderLinkId string
+}
+
+func (o *Client) PlaceActiveOrder(v PlaceActiveOrder) Response[OrderId] {
+	return v.Do(o)
+}
