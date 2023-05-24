@@ -222,6 +222,15 @@ const (
 	StopOrderTpslOrder         StopOrderType = "TpslOrder"
 )
 
+// positionStatus https://bybit-exchange.github.io/docs/v5/enum#positionstatus
+type PositionStatus string
+
+const (
+	PositionStatusNormal PositionStatus = "Normal"
+	PositionStatusLiq    PositionStatus = "Liq"
+	PositionStatusAdl    PositionStatus = "Adl"
+)
+
 type Side string
 
 const (
@@ -241,4 +250,11 @@ type TpSlMode string
 const (
 	TpSlModeFull    TpSlMode = "Full"
 	TpSlModePartial TpSlMode = "Partial"
+)
+
+type TradeMode int
+
+const (
+	TradeCrossMargin    TradeMode = 0
+	TradeIsolatedMargin TradeMode = 1
 )
