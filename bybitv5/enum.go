@@ -139,6 +139,103 @@ const (
 	SellSideOfHedgeMode PositionIdx = 2
 )
 
+// orderStatus https://bybit-exchange.github.io/docs/v5/enum#orderstatus
+type OrderStatus string
+
+const (
+	OrderStatusCreated                 OrderStatus = "Created"
+	OrderStatusNew                     OrderStatus = "New"
+	OrderStatusRejected                OrderStatus = "Rejected"
+	OrderStatusPartiallyFilled         OrderStatus = "PartiallyFilled"
+	OrderStatusPartiallyFilledCanceled OrderStatus = "PartiallyFilledCanceled"
+	OrderStatusFilled                  OrderStatus = "Filled"
+	OrderStatusCancelled               OrderStatus = "Cancelled"
+	OrderStatusUntriggered             OrderStatus = "Untriggered"
+	OrderStatusTriggered               OrderStatus = "Triggered"
+	OrderStatusDeactivated             OrderStatus = "Deactivated"
+	OrderStatusActive                  OrderStatus = "Active"
+)
+
+// cancelType https://bybit-exchange.github.io/docs/v5/enum#canceltype
+type CancelType string
+
+const (
+	CancelByUser                  CancelType = "CancelByUser"
+	CancelByReduceOnly            CancelType = "CancelByReduceOnly"
+	CancelByPrepareLiq            CancelType = "CancelByPrepareLiq"
+	CancelByPrepareAdl            CancelType = "CancelByPrepareAdl"
+	CancelByAdmin                 CancelType = "CancelByAdmin"
+	CancelByTpSlTsClear           CancelType = "CancelByTpSlTsClear"
+	CancelByPzSideCh              CancelType = "CancelByPzSideCh"
+	CancelBySmp                   CancelType = "CancelBySmp"
+	CancelAllBeforeLiq            CancelType = "CancelAllBeforeLiq"
+	CancelAllBeforeAdl            CancelType = "CancelAllBeforeAdl"
+	CancelBySettle                CancelType = "CancelBySettle"
+	CancelByCannotAffordOrderCost CancelType = "CancelByCannotAffordOrderCost"
+	CancelByPmTrialMmOverEquity   CancelType = "CancelByPmTrialMmOverEquity"
+	CancelByAccountBlocking       CancelType = "CancelByAccountBlocking"
+	CancelByDelivery              CancelType = "CancelByDelivery"
+	CancelByMmpTriggered          CancelType = "CancelByMmpTriggered"
+	CancelByCrossSelfMuch         CancelType = "CancelByCrossSelfMuch"
+	CancelByCrossReachMaxTradeNum CancelType = "CancelByCrossReachMaxTradeNum"
+	CancelByDCP                   CancelType = "CancelByDCP"
+)
+
+// rejectReason https://bybit-exchange.github.io/docs/v5/enum#rejectreason
+type RejectReason string
+
+const (
+	RejectNoError                      RejectReason = "EC_NoError"
+	RejectOthers                       RejectReason = "EC_Others"
+	RejectUnknownMessageType           RejectReason = "EC_UnknownMessageType"
+	RejectMissingClOrdID               RejectReason = "EC_MissingClOrdID"
+	RejectMissingOrigClOrdID           RejectReason = "EC_MissingOrigClOrdID"
+	RejectClOrdIDOrigClOrdIDAreTheSame RejectReason = "EC_ClOrdIDOrigClOrdIDAreTheSame"
+	RejectDuplicatedClOrdID            RejectReason = "EC_DuplicatedClOrdID"
+	RejectOrigClOrdIDDoesNotExist      RejectReason = "EC_OrigClOrdIDDoesNotExist"
+	RejectTooLateToCancel              RejectReason = "EC_TooLateToCancel"
+	RejectUnknownOrderType             RejectReason = "EC_UnknownOrderType"
+	RejectUnknownSide                  RejectReason = "EC_UnknownSide"
+	RejectUnknownTimeInForce           RejectReason = "EC_UnknownTimeInForce"
+	RejectWronglyRouted                RejectReason = "EC_WronglyRouted"
+	RejectMarketOrderPriceIsNotZero    RejectReason = "EC_MarketOrderPriceIsNotZero"
+	RejectLimitOrderInvalidPrice       RejectReason = "EC_LimitOrderInvalidPrice"
+	RejectNoEnoughQtyToFill            RejectReason = "EC_NoEnoughQtyToFill"
+	RejectNoImmediateQtyToFill         RejectReason = "EC_NoImmediateQtyToFill"
+	RejectPerCancelRequest             RejectReason = "EC_PerCancelRequest"
+	RejectMarketOrderCannotBePostOnly  RejectReason = "EC_MarketOrderCannotBePostOnly"
+	RejectPostOnlyWillTakeLiquidity    RejectReason = "EC_PostOnlyWillTakeLiquidity"
+	RejectCancelReplaceOrder           RejectReason = "EC_CancelReplaceOrder"
+	RejectInvalidSymbolStatus          RejectReason = "EC_InvalidSymbolStatus"
+)
+
+// stopOrderType https://bybit-exchange.github.io/docs/v5/enum#stopordertype
+type StopOrderType string
+
+const (
+	StopOrderTakeProfit        StopOrderType = "TakeProfit"
+	StopOrderStopLoss          StopOrderType = "StopLoss"
+	StopOrderTrailingStop      StopOrderType = "TrailingStop"
+	StopOrderStop              StopOrderType = "Stop"
+	StopOrderPartialTakeProfit StopOrderType = "PartialTakeProfit"
+	StopOrderPartialStopLoss   StopOrderType = "PartialStopLoss"
+	StopOrderTpslOrder         StopOrderType = "TpslOrder"
+)
+
+type Side string
+
+const (
+	Buy  Side = "Buy"
+	Sell Side = "Sell"
+)
+
+type OrderType string
+
+const (
+	Limit  OrderType = "Limit"
+	Market OrderType = "Market"
+)
+
 type TpSlMode string
 
 const (
