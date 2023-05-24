@@ -42,3 +42,18 @@ type Position struct {
 	CreatedTime      ujson.Int64
 	UpdatedTime      ujson.Int64
 }
+
+func (o GetPositions) Do(c *Client) Response[[]Position] {
+	type result struct {
+		Category       Category
+		NextPageCursor string
+		List           []Position
+	}
+	return Get(c.position(), "list", o, func(r result) ([]Position, error) {
+		return r.List, nil
+	})
+}
+
+func (o *Client) GetPositions(v GetPositions) Response[[]Position] {
+	return v.Do(o)
+}
