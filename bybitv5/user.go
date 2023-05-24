@@ -11,10 +11,6 @@ import (
 type GetKeyInfo struct {
 }
 
-func (o GetKeyInfo) Do(c *Client) Response[KeyInfo] {
-	return Get(c.user(), "query-api", o, forward[KeyInfo])
-}
-
 type KeyInfo struct {
 	Id            ujson.Float64
 	Note          string
@@ -47,6 +43,10 @@ type Permissions struct {
 	BlockTrade    []string
 	Exchange      []string
 	NFT           []string
+}
+
+func (o GetKeyInfo) Do(c *Client) Response[KeyInfo] {
+	return Get(c.user(), "query-api", o, forward[KeyInfo])
 }
 
 func (o *Client) GetKeyInfo() Response[KeyInfo] {

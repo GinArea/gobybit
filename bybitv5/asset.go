@@ -19,16 +19,6 @@ type GetCoinRecords struct {
 	Cursor   string `url:",omitempty"`
 }
 
-func (o GetCoinRecords) Do(c *Client) Response[[]CoinRecord] {
-	type result struct {
-		OrderBody      []CoinRecord
-		NextPageCursor string
-	}
-	return Get(c.asset(), "exchange/order-record", o, func(r result) ([]CoinRecord, error) {
-		return r.OrderBody, nil
-	})
-}
-
 type CoinRecord struct {
 	Fromcoin     string
 	Fromamount   string
@@ -37,6 +27,16 @@ type CoinRecord struct {
 	Exchangerate string
 	Createdtime  string
 	Exchangetxid string
+}
+
+func (o GetCoinRecords) Do(c *Client) Response[[]CoinRecord] {
+	type result struct {
+		OrderBody      []CoinRecord
+		NextPageCursor string
+	}
+	return Get(c.asset(), "exchange/order-record", o, func(r result) ([]CoinRecord, error) {
+		return r.OrderBody, nil
+	})
 }
 
 func (o *Client) GetCoinRecords(v GetCoinRecords) Response[[]CoinRecord] {
@@ -59,17 +59,6 @@ type GetDeliveryRecords struct {
 	Cursor   string `url:",omitempty"`
 }
 
-func (o GetDeliveryRecords) Do(c *Client) Response[[]DeliveryRecord] {
-	type result struct {
-		Category       Category
-		NextPageCursor string
-		List           []DeliveryRecord
-	}
-	return Get(c.asset(), "delivery-record", o, func(r result) ([]DeliveryRecord, error) {
-		return r.List, nil
-	})
-}
-
 type DeliveryRecord struct {
 	Symbol        string
 	Side          Side
@@ -79,6 +68,17 @@ type DeliveryRecord struct {
 	Position      string
 	DeliveryPrice string
 	DeliveryRpl   string
+}
+
+func (o GetDeliveryRecords) Do(c *Client) Response[[]DeliveryRecord] {
+	type result struct {
+		Category       Category
+		NextPageCursor string
+		List           []DeliveryRecord
+	}
+	return Get(c.asset(), "delivery-record", o, func(r result) ([]DeliveryRecord, error) {
+		return r.List, nil
+	})
 }
 
 func (o *Client) GetDeliveryRecords(v GetDeliveryRecords) Response[[]DeliveryRecord] {
@@ -98,6 +98,16 @@ type GetSettlement struct {
 	Cursor   string `url:",omitempty"`
 }
 
+type Settlement struct {
+	RealisedPnl     string
+	Symbol          string
+	Side            string
+	MarkPrice       string
+	Size            string
+	CreatedTime     string
+	SessionAvgPrice string
+}
+
 func (o GetSettlement) Do(c *Client) Response[[]Settlement] {
 	type result struct {
 		Category       Category
@@ -107,16 +117,6 @@ func (o GetSettlement) Do(c *Client) Response[[]Settlement] {
 	return Get(c.asset(), "settlement-record", o, func(r result) ([]Settlement, error) {
 		return r.List, nil
 	})
-}
-
-type Settlement struct {
-	RealisedPnl     string
-	Symbol          string
-	Side            string
-	MarkPrice       string
-	Size            string
-	CreatedTime     string
-	SessionAvgPrice string
 }
 
 func (o *Client) GetSettlement(v GetSettlement) Response[[]Settlement] {
@@ -133,15 +133,6 @@ type GetAssetInfo struct {
 	Coin        string `url:",omitempty"`
 }
 
-func (o GetAssetInfo) Do(c *Client) Response[SpotAssetInfo] {
-	type result struct {
-		Spot SpotAssetInfo
-	}
-	return Get(c.asset(), "transfer/query-asset-info", o, func(r result) (SpotAssetInfo, error) {
-		return r.Spot, nil
-	})
-}
-
 type SpotAssetInfo struct {
 	Status string
 	Assets []AssetInfo
@@ -152,6 +143,15 @@ type AssetInfo struct {
 	Frozen   string
 	Free     string
 	Withdraw string
+}
+
+func (o GetAssetInfo) Do(c *Client) Response[SpotAssetInfo] {
+	type result struct {
+		Spot SpotAssetInfo
+	}
+	return Get(c.asset(), "transfer/query-asset-info", o, func(r result) (SpotAssetInfo, error) {
+		return r.Spot, nil
+	})
 }
 
 func (o *Client) GetAssetInfo(v GetAssetInfo) Response[SpotAssetInfo] {
@@ -172,10 +172,6 @@ type GetCoinsBalance struct {
 	WithBonus   string `url:",omitempty"`
 }
 
-func (o GetCoinsBalance) Do(c *Client) Response[CoinsBalance] {
-	return Get(c.asset(), "transfer/query-account-coins-balance", o, forward[CoinsBalance])
-}
-
 type CoinsBalance struct {
 	AccountType AccountType
 	MemberId    string
@@ -187,6 +183,10 @@ type CoinBalance struct {
 	TransferBalance ujson.Float64
 	WalletBalance   ujson.Float64
 	Bonus           string
+}
+
+func (o GetCoinsBalance) Do(c *Client) Response[CoinsBalance] {
+	return Get(c.asset(), "transfer/query-account-coins-balance", o, forward[CoinsBalance])
 }
 
 func (o *Client) GetCoinsBalance(v GetCoinsBalance) Response[CoinsBalance] {
@@ -215,10 +215,6 @@ type GetCoinBalance struct {
 	WithTransferSafeAmount int    `url:",omitempty"`
 }
 
-func (o GetCoinBalance) Do(c *Client) Response[SingleCoinBalance] {
-	return Get(c.asset(), "transfer/query-account-coin-balance", o, forward[SingleCoinBalance])
-}
-
 type SingleCoinBalance struct {
 	AccountType AccountType
 	MemberId    string
@@ -230,6 +226,10 @@ type SingleCoinBalance struct {
 type CoinBalanceExt struct {
 	CoinBalance
 	TransferSafeAmount string
+}
+
+func (o GetCoinBalance) Do(c *Client) Response[SingleCoinBalance] {
+	return Get(c.asset(), "transfer/query-account-coin-balance", o, forward[SingleCoinBalance])
 }
 
 func (o *Client) GetCoinBalance(v GetCoinBalance) Response[SingleCoinBalance] {

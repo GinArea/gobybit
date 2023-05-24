@@ -35,13 +35,13 @@ type PlaceOrder struct {
 	SlOrderType      OrderType     `json:",omitempty"`
 }
 
-func (o PlaceOrder) Do(c *Client) Response[OrderId] {
-	return Post(c.order(), "create", o, forward[OrderId])
-}
-
 type OrderId struct {
 	OrderId     string
 	OrderLinkId string
+}
+
+func (o PlaceOrder) Do(c *Client) Response[OrderId] {
+	return Post(c.order(), "create", o, forward[OrderId])
 }
 
 func (o *Client) PlaceOrder(v PlaceOrder) Response[OrderId] {
@@ -109,17 +109,6 @@ type GetOpenOrders struct {
 	Cursor      string `url:",omitempty"`
 }
 
-func (o GetOpenOrders) Do(c *Client) Response[[]Order] {
-	type result struct {
-		Category       Category
-		NextPageCursor string
-		List           []Order
-	}
-	return Get(c.order(), "realtime", o, func(r result) ([]Order, error) {
-		return r.List, nil
-	})
-}
-
 type Order struct {
 	OrderId            string
 	OrderLinkId        string
@@ -162,6 +151,17 @@ type Order struct {
 	PlaceType          string
 	CreatedTime        ujson.Int64
 	UpdatedTime        ujson.Int64
+}
+
+func (o GetOpenOrders) Do(c *Client) Response[[]Order] {
+	type result struct {
+		Category       Category
+		NextPageCursor string
+		List           []Order
+	}
+	return Get(c.order(), "realtime", o, func(r result) ([]Order, error) {
+		return r.List, nil
+	})
 }
 
 func (o *Client) GetOpenOrders(v GetOpenOrders) Response[[]Order] {

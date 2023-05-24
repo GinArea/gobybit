@@ -20,8 +20,18 @@ type GetKline struct {
 	Limit    int `url:",omitempty"`
 }
 
-func (o GetKline) Do(c *Client) Response[[]KlineExt] {
-	return getKline(c, "kline", o, UnmarshalKlineExt)
+type Kline struct {
+	StartTime  string
+	OpenPrice  string
+	HighPrice  string
+	LowPrice   string
+	ClosePrice string
+}
+
+type KlineExt struct {
+	Kline
+	Volume   string
+	Turnover string
 }
 
 type klineResult struct {
@@ -34,14 +44,6 @@ func getKline[T any](c *Client, path string, q GetKline, unmarshal func([]string
 	return GetPub(c.market(), path, q, func(r klineResult) ([]T, error) {
 		return transformList(r.List, unmarshal)
 	})
-}
-
-type Kline struct {
-	StartTime  string
-	OpenPrice  string
-	HighPrice  string
-	LowPrice   string
-	ClosePrice string
 }
 
 func UnmarshalKline(s []string) (r Kline, err error) {
@@ -59,12 +61,6 @@ func UnmarshalKline(s []string) (r Kline, err error) {
 	return
 }
 
-type KlineExt struct {
-	Kline
-	Volume   string
-	Turnover string
-}
-
 func UnmarshalKlineExt(s []string) (r KlineExt, err error) {
 	requiredLen := 7
 	currentLen := len(s)
@@ -78,6 +74,10 @@ func UnmarshalKlineExt(s []string) (r KlineExt, err error) {
 		err = fmt.Errorf("kline list len is %d, but required %d", currentLen, requiredLen)
 	}
 	return
+}
+
+func (o GetKline) Do(c *Client) Response[[]KlineExt] {
+	return getKline(c, "kline", o, UnmarshalKlineExt)
 }
 
 func (o *Client) GetKline(v GetKline) Response[[]KlineExt] {
