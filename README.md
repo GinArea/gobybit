@@ -27,7 +27,6 @@ import (
     "reflect"
 
     "github.com/ginarea/gobybit/bybitv5"
-    "github.com/gotidy/ptr"
 )
 
 func main() {
@@ -38,12 +37,12 @@ func main() {
 
     responce(client.GetInstruments(bybitv5.GetInstruments{
         Category: bybitv5.Inverse,
-        Symbol:   ptr.Of("BTCUSD"),
+        Symbol:   "BTCUSD",
     }))
 
     responce(client.GetTickers(bybitv5.GetTickers{
         Category: bybitv5.Inverse,
-        Symbol:   ptr.Of("ETHUSD"),
+        Symbol:   "ETHUSD",
     }))
 
     responce(client.GetOrderbook(bybitv5.GetOrderbook{
