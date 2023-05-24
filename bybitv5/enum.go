@@ -138,3 +138,10 @@ const (
 	BuySideOfHedgeMode  PositionIdx = 1
 	SellSideOfHedgeMode PositionIdx = 2
 )
+
+type TpSlMode string
+
+const (
+	TpSlModeFull    TpSlMode = "Full"
+	TpSlModePartial TpSlMode = "Partial"
+)
