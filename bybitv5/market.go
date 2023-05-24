@@ -15,9 +15,9 @@ type GetKline struct {
 	Category Category
 	Symbol   string
 	Interval Interval
-	Start    *int
-	End      *int
-	Limit    *int
+	Start    int `url:",omitempty"`
+	End      int `url:",omitempty"`
+	Limit    int `url:",omitempty"`
 }
 
 func (o GetKline) Do(c *Client) Response[[]KlineExt] {
@@ -125,11 +125,11 @@ func (o *Client) GetPremiumIndexPriceKline(v GetKline) Response[[]Kline] {
 //	cursor            string  Cursor. Used for pagination
 type GetInstruments struct {
 	Category Category
-	Symbol   *string
-	Status   *Status
-	BaseCoin *string
-	Limit    *int
-	Cursor   *string
+	Symbol   string `url:",omitempty"`
+	Status   Status `url:",omitempty"`
+	BaseCoin string `url:",omitempty"`
+	Limit    int    `url:",omitempty"`
+	Cursor   string `url:",omitempty"`
 }
 
 type Instrument struct {
@@ -195,7 +195,7 @@ func (o *Client) GetInstruments(v GetInstruments) Response[[]Instrument] {
 type GetOrderbook struct {
 	Category Category
 	Symbol   string
-	Limit    *int
+	Limit    int `url:",omitempty"`
 }
 
 type Orderbook struct {
@@ -223,9 +223,9 @@ func (o *Client) GetOrderbook(v GetOrderbook) Response[Orderbook] {
 //	expDate           string Expiry date. e.g., 25DEC22. For option only
 type GetTickers struct {
 	Category Category
-	Symbol   *string
-	BaseCoin *string
-	ExpDate  *string
+	Symbol   string `url:",omitempty"`
+	BaseCoin string `url:",omitempty"`
+	ExpDate  string `url:",omitempty"`
 }
 
 type Ticker struct {
@@ -280,9 +280,9 @@ func (o *Client) GetTickers(v GetTickers) Response[[]Ticker] {
 type GetFundingRateHistory struct {
 	Category  Category
 	Symbol    string
-	StartTime *int
-	EndTime   *int
-	Limit     *int
+	StartTime int `url:",omitempty"`
+	EndTime   int `url:",omitempty"`
+	Limit     int `url:",omitempty"`
 }
 
 type FundingRateHistory struct {
@@ -315,10 +315,10 @@ func (o *Client) GetFundingRateHistory(v GetFundingRateHistory) Response[[]Fundi
 //	limit               integer
 type GetPublicTradingHistory struct {
 	Category   Category
-	Symbol     *string
-	BaseCoin   *string
-	OptionType *string
-	Limit      *int
+	Symbol     string `url:",omitempty"`
+	BaseCoin   string `url:",omitempty"`
+	OptionType string `url:",omitempty"`
+	Limit      int    `url:",omitempty"`
 }
 
 type PublicTradingHistory struct {
@@ -359,10 +359,10 @@ type GetOpenInterest struct {
 	Category     Category
 	Symbol       string
 	IntervalTime IntervalTime
-	StartTime    *int
-	EndTime      *int
-	Limit        *int
-	Cursor       *string
+	StartTime    int    `url:",omitempty"`
+	EndTime      int    `url:",omitempty"`
+	Limit        int    `url:",omitempty"`
+	Cursor       string `url:",omitempty"`
 }
 
 type OpenInterest struct {
@@ -395,10 +395,10 @@ func (o *Client) GetOpenInterest(v GetOpenInterest) Response[[]OpenInterest] {
 //	endTime            integer The end timestamp (ms)
 type GetHistoricalVolatility struct {
 	Category  Category
-	BaseCoin  *string
-	Period    *Period
-	StartTime *int
-	EndTime   *int
+	BaseCoin  string `url:",omitempty"`
+	Period    Period `url:",omitempty"`
+	StartTime int    `url:",omitempty"`
+	EndTime   int    `url:",omitempty"`
 }
 
 type HistoricalVolatility struct {
@@ -420,7 +420,7 @@ func (o *Client) GetHistoricalVolatility(v GetHistoricalVolatility) Response[[]H
 //
 //	coin string coin. Default: return all insurance coins
 type GetInsurance struct {
-	Coin *string
+	Coin string `url:",omitempty"`
 }
 
 type Insurance struct {
@@ -450,7 +450,7 @@ func (o *Client) GetInsurance(v GetInsurance) Response[[]Insurance] {
 //	symbol            string Symbol name
 type GetRiskLimit struct {
 	Category Category
-	Symbol   *string
+	Symbol   string `url:",omitempty"`
 }
 
 type RiskLimit struct {
@@ -487,10 +487,10 @@ func (o *Client) GetRiskLimit(v GetRiskLimit) Response[[]RiskLimit] {
 //	cursor            string  Cursor. Used for pagination
 type GetDeliveryPrice struct {
 	Category Category
-	Symbol   *string
-	BaseCoin *string
-	Limit    *int
-	Cursor   *string
+	Symbol   string `url:",omitempty"`
+	BaseCoin string `url:",omitempty"`
+	Limit    int    `url:",omitempty"`
+	Cursor   string `url:",omitempty"`
 }
 
 type DeliveryPrice struct {

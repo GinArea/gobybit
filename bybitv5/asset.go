@@ -13,10 +13,10 @@ import (
 //	limit    integer Limit for data size per page. [1, 50]. Default: 10
 //	cursor   string  Cursor. Used for pagination
 type GetCoinRecords struct {
-	FromCoin *string
-	ToCoin   *string
-	Limit    *int
-	Cursor   *string
+	FromCoin string `url:",omitempty"`
+	ToCoin   string `url:",omitempty"`
+	Limit    int    `url:",omitempty"`
+	Cursor   string `url:",omitempty"`
 }
 
 func (o GetCoinRecords) Do(c *Client) Response[[]CoinRecord] {
@@ -53,10 +53,10 @@ func (o *Client) GetCoinRecords(v GetCoinRecords) Response[[]CoinRecord] {
 // cursor            string  Cursor. Used for pagination
 type GetDeliveryRecords struct {
 	Category Category
-	Symbol   *string
-	Expdate  *string
-	Limit    *int
-	Cursor   *string
+	Symbol   string `url:",omitempty"`
+	Expdate  string `url:",omitempty"`
+	Limit    int    `url:",omitempty"`
+	Cursor   string `url:",omitempty"`
 }
 
 func (o GetDeliveryRecords) Do(c *Client) Response[[]DeliveryRecord] {
@@ -93,9 +93,9 @@ func (o *Client) GetDeliveryRecords(v GetDeliveryRecords) Response[[]DeliveryRec
 // cursor            string  Cursor. Used for pagination
 type GetSettlement struct {
 	Category Category
-	Symbol   *string
-	Limit    *int
-	Cursor   *string
+	Symbol   string `url:",omitempty"`
+	Limit    int    `url:",omitempty"`
+	Cursor   string `url:",omitempty"`
 }
 
 func (o GetSettlement) Do(c *Client) Response[[]Settlement] {
@@ -130,7 +130,7 @@ func (o *Client) GetSettlement(v GetSettlement) Response[[]Settlement] {
 //	coin                 string Coin name
 type GetAssetInfo struct {
 	AccountType AccountType
-	Coin        *string
+	Coin        string `url:",omitempty"`
 }
 
 func (o GetAssetInfo) Do(c *Client) Response[SpotAssetInfo] {
@@ -167,9 +167,9 @@ func (o *Client) GetAssetInfo(v GetAssetInfo) Response[SpotAssetInfo] {
 //	withBonus            string Whether query bonus or not. 0(default)：false; 1：true
 type GetCoinsBalance struct {
 	AccountType AccountType
-	MemberId    *string
-	Coin        *string
-	WithBonus   *string
+	MemberId    string `url:",omitempty"`
+	Coin        string `url:",omitempty"`
+	WithBonus   string `url:",omitempty"`
 }
 
 func (o GetCoinsBalance) Do(c *Client) Response[CoinsBalance] {
@@ -210,9 +210,9 @@ func (o *Client) GetAccountCoinsBalance(accountType AccountType) Response[CoinsB
 type GetCoinBalance struct {
 	AccountType            AccountType
 	Coin                   string
-	MemberId               *string
-	WithBonus              *int
-	WithTransferSafeAmount *int
+	MemberId               string `url:",omitempty"`
+	WithBonus              int    `url:",omitempty"`
+	WithTransferSafeAmount int    `url:",omitempty"`
 }
 
 func (o GetCoinBalance) Do(c *Client) Response[SingleCoinBalance] {
