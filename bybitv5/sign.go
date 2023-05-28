@@ -4,6 +4,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -47,6 +48,16 @@ func (o *Sign) HeaderPost(h http.Header, body []byte) {
 	o.header(h, string(body[:]))
 }
 
+func (o *Sign) WebSocket() []string {
+	expires := nowUtcMs() + o.timeShift + o.recvWindow
+	sign := signHmac(fmt.Sprintf("GET/realtime%d", expires), o.secret)
+	return []string{
+		o.key,
+		strconv.Itoa(expires),
+		sign,
+	}
+}
+
 func (o *Sign) header(h http.Header, s string) {
 	ts, window := o.timestamp()
 	h.Set("X-BAPI-API-KEY", o.key)
@@ -56,10 +67,14 @@ func (o *Sign) header(h http.Header, s string) {
 }
 
 func (o *Sign) timestamp() (ts, window string) {
-	i := int(time.Now().UTC().UnixNano()/int64(time.Millisecond)) + o.timeShift
+	i := nowUtcMs() + o.timeShift
 	ts = strconv.Itoa(i)
 	window = strconv.Itoa(o.recvWindow)
 	return
+}
+
+func nowUtcMs() int {
+	return int(time.Now().UTC().UnixNano() / int64(time.Millisecond))
 }
 
 func signHmac(s, secret string) string {

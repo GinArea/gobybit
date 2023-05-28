@@ -203,7 +203,7 @@ type Orderbook struct {
 	Bid       [][]string `json:"b"`
 	Ask       [][]string `json:"a"`
 	Timestamp int        `json:"ts"`
-	UpdateID  int        `json:"u"`
+	UpdateId  int        `json:"u"`
 }
 
 func (o GetOrderbook) Do(c *Client) Response[Orderbook] {

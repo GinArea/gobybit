@@ -231,6 +231,16 @@ const (
 	PositionStatusAdl    PositionStatus = "Adl"
 )
 
+// tickDirection https://bybit-exchange.github.io/docs/v5/enum#tickdirection
+type TickDirection string
+
+const (
+	TickPlus      TickDirection = "PlusTick"
+	TickZeroPlus  TickDirection = "ZeroPlusTick"
+	TickMinus     TickDirection = "MinusTick"
+	TickZeroMinus TickDirection = "ZeroMinusTick"
+)
+
 type Side string
 
 const (

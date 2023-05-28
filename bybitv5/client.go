@@ -46,11 +46,6 @@ func (o *Client) WithAppendPath(path string) *Client {
 	return o
 }
 
-func (o *Client) WithAuth(key, secret string) *Client {
-	o.s = NewSign(key, secret)
-	return o
-}
-
 func (o *Client) WithProxy(proxy string) *Client {
 	o.c.WithProxy(proxy)
 	return o
@@ -63,6 +58,11 @@ func (o *Client) WithTimeout(timeout time.Duration) *Client {
 
 func (o *Client) WithTraceFormat(log *ulog.Log, f uhttp.Format) *Client {
 	o.c.WithTraceFormat(log, f)
+	return o
+}
+
+func (o *Client) WithAuth(key, secret string) *Client {
+	o.s = NewSign(key, secret)
 	return o
 }
 
