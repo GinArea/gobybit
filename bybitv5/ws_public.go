@@ -11,13 +11,13 @@ type WsPublic struct {
 	c             *WsClient
 	category      Category
 	onConnected   func()
-	subscriptions *Subscriptions[PublicTopic]
+	subscriptions *Subscriptions
 }
 
 func NewWsPublic() *WsPublic {
 	o := new(WsPublic)
 	o.c = NewWsClient()
-	o.subscriptions = NewSubscriptions[PublicTopic](o)
+	o.subscriptions = NewSubscriptions(o)
 	return o
 }
 
@@ -108,39 +108,36 @@ func (o *WsPublic) Ready() bool {
 	return o.Connected()
 }
 
-func (o *WsPublic) OrderBook(symbol string, depth int) {
-	o.subscribe(topicNameExt("orderbook", symbol, depth))
-	//NewWsDeltaExecutor[OrderbookShot]
+func (o *WsPublic) OrderBook(symbol string, depth int) *Executor[Orderbook] {
+	return NewExecutor[Orderbook](topicNameExt("orderbook", symbol, depth), o.subscriptions)
 }
 
-func (o *WsPublic) Trade(symbol string) *Executor[PublicTopic, []TradeShot] {
-	return NewExecutor[PublicTopic, []TradeShot](topicName("publicTrade", symbol), o.subscriptions)
+func (o *WsPublic) Trade(symbol string) *Executor[[]TradeShot] {
+	return NewExecutor[[]TradeShot](topicName("publicTrade", symbol), o.subscriptions)
 }
 
-func (o *WsPublic) Ticker(symbol string) *Executor[PublicTopic, Ticker] {
-	return NewExecutor[PublicTopic, Ticker](topicName("tickers", symbol), o.subscriptions)
-	//o.subscribe(topicName("tickers", symbol))
-	//o.subscribe("tickers", symbol)
+func (o *WsPublic) Ticker(symbol string) *Executor[Ticker] {
+	return NewExecutor[Ticker](topicName("tickers", symbol), o.subscriptions)
 }
 
-func (o *WsPublic) Kline(symbol string, interval Interval) {
-	//o.subscribeExt("kline", symbol, interval)
+func (o *WsPublic) Kline(symbol string, interval Interval) *Executor[[]KlineShot] {
+	return NewExecutor[[]KlineShot](topicNameExt("kline", symbol, interval), o.subscriptions)
 }
 
-func (o *WsPublic) Liquidation(symbol string) {
-	//o.subscribe("liquidation", symbol)
+func (o *WsPublic) Liquidation(symbol string) *Executor[LiquidationShot] {
+	return NewExecutor[LiquidationShot](topicName("liquidation", symbol), o.subscriptions)
 }
 
-func (o *WsPublic) LtKline(symbol string, interval Interval) {
-	//o.subscribeExt("kline_lt", symbol, interval)
+func (o *WsPublic) LtKline(symbol string, interval Interval) *Executor[[]KlineShot] {
+	return NewExecutor[[]KlineShot](topicNameExt("kline_lt", symbol, interval), o.subscriptions)
 }
 
-func (o *WsPublic) LtTicker(symbol string) {
-	//o.subscribe("tickers_lt", symbol)
+func (o *WsPublic) LtTicker(symbol string) *Executor[LtTickerShot] {
+	return NewExecutor[LtTickerShot](topicName("tickers_lt", symbol), o.subscriptions)
 }
 
-func (o *WsPublic) LtNav(symbol string) {
-	//o.subscribe("lt", symbol)
+func (o *WsPublic) LtNav(symbol string) *Executor[LtNavShot] {
+	return NewExecutor[LtNavShot](topicName("lt", symbol), o.subscriptions)
 }
 
 func (o *WsPublic) subscribe(topic string) {

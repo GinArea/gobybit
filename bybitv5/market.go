@@ -1,6 +1,10 @@
 package bybitv5
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/msw-x/moon/ujson"
+)
 
 // Get Kline
 // https://bybit-exchange.github.io/docs/v5/market/kline
@@ -199,11 +203,11 @@ type GetOrderbook struct {
 }
 
 type Orderbook struct {
-	Symbol    string     `json:"s"`
-	Bid       [][]string `json:"b"`
-	Ask       [][]string `json:"a"`
-	Timestamp int        `json:"ts"`
-	UpdateId  int        `json:"u"`
+	Symbol    string            `json:"s"`
+	Bid       [][]ujson.Float64 `json:"b"`
+	Ask       [][]ujson.Float64 `json:"a"`
+	Timestamp int               `json:"ts"`
+	UpdateId  int               `json:"u"`
 }
 
 func (o GetOrderbook) Do(c *Client) Response[Orderbook] {
@@ -229,29 +233,29 @@ type GetTickers struct {
 }
 
 type Ticker struct {
-	Symol                  string
-	LastPrice              string
-	IndexPrice             string
-	MarkPrice              string
-	PrevPrice24h           string
-	Price24hPcnt           string
-	HighPrice24h           string
-	LowPrice24h            string
-	PrevPrice1h            string
-	OpenInterest           string
-	OpenInterestValue      string
-	Turnover24h            string
-	Volume24h              string
-	FundingRate            string
+	Symbol                 string
+	LastPrice              ujson.StringFloat64
+	IndexPrice             ujson.StringFloat64
+	MarkPrice              ujson.StringFloat64
+	PrevPrice24h           ujson.StringFloat64
+	Price24hPcnt           ujson.StringFloat64
+	HighPrice24h           ujson.StringFloat64
+	LowPrice24h            ujson.StringFloat64
+	PrevPrice1h            ujson.StringFloat64
+	OpenInterest           ujson.StringFloat64
+	OpenInterestValue      ujson.StringFloat64
+	Turnover24h            ujson.StringFloat64
+	Volume24h              ujson.StringFloat64
+	FundingRate            ujson.StringFloat64
 	NextFundingTime        string
-	PredictedDeliveryPrice string
-	BasisRate              string
-	DeliveryFeeRate        string
+	PredictedDeliveryPrice ujson.StringFloat64
+	BasisRate              ujson.StringFloat64
+	DeliveryFeeRate        ujson.StringFloat64
 	DeliveryTime           string
-	Ask1Size               string
-	Bid1Price              string
-	Ask1Price              string
-	Bid1Size               string
+	Ask1Size               ujson.StringFloat64
+	Bid1Price              ujson.StringFloat64
+	Ask1Price              ujson.StringFloat64
+	Bid1Size               ujson.StringFloat64
 	Basis                  string
 }
 

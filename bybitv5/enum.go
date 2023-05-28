@@ -241,6 +241,18 @@ const (
 	TickZeroMinus TickDirection = "ZeroMinusTick"
 )
 
+// execType https://bybit-exchange.github.io/docs/v5/enum#exectype
+type ExecType string
+
+const (
+	ExecTrade      ExecType = "Trade"
+	ExecAdlTrade   ExecType = "AdlTrade"
+	ExecFunding    ExecType = "Funding"
+	ExecBustTrade  ExecType = "BustTrade"
+	ExecDelivery   ExecType = "Delivery"
+	ExecBlockTrade ExecType = "BlockTrade"
+)
+
 type Side string
 
 const (

@@ -7,20 +7,20 @@ import (
 	"sync"
 )
 
-type Subscriptions[T SubscriptionTopic] struct {
+type Subscriptions struct {
 	c     SubscriptionClient
 	mutex sync.Mutex
-	funcs SubscriptionFuncs[T]
+	funcs SubscriptionFuncs
 }
 
-func NewSubscriptions[T SubscriptionTopic](c SubscriptionClient) *Subscriptions[T] {
-	o := new(Subscriptions[T])
+func NewSubscriptions(c SubscriptionClient) *Subscriptions {
+	o := new(Subscriptions)
 	o.c = c
-	o.funcs = make(SubscriptionFuncs[T])
+	o.funcs = make(SubscriptionFuncs)
 	return o
 }
 
-func (o *Subscriptions[T]) subscribe(topic string, f SubscriptionFunc[T]) {
+func (o *Subscriptions) subscribe(topic string, f SubscriptionFunc) {
 	if o.c.Ready() {
 		o.c.subscribe(topic)
 	}
@@ -29,7 +29,7 @@ func (o *Subscriptions[T]) subscribe(topic string, f SubscriptionFunc[T]) {
 	o.funcs[topic] = f
 }
 
-func (o *Subscriptions[T]) unsubscribe(topic string) {
+func (o *Subscriptions) unsubscribe(topic string) {
 	if o.c.Ready() {
 		o.c.unsubscribe(topic)
 	}
@@ -38,7 +38,7 @@ func (o *Subscriptions[T]) unsubscribe(topic string) {
 	delete(o.funcs, topic)
 }
 
-func (o *Subscriptions[T]) subscribeAll() {
+func (o *Subscriptions) subscribeAll() {
 	o.mutex.Lock()
 	defer o.mutex.Unlock()
 	for topic, _ := range o.funcs {
@@ -46,13 +46,13 @@ func (o *Subscriptions[T]) subscribeAll() {
 	}
 }
 
-func (o *Subscriptions[T]) processTopic(data []byte) (err error) {
-	var topic T
+func (o *Subscriptions) processTopic(data []byte) (err error) {
+	var topic RawTopic
 	err = json.Unmarshal(data, &topic)
 	if err == nil {
-		f := o.getFunc(topic.Name())
+		f := o.getFunc(topic.Topic)
 		if f == nil {
-			err = fmt.Errorf("subscription of topic[%s] not found", topic.Name())
+			err = fmt.Errorf("subscription of topic[%s] not found", topic.Topic)
 		} else {
 			err = f(topic)
 		}
@@ -60,7 +60,7 @@ func (o *Subscriptions[T]) processTopic(data []byte) (err error) {
 	return
 }
 
-func (o *Subscriptions[T]) getFunc(name string) (f SubscriptionFunc[T]) {
+func (o *Subscriptions) getFunc(name string) (f SubscriptionFunc) {
 	o.mutex.Lock()
 	defer o.mutex.Unlock()
 	for topic, fn := range o.funcs {
@@ -72,17 +72,12 @@ func (o *Subscriptions[T]) getFunc(name string) (f SubscriptionFunc[T]) {
 	return
 }
 
-type SubscriptionTopic interface {
-	Name() string
-	RawData() []byte
-}
-
 type SubscriptionClient interface {
 	Ready() bool
 	subscribe(string)
 	unsubscribe(string)
 }
 
-type SubscriptionFunc[T SubscriptionTopic] func(T) error
+type SubscriptionFunc func(RawTopic) error
 
-type SubscriptionFuncs[T SubscriptionTopic] map[string]SubscriptionFunc[T]
+type SubscriptionFuncs map[string]SubscriptionFunc

@@ -13,6 +13,20 @@ type WsPrivate struct {
 	onReady        func()
 	onConnected    func()
 	onDisconnected func()
+	subscriptions  *Subscriptions
+}
+
+func NewWsPrivate(key, secret string) *WsPrivate {
+	o := new(WsPrivate)
+	o.c = NewWsClient()
+	o.s = NewSign(key, secret)
+	o.subscriptions = NewSubscriptions(o)
+	o.c.WithPath("v5/private")
+	return o
+}
+
+func (o *WsPrivate) Close() {
+	o.c.Close()
 }
 
 func (o *WsPrivate) Transport() *uws.Options {
@@ -60,11 +74,6 @@ func (o *WsPrivate) WithOnDisconnected(f func()) {
 	o.onDisconnected = f
 }
 
-func (o *WsPrivate) WithAuth(key, secret string) *WsPrivate {
-	o.s = NewSign(key, secret)
-	return o
-}
-
 func (o *WsPrivate) Run() {
 	o.c.WithOnConnected(func() {
 		if o.onConnected != nil {
@@ -91,24 +100,24 @@ func (o *WsPrivate) Ready() bool {
 	return o.ready
 }
 
-func (o *WsPrivate) Position() {
-
+func (o *WsPrivate) Position() *Executor[[]PositionShot] {
+	return NewExecutor[[]PositionShot]("position", o.subscriptions)
 }
 
-func (o *WsPrivate) Execution() {
-
+func (o *WsPrivate) Execution() *Executor[[]ExecutionShot] {
+	return NewExecutor[[]ExecutionShot]("execution", o.subscriptions)
 }
 
-func (o *WsPrivate) Order() {
-
+func (o *WsPrivate) Order() *Executor[[]OrderShot] {
+	return NewExecutor[[]OrderShot]("order", o.subscriptions)
 }
 
-func (o *WsPrivate) Wallet() {
-
+func (o *WsPrivate) Wallet() *Executor[[]WalletShot] {
+	return NewExecutor[[]WalletShot]("wallet", o.subscriptions)
 }
 
-func (o *WsPrivate) Greek() {
-
+func (o *WsPrivate) Greek() *Executor[[]GreekShot] {
+	return NewExecutor[[]GreekShot]("greeks", o.subscriptions)
 }
 
 func (o *WsPrivate) auth() {
@@ -118,11 +127,12 @@ func (o *WsPrivate) auth() {
 	})
 }
 
-func (o *WsPrivate) setReady() {
-	o.ready = true
-	if o.onReady != nil {
-		o.onReady()
-	}
+func (o *WsPrivate) subscribe(topic string) {
+	o.c.Subscribe(topic)
+}
+
+func (o *WsPrivate) unsubscribe(topic string) {
+	o.c.Unsubscribe(topic)
 }
 
 func (o *WsPrivate) onResponse(r WsResponse) error {
@@ -130,14 +140,18 @@ func (o *WsPrivate) onResponse(r WsResponse) error {
 	if r.Operation == "auth" {
 		log.Info("auth:", ufmt.SuccessFailure(r.Success))
 		if r.Success {
-			o.setReady()
-			//o.private.subscribeAll()
+			o.ready = true
+			if o.onReady != nil {
+				o.onReady()
+			}
+			o.subscriptions.subscribeAll()
 		}
+	} else {
+		r.Log(log)
 	}
-	r.Log(log)
 	return nil
 }
 
 func (o *WsPrivate) onTopic(data []byte) error {
-	return nil
+	return o.subscriptions.processTopic(data)
 }

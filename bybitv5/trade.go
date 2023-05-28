@@ -122,8 +122,8 @@ type Order struct {
 	OrderStatus        OrderStatus
 	CancelType         CancelType
 	RejectReason       RejectReason
-	AvgPrice           ujson.Float64
-	LeavesQty          ujson.Float64
+	AvgPrice           ujson.StringFloat64
+	LeavesQty          ujson.StringFloat64
 	LeavesValue        string
 	CumExecQty         ujson.Float64
 	CumExecValue       ujson.Float64
@@ -132,25 +132,25 @@ type Order struct {
 	OrderType          OrderType
 	StopOrderType      StopOrderType
 	OrderIv            string
-	TriggerPrice       ujson.Float64
-	TakeProfit         ujson.Float64
-	StopLoss           ujson.Float64
+	TriggerPrice       ujson.StringFloat64
+	TakeProfit         ujson.StringFloat64
+	StopLoss           ujson.StringFloat64
 	TpTriggerBy        TriggerBy
 	SlTriggerBy        TriggerBy
 	TriggerDirection   int
 	TriggerBy          TriggerBy
-	LastPriceOnCreated ujson.Float64
+	LastPriceOnCreated ujson.StringFloat64
 	ReduceOnly         bool
 	CloseOnTrigger     bool
 	SmpType            SmpType
 	SmpGroup           int
 	SmpOrderId         string
 	TpslMode           TpSlMode
-	TpLimitPrice       ujson.Float64
-	SlLimitPrice       ujson.Float64
+	TpLimitPrice       ujson.StringFloat64
+	SlLimitPrice       ujson.StringFloat64
 	PlaceType          string
 	CreatedTime        ujson.Int64
-	UpdatedTime        ujson.Int64
+	UpdatedTime        ujson.StringInt64
 }
 
 func (o GetOpenOrders) Do(c *Client) Response[[]Order] {

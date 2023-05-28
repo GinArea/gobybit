@@ -1,23 +1,27 @@
 package bybitv5
 
-type Executor[T SubscriptionTopic, V any] struct {
+type Executor[T any] struct {
 	topic         string
-	subscriptions *Subscriptions[T]
+	subscriptions *Subscriptions
 }
 
-func NewExecutor[T SubscriptionTopic, V any](topic string, subscriptions *Subscriptions[T]) *Executor[T, V] {
-	o := new(Executor[T, V])
+func NewExecutor[T any](topic string, subscriptions *Subscriptions) *Executor[T] {
+	o := new(Executor[T])
 	o.topic = topic
 	o.subscriptions = subscriptions
 	return o
 }
 
-func (o *Executor[T, V]) Subscribe(onShot func(V)) {
-	o.subscriptions.subscribe(o.topic, func(topic T) error {
-		return WsFunc(topic.RawData(), onShot)
+func (o *Executor[T]) Subscribe(onShot func(Topic[T])) {
+	o.subscriptions.subscribe(o.topic, func(raw RawTopic) error {
+		topic, err := UnmarshalRawTopic[T](raw)
+		if err == nil {
+			onShot(topic)
+		}
+		return err
 	})
 }
 
-func (o *Executor[T, V]) Unsubscribe() {
+func (o *Executor[T]) Unsubscribe() {
 	o.subscriptions.unsubscribe(o.topic)
 }

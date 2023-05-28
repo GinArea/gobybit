@@ -20,8 +20,13 @@ func (o WsResponse) Valid() bool {
 func (o WsResponse) Log(log *ulog.Log) {
 	switch o.Operation {
 	case "ping":
+	case "pong":
 	case "subscribe":
-		log.Info("subscribe:", ufmt.SuccessFailure(o.Success))
+		if o.Success {
+			log.Info("subscribe: success")
+		} else {
+			log.Error("subscribe:", o.Message)
+		}
 	case "unsubscribe":
 		log.Info("unsubscribe:", ufmt.SuccessFailure(o.Success))
 	default:
