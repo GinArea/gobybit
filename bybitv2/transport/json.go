@@ -22,6 +22,9 @@ type Float64 float64
 func (o *Float64) UnmarshalJSON(b []byte) error {
 	s := string(b)
 	s = strings.Trim(s, `"`)
+	if s == "null" {
+		s = ""
+	}
 	if s == "" {
 		*o = 0
 		return nil
