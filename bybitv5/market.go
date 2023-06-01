@@ -148,6 +148,7 @@ type Instrument struct {
 	PriceScale         string
 	LeverageFilter     LeverageFilter
 	PriceFilter        PriceFilter
+	LotSizeFilter      LotSizeFilter
 	UnifiedMarginTrade bool
 	FundingInterval    int
 	SettleCoin         string
