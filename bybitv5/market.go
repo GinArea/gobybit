@@ -314,9 +314,9 @@ type Ticker struct {
 	Volume24h              ujson.Float64
 	FundingRate            ujson.Float64
 	NextFundingTime        string
-	PredictedDeliveryPrice ujson.Float64
-	BasisRate              ujson.Float64
-	DeliveryFeeRate        ujson.Float64
+	PredictedDeliveryPrice ujson.StringFloat64
+	BasisRate              ujson.StringFloat64
+	DeliveryFeeRate        ujson.StringFloat64
 	DeliveryTime           string
 	Ask1Size               ujson.Float64
 	Bid1Price              ujson.Float64
