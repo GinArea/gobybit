@@ -253,6 +253,16 @@ const (
 	ExecBlockTrade ExecType = "BlockTrade"
 )
 
+// marginTrading https://bybit-exchange.github.io/docs/v5/enum#margintrading
+type MarginTrading string
+
+const (
+	MarginTradingNone           MarginTrading = "none"
+	MarginTradingBoth           MarginTrading = "both"
+	MarginTradingUtaOnly        MarginTrading = "utaOnly"
+	MarginTradingNormalSpotOnly MarginTrading = "normalSpotOnly"
+)
+
 type Side string
 
 const (

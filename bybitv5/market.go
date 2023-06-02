@@ -155,37 +155,97 @@ type Instrument struct {
 }
 
 type LeverageFilter struct {
-	MinLeverage  string
-	MaxLeverage  string
-	LeverageStep string
+	MinLeverage  ujson.Float64
+	MaxLeverage  ujson.Float64
+	LeverageStep ujson.Float64
 }
 
 type PriceFilter struct {
-	MaxPrice string
-	MinPrice string
-	TickSize string
+	MaxPrice ujson.Float64
+	MinPrice ujson.Float64
+	TickSize ujson.Float64
 }
 
 type LotSizeFilter struct {
-	MaxOrderQty         string
-	MinOrderQty         string
-	QtyStep             string
+	MaxOrderQty         ujson.Float64
+	MinOrderQty         ujson.Float64
+	QtyStep             ujson.Float64
 	PostOnlyMaxOrderQty string
 }
 
-func (o GetInstruments) Do(c *Client) Response[[]Instrument] {
-	type result struct {
-		Category       Category
-		List           []Instrument
-		NextPageCursor string
-	}
-	return GetPub(c.market(), "instruments-info", o, func(r result) ([]Instrument, error) {
+type InstrumentOption struct {
+	Symbol          string
+	Status          Status
+	BaseCoin        string
+	QuoteCoin       string
+	OptionsType     string
+	LaunchTime      string
+	DeliveryTime    string
+	DeliveryFeeRate string
+	PriceFilter     PriceFilter
+	LotSizeFilter   LotSizeFilter
+	SettleCoin      string
+}
+
+type InstrumentSpot struct {
+	Symbol        string
+	Status        Status
+	BaseCoin      string
+	QuoteCoin     string
+	MarginTrading MarginTrading
+	PriceFilter   PriceFilterSpot
+	LotSizeFilter LotSizeFilterSpot
+}
+
+type LotSizeFilterSpot struct {
+	BasePrecision  ujson.Float64
+	QuotePrecision ujson.Float64
+	MaxOrderQty    ujson.Float64
+	MinOrderQty    ujson.Float64
+	MaxOrderAmt    ujson.Float64
+	MinOrderAmt    ujson.Float64
+}
+
+type PriceFilterSpot struct {
+	TickSize string
+}
+
+type instrumentsResult[T any] struct {
+	Category       Category
+	List           []T
+	NextPageCursor string
+}
+
+func getInstruments[T any](o GetInstruments, c *Client) Response[[]T] {
+	return GetPub(c.market(), "instruments-info", o, func(r instrumentsResult[T]) ([]T, error) {
 		return r.List, nil
 	})
 }
 
+func (o GetInstruments) Do(c *Client) Response[[]Instrument] {
+	return getInstruments[Instrument](o, c)
+}
+
+func (o GetInstruments) DoOption(c *Client) Response[[]InstrumentOption] {
+	o.Category = Option
+	return getInstruments[InstrumentOption](o, c)
+}
+
+func (o GetInstruments) DoSpot(c *Client) Response[[]InstrumentSpot] {
+	o.Category = Spot
+	return getInstruments[InstrumentSpot](o, c)
+}
+
 func (o *Client) GetInstruments(v GetInstruments) Response[[]Instrument] {
 	return v.Do(o)
+}
+
+func (o *Client) GetInstrumentsOption(v GetInstruments) Response[[]InstrumentOption] {
+	return v.DoOption(o)
+}
+
+func (o *Client) GetInstrumentsSpot(v GetInstruments) Response[[]InstrumentSpot] {
+	return v.DoSpot(o)
 }
 
 // Get Orderbook
