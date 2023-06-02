@@ -207,7 +207,7 @@ type LotSizeFilterSpot struct {
 }
 
 type PriceFilterSpot struct {
-	TickSize string
+	TickSize ujson.Float64
 }
 
 type instrumentsResult[T any] struct {
