@@ -182,8 +182,21 @@ func (o CancelAllOrders) Do(c *Client) Response[OrderId] {
 	return Post(c.order(), "cancel-all", o, forward[OrderId])
 }
 
+func (o CancelAllOrders) DoSpot(c *Client) Response[bool] {
+	type result struct {
+		Success ujson.Bool
+	}
+	return Post(c.order(), "cancel-all", o, func(r result) (bool, error) {
+		return r.Success.Value(), nil
+	})
+}
+
 func (o *Client) CancelAllOrders(v CancelAllOrders) Response[OrderId] {
 	return v.Do(o)
+}
+
+func (o *Client) CancelAllOrdersSpot(v CancelAllOrders) Response[bool] {
+	return v.DoSpot(o)
 }
 
 // Get Order History
