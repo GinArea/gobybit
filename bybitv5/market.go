@@ -300,57 +300,57 @@ type GetTickersOption struct {
 
 type Ticker struct {
 	Symbol                 string
-	LastPrice              ujson.StringFloat64
-	IndexPrice             ujson.StringFloat64
-	MarkPrice              ujson.StringFloat64
-	PrevPrice24h           ujson.StringFloat64
-	Price24hPcnt           ujson.StringFloat64
-	HighPrice24h           ujson.StringFloat64
-	LowPrice24h            ujson.StringFloat64
-	PrevPrice1h            ujson.StringFloat64
-	OpenInterest           ujson.StringFloat64
-	OpenInterestValue      ujson.StringFloat64
-	Turnover24h            ujson.StringFloat64
-	Volume24h              ujson.StringFloat64
-	FundingRate            ujson.StringFloat64
+	LastPrice              ujson.Float64
+	IndexPrice             ujson.Float64
+	MarkPrice              ujson.Float64
+	PrevPrice24h           ujson.Float64
+	Price24hPcnt           ujson.Float64
+	HighPrice24h           ujson.Float64
+	LowPrice24h            ujson.Float64
+	PrevPrice1h            ujson.Float64
+	OpenInterest           ujson.Float64
+	OpenInterestValue      ujson.Float64
+	Turnover24h            ujson.Float64
+	Volume24h              ujson.Float64
+	FundingRate            ujson.Float64
 	NextFundingTime        string
-	PredictedDeliveryPrice ujson.StringFloat64
-	BasisRate              ujson.StringFloat64
-	DeliveryFeeRate        ujson.StringFloat64
+	PredictedDeliveryPrice ujson.Float64
+	BasisRate              ujson.Float64
+	DeliveryFeeRate        ujson.Float64
 	DeliveryTime           string
-	Ask1Size               ujson.StringFloat64
-	Bid1Price              ujson.StringFloat64
-	Ask1Price              ujson.StringFloat64
-	Bid1Size               ujson.StringFloat64
+	Ask1Size               ujson.Float64
+	Bid1Price              ujson.Float64
+	Ask1Price              ujson.Float64
+	Bid1Size               ujson.Float64
 	Basis                  string
 }
 
 type TickerOption struct {
 	Symbol                 string
-	Bid1Price              ujson.StringFloat64
-	Bid1Size               ujson.StringFloat64
-	Bid1Iv                 ujson.StringFloat64
-	Ask1Price              ujson.StringFloat64
-	Ask1Size               ujson.StringFloat64
-	Ask1Iv                 ujson.StringFloat64
-	LastPrice              ujson.StringFloat64
-	HighPrice24H           ujson.StringFloat64
-	LowPrice24H            ujson.StringFloat64
-	MarkPrice              ujson.StringFloat64
-	IndexPrice             ujson.StringFloat64
-	MarkIv                 ujson.StringFloat64
-	UnderlyingPrice        ujson.StringFloat64
-	OpenInterest           ujson.StringFloat64
-	Turnover24H            ujson.StringFloat64
-	Volume24H              ujson.StringFloat64
-	TotalVolume            ujson.StringFloat64
-	TotalTurnover          ujson.StringFloat64
-	Delta                  ujson.StringFloat64
-	Gamma                  ujson.StringFloat64
-	Vega                   ujson.StringFloat64
-	Theta                  ujson.StringFloat64
-	PredictedDeliveryPrice ujson.StringFloat64
-	Change24H              ujson.StringFloat64
+	Bid1Price              ujson.Float64
+	Bid1Size               ujson.Float64
+	Bid1Iv                 ujson.Float64
+	Ask1Price              ujson.Float64
+	Ask1Size               ujson.Float64
+	Ask1Iv                 ujson.Float64
+	LastPrice              ujson.Float64
+	HighPrice24H           ujson.Float64
+	LowPrice24H            ujson.Float64
+	MarkPrice              ujson.Float64
+	IndexPrice             ujson.Float64
+	MarkIv                 ujson.Float64
+	UnderlyingPrice        ujson.Float64
+	OpenInterest           ujson.Float64
+	Turnover24H            ujson.Float64
+	Volume24H              ujson.Float64
+	TotalVolume            ujson.Float64
+	TotalTurnover          ujson.Float64
+	Delta                  ujson.Float64
+	Gamma                  ujson.Float64
+	Vega                   ujson.Float64
+	Theta                  ujson.Float64
+	PredictedDeliveryPrice ujson.Float64
+	Change24H              ujson.Float64
 }
 
 type TickerSpot struct {
