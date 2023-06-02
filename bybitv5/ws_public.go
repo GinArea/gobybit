@@ -123,8 +123,16 @@ func (o *WsPublic) Trade(symbol string) *Executor[[]TradeShot] {
 	return NewExecutor[[]TradeShot](topicName("publicTrade", symbol), o.subscriptions)
 }
 
-func (o *WsPublic) Ticker(symbol string) *Executor[Ticker] {
-	return NewExecutor[Ticker](topicName("tickers", symbol), o.subscriptions)
+func (o *WsPublic) Ticker(symbol string) *Executor[TickerShot] {
+	return NewExecutor[TickerShot](topicName("tickers", symbol), o.subscriptions)
+}
+
+func (o *WsPublic) TickerOption(symbol string) *Executor[TickerOptionShot] {
+	return NewExecutor[TickerOptionShot](topicName("tickers", symbol), o.subscriptions)
+}
+
+func (o *WsPublic) TickerSpot(symbol string) *Executor[TickerSpotShot] {
+	return NewExecutor[TickerSpotShot](topicName("tickers", symbol), o.subscriptions)
 }
 
 func (o *WsPublic) Kline(symbol string, interval Interval) *Executor[[]KlineShot] {
