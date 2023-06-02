@@ -289,6 +289,11 @@ func (o *Client) GetOrderbook(v GetOrderbook) Response[Orderbook] {
 type GetTickers struct {
 	Category Category
 	Symbol   string `url:",omitempty"`
+}
+
+type GetTickersOption struct {
+	Category Category
+	Symbol   string `url:",omitempty"`
 	BaseCoin string `url:",omitempty"`
 	ExpDate  string `url:",omitempty"`
 }
@@ -320,17 +325,84 @@ type Ticker struct {
 	Basis                  string
 }
 
-func (o GetTickers) Do(c *Client) Response[[]Ticker] {
-	type result struct {
-		Category Category
-		List     []Ticker
-	}
-	return GetPub(c.market(), "tickers", o, func(r result) ([]Ticker, error) {
+type TickerOption struct {
+	Symbol                 string
+	Bid1Price              ujson.StringFloat64
+	Bid1Size               ujson.StringFloat64
+	Bid1Iv                 ujson.StringFloat64
+	Ask1Price              ujson.StringFloat64
+	Ask1Size               ujson.StringFloat64
+	Ask1Iv                 ujson.StringFloat64
+	LastPrice              ujson.StringFloat64
+	HighPrice24H           ujson.StringFloat64
+	LowPrice24H            ujson.StringFloat64
+	MarkPrice              ujson.StringFloat64
+	IndexPrice             ujson.StringFloat64
+	MarkIv                 ujson.StringFloat64
+	UnderlyingPrice        ujson.StringFloat64
+	OpenInterest           ujson.StringFloat64
+	Turnover24H            ujson.StringFloat64
+	Volume24H              ujson.StringFloat64
+	TotalVolume            ujson.StringFloat64
+	TotalTurnover          ujson.StringFloat64
+	Delta                  ujson.StringFloat64
+	Gamma                  ujson.StringFloat64
+	Vega                   ujson.StringFloat64
+	Theta                  ujson.StringFloat64
+	PredictedDeliveryPrice ujson.StringFloat64
+	Change24H              ujson.StringFloat64
+}
+
+type TickerSpot struct {
+	Symbol        string
+	Bid1Price     ujson.Float64
+	Bid1Size      ujson.Float64
+	Ask1Price     ujson.Float64
+	Ask1Size      ujson.Float64
+	LastPrice     ujson.Float64
+	PrevPrice24H  ujson.Float64
+	Price24HPcnt  ujson.Float64
+	HighPrice24H  ujson.Float64
+	LowPrice24H   ujson.Float64
+	Turnover24H   ujson.Float64
+	Volume24H     ujson.Float64
+	UsdIndexPrice ujson.Float64
+}
+
+type tickersResult[T any] struct {
+	Category Category
+	List     []T
+}
+
+func getTicker[T any, G any](o G, c *Client) Response[[]T] {
+	return GetPub(c.market(), "tickers", o, func(r instrumentsResult[T]) ([]T, error) {
 		return r.List, nil
 	})
 }
 
+func (o GetTickers) Do(c *Client) Response[[]Ticker] {
+	return getTicker[Ticker](o, c)
+}
+
+func (o GetTickers) DoSpot(c *Client) Response[[]TickerSpot] {
+	o.Category = Spot
+	return getTicker[TickerSpot](o, c)
+}
+
+func (o GetTickersOption) Do(c *Client) Response[[]TickerOption] {
+	o.Category = Option
+	return getTicker[TickerOption](o, c)
+}
+
 func (o *Client) GetTickers(v GetTickers) Response[[]Ticker] {
+	return v.Do(o)
+}
+
+func (o *Client) GetTickersSpot(v GetTickers) Response[[]TickerSpot] {
+	return v.DoSpot(o)
+}
+
+func (o *Client) GetTickersOption(v GetTickersOption) Response[[]TickerOption] {
 	return v.Do(o)
 }
 
