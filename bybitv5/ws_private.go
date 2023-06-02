@@ -62,7 +62,7 @@ func (o *WsPrivate) WithLogResponse(enable bool) *WsPrivate {
 	return o
 }
 
-func (o *WsPrivate) WithOnDialError(f func(error)) *WsPrivate {
+func (o *WsPrivate) WithOnDialError(f func(error) bool) *WsPrivate {
 	o.c.WithOnDialError(f)
 	return o
 }

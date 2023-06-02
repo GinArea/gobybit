@@ -58,7 +58,7 @@ func (o *WsPublic) WithLogResponse(enable bool) *WsPublic {
 	return o
 }
 
-func (o *WsPublic) WithOnDialError(f func(error)) *WsPublic {
+func (o *WsPublic) WithOnDialError(f func(error) bool) *WsPublic {
 	o.c.WithOnDialError(f)
 	return o
 }

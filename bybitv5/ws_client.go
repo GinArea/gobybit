@@ -70,7 +70,7 @@ func (o *WsClient) WithLogResponse(enable bool) *WsClient {
 	return o
 }
 
-func (o *WsClient) WithOnDialError(f func(error)) *WsClient {
+func (o *WsClient) WithOnDialError(f func(error) bool) *WsClient {
 	o.c.WithOnDialError(f)
 	return o
 }
