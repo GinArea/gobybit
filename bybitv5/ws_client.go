@@ -70,20 +70,29 @@ func (o *WsClient) WithLogResponse(enable bool) *WsClient {
 	return o
 }
 
-func (o *WsClient) WithOnConnected(f func()) {
+func (o *WsClient) WithOnDialError(f func(error)) *WsClient {
+	o.c.WithOnDialError(f)
+	return o
+}
+
+func (o *WsClient) WithOnConnected(f func()) *WsClient {
 	o.c.WithOnConnected(f)
+	return o
 }
 
-func (o *WsClient) WithOnDisconnected(f func()) {
+func (o *WsClient) WithOnDisconnected(f func()) *WsClient {
 	o.c.WithOnDisconnected(f)
+	return o
 }
 
-func (o *WsClient) WithOnResponse(f func(WsResponse) error) {
+func (o *WsClient) WithOnResponse(f func(WsResponse) error) *WsClient {
 	o.onResponce = f
+	return o
 }
 
-func (o *WsClient) WithOnTopic(f func([]byte) error) {
+func (o *WsClient) WithOnTopic(f func([]byte) error) *WsClient {
 	o.onTopic = f
+	return o
 }
 
 func (o *WsClient) Run() {

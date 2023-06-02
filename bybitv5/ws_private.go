@@ -62,16 +62,24 @@ func (o *WsPrivate) WithLogResponse(enable bool) *WsPrivate {
 	return o
 }
 
-func (o *WsPrivate) WithOnReady(f func()) {
+func (o *WsPrivate) WithOnDialError(f func(error)) *WsPrivate {
+	o.c.WithOnDialError(f)
+	return o
+}
+
+func (o *WsPrivate) WithOnReady(f func()) *WsPrivate {
 	o.onReady = f
+	return o
 }
 
-func (o *WsPrivate) WithOnConnected(f func()) {
+func (o *WsPrivate) WithOnConnected(f func()) *WsPrivate {
 	o.onConnected = f
+	return o
 }
 
-func (o *WsPrivate) WithOnDisconnected(f func()) {
+func (o *WsPrivate) WithOnDisconnected(f func()) *WsPrivate {
 	o.onDisconnected = f
+	return o
 }
 
 func (o *WsPrivate) Run() {

@@ -58,12 +58,19 @@ func (o *WsPublic) WithLogResponse(enable bool) *WsPublic {
 	return o
 }
 
-func (o *WsPublic) WithOnConnected(f func()) {
-	o.onConnected = f
+func (o *WsPublic) WithOnDialError(f func(error)) *WsPublic {
+	o.c.WithOnDialError(f)
+	return o
 }
 
-func (o *WsPublic) WithOnDisconnected(f func()) {
+func (o *WsPublic) WithOnConnected(f func()) *WsPublic {
+	o.onConnected = f
+	return o
+}
+
+func (o *WsPublic) WithOnDisconnected(f func()) *WsPublic {
 	o.c.WithOnDisconnected(f)
+	return o
 }
 
 func (o *WsPublic) WithCategory(category Category) *WsPublic {
