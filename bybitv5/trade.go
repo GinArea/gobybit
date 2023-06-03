@@ -122,8 +122,8 @@ type Order struct {
 	OrderStatus        OrderStatus
 	CancelType         CancelType
 	RejectReason       RejectReason
-	AvgPrice           ujson.StringFloat64
-	LeavesQty          ujson.StringFloat64
+	AvgPrice           ujson.Float64
+	LeavesQty          ujson.Float64
 	LeavesValue        string
 	CumExecQty         ujson.Float64
 	CumExecValue       ujson.Float64
@@ -149,8 +149,8 @@ type Order struct {
 	TpLimitPrice       ujson.StringFloat64
 	SlLimitPrice       ujson.StringFloat64
 	PlaceType          string
-	CreatedTime        ujson.Int64
-	UpdatedTime        ujson.StringInt64
+	CreatedTime        ujson.TimeMs
+	UpdatedTime        ujson.TimeMs
 }
 
 func (o GetOpenOrders) Do(c *Client) Response[[]Order] {
