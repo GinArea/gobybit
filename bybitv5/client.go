@@ -78,6 +78,10 @@ func (o *Client) position() *Client {
 	return o.Clone().WithAppendPath("position")
 }
 
+func (o *Client) account() *Client {
+	return o.Clone().WithAppendPath("account")
+}
+
 func (o *Client) asset() *Client {
 	return o.Clone().WithAppendPath("asset")
 }
