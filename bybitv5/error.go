@@ -57,6 +57,17 @@ func (o *Error) KycNeeded() bool {
 	return slices.Contains(codes, o.Code)
 }
 
+func (o *Error) Timeout() bool {
+	codes := []int{
+		10000,  // Server Timeout
+		170007, // Timeout waiting for response from backend server.
+		170146, // Order creation timeout
+		170147, // Order cancellation timeout
+		177002, // Timeout
+	}
+	return slices.Contains(codes, o.Code)
+}
+
 func (o *Error) InsufficientBalance() bool {
 	codes := []int{
 		110004, // Wallet balance is insufficient
