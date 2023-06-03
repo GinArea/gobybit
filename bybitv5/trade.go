@@ -153,6 +153,10 @@ type Order struct {
 	UpdatedTime        ujson.TimeMs
 }
 
+func (o Order) GetCumExecValue() float64 {
+	return o.CumExecQty.Value() * o.AvgPrice.Value()
+}
+
 func (o GetOpenOrders) Do(c *Client) Response[[]Order] {
 	type result struct {
 		Category       Category
