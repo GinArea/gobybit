@@ -226,3 +226,18 @@ func (o *Client) QueryOrderByID(symbol string, orderID string) (i Order, err err
 	}
 	return
 }
+
+func (o *Client) QueryOrderByLinkID(symbol string, orderLinkID string) (i Order, err error) {
+	ret, err := o.QueryOrder(QueryOrder{
+		Symbol:      symbol,
+		OrderLinkID: &orderLinkID,
+	})
+	if err == nil {
+		if len(ret) == 1 {
+			i = ret[0]
+		} else {
+			err = fmt.Errorf("query order result len != 1 (%d)", len(ret))
+		}
+	}
+	return
+}
