@@ -68,8 +68,8 @@ type BookTickerShot struct {
 	Symbol       string            `json:"s"`  // Trading pair
 	BestBidPrice transport.Float64 `json:"bp"` // Best bid price
 	BidQuantity  transport.Float64 `json:"bq"` // Bid quantity
-	BestAskPrice transport.Float64 `json:"qp"` // Best ask price
-	AskQuantity  transport.Float64 `json:"qq"` // Ask quantity
+	BestAskPrice transport.Float64 `json:"ap"` // Best ask price
+	AskQuantity  transport.Float64 `json:"aq"` // Ask quantity
 	Timestamp    uint64            `json:"t"`  // The time that message is sent out
 }
 
