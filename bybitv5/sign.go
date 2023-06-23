@@ -83,6 +83,12 @@ func signHmac(s, secret string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
+func encodeParam(name, value string) string {
+	params := url.Values{}
+	params.Add(name, value)
+	return params.Encode()
+}
+
 func encodeSortParams(src url.Values) (s string) {
 	if len(src) == 0 {
 		return
@@ -95,7 +101,7 @@ func encodeSortParams(src url.Values) (s string) {
 	}
 	sort.Strings(keys)
 	for _, k := range keys {
-		s += k + "=" + src.Get(k) + "&"
+		s += encodeParam(k, src.Get(k)) + "&"
 	}
 	s = s[0 : len(s)-1]
 	return
