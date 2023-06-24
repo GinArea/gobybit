@@ -214,6 +214,8 @@ type WalletCoin struct {
 	Equity              ujson.StringFloat64
 	UsdValue            ujson.StringFloat64
 	WalletBalance       ujson.StringFloat64
+	Free                ujson.StringFloat64
+	Locked              ujson.StringFloat64
 	AvailableToWithdraw ujson.StringFloat64
 	AvailableToBorrow   ujson.StringFloat64
 	BorrowAmount        ujson.StringFloat64
