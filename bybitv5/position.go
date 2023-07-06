@@ -19,14 +19,14 @@ type Position struct {
 	RiskLimitValue   ujson.Int64
 	Symbol           string
 	Side             Side
-	Size             ujson.Int64
+	Size             ujson.Float64
 	AvgPrice         ujson.Float64
 	PositionValue    ujson.Float64
 	TradeMode        TradeMode
 	PositionStatus   PositionStatus
 	AutoAddMargin    ujson.Bool
 	AdlRankIndicator int
-	Leverage         ujson.Int64
+	Leverage         ujson.Float64
 	PositionBalance  ujson.Float64
 	MarkPrice        ujson.Float64
 	LiqPrice         ujson.Float64
