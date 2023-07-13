@@ -141,9 +141,9 @@ func (o *Client) Request(method string, path string, param any, ret any, sign bo
 		err, httpError = o.request(method, path, param, ret, sign)
 		if httpError && o.onHttpError != nil {
 			if o.onHttpError(err, attempt) {
+				attempt++
 				continue
 			}
-			attempt++
 		}
 		break
 	}
