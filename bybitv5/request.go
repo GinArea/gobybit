@@ -19,7 +19,9 @@ func req[R, T any](c *Client, method string, path string, request any, transform
 		return
 	}
 	if sign && c.s != nil {
-		perf.Request.Header = make(http.Header)
+		if perf.Request.Header == nil {
+			perf.Request.Header = make(http.Header)
+		}
 		switch method {
 		case http.MethodGet:
 			c.s.HeaderGet(perf.Request.Header, perf.Request.Params)
