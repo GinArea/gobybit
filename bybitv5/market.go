@@ -6,6 +6,25 @@ import (
 	"github.com/msw-x/moon/ujson"
 )
 
+// Get Server Time
+// https://bybit-exchange.github.io/docs/v5/market/time
+type GetServerTime struct {
+}
+
+type ServerTime struct {
+	TimeSecond string
+	TimeNano   string
+}
+
+func (o GetServerTime) Do(c *Client) Response[ServerTime] {
+	return GetPub(c.market(), "time", o, forward[ServerTime])
+}
+
+func (o *Client) GetServerTime() Response[ServerTime] {
+	var v GetServerTime
+	return v.Do(o)
+}
+
 // Get Kline
 // https://bybit-exchange.github.io/docs/v5/market/kline
 //
