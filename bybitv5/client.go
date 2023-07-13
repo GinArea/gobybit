@@ -8,8 +8,9 @@ import (
 )
 
 type Client struct {
-	c *uhttp.Client
-	s *Sign
+	c          *uhttp.Client
+	s          *Sign
+	onNetError func(err error, attempt int) bool
 }
 
 func NewClient() *Client {
@@ -63,6 +64,11 @@ func (o *Client) WithTraceFormat(log *ulog.Log, f uhttp.Format) *Client {
 
 func (o *Client) WithAuth(key, secret string) *Client {
 	o.s = NewSign(key, secret)
+	return o
+}
+
+func (o *Client) WithOnNetError(onNetError func(err error, attempt int) bool) *Client {
+	o.onNetError = onNetError
 	return o
 }
 

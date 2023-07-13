@@ -7,7 +7,7 @@ import (
 	"github.com/msw-x/moon/uhttp"
 )
 
-func request[R, T any](c *Client, method string, path string, request any, transform func(R) (T, error), sign bool) (r Response[T]) {
+func req[R, T any](c *Client, method string, path string, request any, transform func(R) (T, error), sign bool) (r Response[T]) {
 	var perf *uhttp.Performer
 	switch method {
 	case http.MethodGet:
@@ -44,6 +44,22 @@ func request[R, T any](c *Client, method string, path string, request any, trans
 		}
 	} else {
 		r.Error = h.Error
+		r.NetError = true
+	}
+	return
+}
+
+func request[R, T any](c *Client, method string, path string, request any, transform func(R) (T, error), sign bool) (r Response[T]) {
+	var attempt int
+	for {
+		r = req(c, method, path, request, transform, sign)
+		if r.NetError && c.onNetError != nil {
+			if c.onNetError(r.Error, attempt) {
+				attempt++
+				continue
+			}
+		}
+		break
 	}
 	return
 }
