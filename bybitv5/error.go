@@ -53,6 +53,10 @@ func (o *Error) UnmatchedIp() bool {
 	return o.Code == 10010
 }
 
+func (o *Error) SymbolIsNotWhitelisted() bool {
+	return o.Code == 10029
+}
+
 func (o *Error) KycNeeded() bool {
 	codes := []int{
 		10024,  // Compliance rules triggered
