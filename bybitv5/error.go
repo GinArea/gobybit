@@ -28,6 +28,10 @@ func (o *Error) Error() string {
 	return fmt.Sprintf("code[%d]: %s", o.Code, o.Text)
 }
 
+func (o *Error) RequestParameterError() bool {
+	return o.Code == 10001
+}
+
 func (o *Error) ApiKeyInvalid() bool {
 	codes := []int{
 		10003, // API key is invalid
