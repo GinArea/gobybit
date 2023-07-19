@@ -68,6 +68,7 @@ func (o *Error) KycNeeded() bool {
 func (o *Error) Timeout() bool {
 	codes := []int{
 		10000,  // Server Timeout
+		10016,  // Request timeout
 		170007, // Timeout waiting for response from backend server.
 		170146, // Order creation timeout
 		170147, // Order cancellation timeout
