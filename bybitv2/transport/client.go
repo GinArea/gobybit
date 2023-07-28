@@ -241,13 +241,13 @@ func (o *Client) request(method string, path string, param any, ret any, sign bo
 		signHeader(req.Header)
 	}
 	resp, err := o.client.Do(req)
-	statusCode = resp.StatusCode
 	elapsedTime := time.Since(timestamp).Truncate(time.Millisecond)
 	if err != nil {
 		logf("request fail [%s]: %v", elapsedTime.String(), err)
 		return
 	}
 	defer resp.Body.Close()
+	statusCode = resp.StatusCode
 	body, _ := io.ReadAll(resp.Body)
 	m := fmt.Sprintf("%s %s", resp.Status, elapsedTime.String())
 	if len(body) >= 0 {
