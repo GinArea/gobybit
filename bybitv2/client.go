@@ -69,8 +69,8 @@ func (o *Client) WithLogResponse(logResponse bool) *Client {
 	return o
 }
 
-func (o *Client) WithOnHttpError(onHttpError func(err error, attempt int) bool) *Client {
-	o.c.WithOnHttpError(onHttpError)
+func (o *Client) WithOnTransportError(f transport.OnTransportError) *Client {
+	o.c.WithOnTransportError(f)
 	return o
 }
 

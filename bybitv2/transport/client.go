@@ -21,19 +21,19 @@ import (
 )
 
 type Client struct {
-	log         *ulog.Log
-	url         string
-	key         string
-	secret      string
-	proxy       *url.URL
-	client      *http.Client
-	logUri      bool
-	logRequest  bool
-	logResponse bool
-	timeout     time.Duration
-	onHttpError func(err error, attempt int) bool
-	timeShift   int
-	recvWindow  int
+	log              *ulog.Log
+	url              string
+	key              string
+	secret           string
+	proxy            *url.URL
+	client           *http.Client
+	logUri           bool
+	logRequest       bool
+	logResponse      bool
+	timeout          time.Duration
+	onTransportError OnTransportError
+	timeShift        int
+	recvWindow       int
 }
 
 func NewClient() *Client {
@@ -105,8 +105,8 @@ func (o *Client) WithLogResponse(logResponse bool) *Client {
 	return o
 }
 
-func (o *Client) WithOnHttpError(onHttpError func(err error, attempt int) bool) *Client {
-	o.onHttpError = onHttpError
+func (o *Client) WithOnTransportError(f OnTransportError) *Client {
+	o.onTransportError = f
 	return o
 }
 
@@ -135,12 +135,12 @@ func (o *Client) Secret() string {
 }
 
 func (o *Client) Request(method string, path string, param any, ret any, sign bool) (err error) {
-	var httpError bool
+	var statusCode int
 	var attempt int
 	for {
-		err, httpError = o.request(method, path, param, ret, sign)
-		if httpError && o.onHttpError != nil {
-			if o.onHttpError(err, attempt) {
+		err, statusCode = o.request(method, path, param, ret, sign)
+		if statusCode != http.StatusOK && o.onTransportError != nil {
+			if o.onTransportError(err, statusCode, attempt) {
 				attempt++
 				continue
 			}
@@ -174,7 +174,7 @@ func (o *Client) Delete(path string, param any, ret any) error {
 	return o.RequestPrivate(http.MethodDelete, path, param, ret)
 }
 
-func (o *Client) request(method string, path string, param any, ret any, sign bool) (err error, httpError bool) {
+func (o *Client) request(method string, path string, param any, ret any, sign bool) (err error, statusCode int) {
 	logf := func(format string, a ...any) {
 		m := fmt.Sprintf(format, a...)
 		if err == nil {
@@ -241,10 +241,10 @@ func (o *Client) request(method string, path string, param any, ret any, sign bo
 		signHeader(req.Header)
 	}
 	resp, err := o.client.Do(req)
+	statusCode = resp.StatusCode
 	elapsedTime := time.Since(timestamp).Truncate(time.Millisecond)
 	if err != nil {
 		logf("request fail [%s]: %v", elapsedTime.String(), err)
-		httpError = true
 		return
 	}
 	defer resp.Body.Close()
@@ -286,7 +286,6 @@ func (o *Client) request(method string, path string, param any, ret any, sign bo
 	} else {
 		err = errors.New(fmt.Sprintf("http status-code: %d", resp.StatusCode))
 		logf("%v", err)
-		httpError = true
 		return
 	}
 	logf("%s", m)
@@ -343,3 +342,5 @@ func makeSignature(src url.Values, key string) string {
 	}
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
+
+type OnTransportError func(err error, statusCode int, attempt int) bool
