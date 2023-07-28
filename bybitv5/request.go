@@ -1,9 +1,11 @@
 package bybitv5
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
+	"github.com/msw-x/moon/ufmt"
 	"github.com/msw-x/moon/uhttp"
 )
 
@@ -32,21 +34,25 @@ func req[R, T any](c *Client, method string, path string, request any, transform
 	}
 	h := perf.Do()
 	if h.Error == nil {
-		if h.BodyExists() {
-			raw := new(response[R])
-			h.Json(raw)
-			r.Time = raw.Time
-			r.Error = raw.Error()
-			if r.Ok() {
-				r.Data, r.Error = transform(raw.Result)
+		r.StatusCode = h.StatusCode
+		if h.StatusCode == http.StatusOK {
+			if h.BodyExists() {
+				raw := new(response[R])
+				h.Json(raw)
+				r.Time = raw.Time
+				r.Error = raw.Error()
+				if r.Ok() {
+					r.Data, r.Error = transform(raw.Result)
+				}
 			}
+		} else {
+			r.Error = errors.New(ufmt.Join(h.Status, h.Text()))
 		}
 		if sign {
 			r.SetErrorIfNil(h.HeaderTo(&r.Limit))
 		}
 	} else {
 		r.Error = h.Error
-		r.NetError = true
 	}
 	return
 }
@@ -55,8 +61,8 @@ func request[R, T any](c *Client, method string, path string, request any, trans
 	var attempt int
 	for {
 		r = req(c, method, path, request, transform, sign)
-		if r.NetError && c.onNetError != nil {
-			if c.onNetError(r.Error, attempt) {
+		if r.StatusCode != http.StatusOK && c.onTransportError != nil {
+			if c.onTransportError(r.Error, r.StatusCode, attempt) {
 				attempt++
 				continue
 			}

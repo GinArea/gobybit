@@ -1,11 +1,11 @@
 package bybitv5
 
 type Response[T any] struct {
-	Time     uint64
-	Data     T
-	Limit    RateLimit
-	Error    error
-	NetError bool
+	Time       uint64
+	Data       T
+	Limit      RateLimit
+	Error      error
+	StatusCode int
 }
 
 func (o *Response[T]) Ok() bool {
