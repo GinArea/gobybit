@@ -62,3 +62,63 @@ func (o *Client) GetWallatBalance(v GetWallatBalance) Response[[]WalletBalance] 
 func (o *Client) GetAccountWallatBalance(accountType AccountType) Response[[]WalletBalance] {
 	return o.GetWallatBalance(GetWallatBalance{AccountType: accountType})
 }
+
+// Get Transaction Log
+// https://bybit-exchange.github.io/docs/v5/account/transaction-log
+//
+//	accountType string  Account Type. UNIFIED
+//	category    string  Product type. spot,linear,option
+//	currency    string  Currency
+//	baseCoin    string  BaseCoin. e.g., BTC of BTCPERP
+//	type        string  Types of transaction logs
+//	startTime   integer The start timestamp (ms)
+//	endTime     integer The end timestamp (ms)
+//	limit       integer Limit for data size per page. [1, 50]. Default: 20
+//	cursor      string  Cursor. Use the nextPageCursor token from the response to retrieve the next page of the result set
+type GetTransactionLog struct {
+	AccountType AccountType `url:",omitempty"`
+	Category    Category    `url:",omitempty"`
+	Currency    string      `url:",omitempty"`
+	BaseCoin    string      `url:",omitempty"`
+	Type        Type        `url:",omitempty"`
+	StartTime   int         `url:",omitempty"`
+	EndTime     int         `url:",omitempty"`
+	Limit       int         `url:",omitempty"`
+	Cursor      string      `url:",omitempty"`
+}
+
+type TransactionLog struct {
+	Symbol          string
+	Side            Side
+	Funding         ujson.Float64
+	OrderLinkId     string
+	OrderId         string
+	Fee             ujson.Float64
+	Change          ujson.Float64
+	CashFlow        ujson.Float64
+	TransactionTime string
+	Type            Type
+	FeeRate         ujson.Float64
+	BonusChange     ujson.Float64
+	Size            ujson.Float64
+	Qty             ujson.Float64
+	CashBalance     ujson.Float64
+	Currency        string
+	Category        Category
+	TradePrice      ujson.Float64
+	TradeId         string
+}
+
+func (o GetTransactionLog) Do(c *Client) Response[[]TransactionLog] {
+	type result struct {
+		NextPageCursor string
+		List           []TransactionLog
+	}
+	return Get(c.account(), "transaction-log", o, func(r result) ([]TransactionLog, error) {
+		return r.List, nil
+	})
+}
+
+func (o *Client) GetTransactionLog(v GetTransactionLog) Response[[]TransactionLog] {
+	return v.Do(o)
+}

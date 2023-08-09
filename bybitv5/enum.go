@@ -102,6 +102,29 @@ const (
 	StatusClosed     Status = "Closed"
 )
 
+type Type string
+
+const (
+	TypeTransferIn                    Type = "TRANSFER_IN"
+	TypeTransferOut                   Type = "TRANSFER_OUT"
+	TypeTrade                         Type = "TRADE"
+	TypeSettlement                    Type = "SETTLEMENT"
+	TypeDelivery                      Type = "DELIVERY"
+	TypeLiquidation                   Type = "LIQUIDATION"
+	TypeBonus                         Type = "BONUS"
+	TypeFeeRefund                     Type = "FEE_REFUND"
+	TypeInterest                      Type = "INTEREST"
+	TypeCurrencyBuy                   Type = "CURRENCY_BUY"
+	TypeCurrencySell                  Type = "CURRENCY_SELL"
+	TypeBorrowedAmountInsLoan         Type = "BORROWED_AMOUNT_INS_LOAN"
+	TypePrincipleRepaymentInsLoan     Type = "PRINCIPLE_REPAYMENT_INS_LOAN"
+	TypeInterestRepaymentInsLoan      Type = "INTEREST_REPAYMENT_INS_LOAN"
+	TypeAutoSoldCollateralInsLoan     Type = "AUTO_SOLD_COLLATERAL_INS_LOAN"
+	TypeAutoBuyLiabilityInsLoan       Type = "AUTO_BUY_LIABILITY_INS_LOAN"
+	TypeAutoPrincipleRepaymentInsLoan Type = "AUTO_PRINCIPLE_REPAYMENT_INS_LOAN"
+	TypeAutoInterestRepaymentInsLoan  Type = "AUTO_INTEREST_REPAYMENT_INS_LOAN"
+)
+
 // triggerBy (https://bybit-exchange.github.io/docs/v5/enum#triggerby)
 type TriggerBy string
 
