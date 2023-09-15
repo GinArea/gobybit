@@ -39,8 +39,8 @@ type Position struct {
 	TrailingStop     ujson.Float64
 	UnrealisedPnl    ujson.Float64
 	CumRealisedPnl   ujson.Float64
-	CreatedTime      ujson.Int64
-	UpdatedTime      ujson.Int64
+	CreatedTime      ujson.TimeMs
+	UpdatedTime      ujson.TimeMs
 }
 
 func (o GetPositions) Do(c *Client) Response[[]Position] {
