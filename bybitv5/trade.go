@@ -128,6 +128,7 @@ type Order struct {
 	CumExecQty         ujson.Float64
 	CumExecValue       ujson.Float64
 	CumExecFee         ujson.Float64
+	FeeCurrency        string
 	TimeInForce        TimeInForce
 	OrderType          OrderType
 	StopOrderType      StopOrderType
