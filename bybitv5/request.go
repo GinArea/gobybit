@@ -29,7 +29,9 @@ func req[R, T any](c *Client, method string, path string, request any, transform
 			c.s.HeaderGet(perf.Request.Header, perf.Request.Params)
 		case http.MethodPost:
 			c.s.HeaderPost(perf.Request.Header, perf.Request.Body)
-			perf.Header("Referer", "GinArea").Header("x-referer", "GinArea")
+			if c.referer != "" {
+				perf.Header("Referer", c.referer).Header("x-referer", c.referer)
+			}
 		}
 	}
 	h := perf.Do()

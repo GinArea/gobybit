@@ -10,6 +10,7 @@ import (
 type Client struct {
 	c                *uhttp.Client
 	s                *Sign
+	referer          string
 	onTransportError OnTransportError
 }
 
@@ -18,6 +19,7 @@ func NewClient() *Client {
 	o.c = uhttp.NewClient()
 	o.WithBaseUrl(MainBaseUrl)
 	o.WithPath("v5")
+	o.WithReferer("GinArea")
 	return o
 }
 
@@ -25,6 +27,7 @@ func (o *Client) Clone() *Client {
 	r := new(Client)
 	r.c = o.c.Clone()
 	r.s = o.s
+	r.referer = o.referer
 	r.onTransportError = o.onTransportError
 	return r
 }
@@ -65,6 +68,11 @@ func (o *Client) WithTraceFormat(log *ulog.Log, f uhttp.Format) *Client {
 
 func (o *Client) WithAuth(key, secret string) *Client {
 	o.s = NewSign(key, secret)
+	return o
+}
+
+func (o *Client) WithReferer(referer string) *Client {
+	o.referer = referer
 	return o
 }
 
