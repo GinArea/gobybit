@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/msw-x/moon/uhttp"
-	"github.com/msw-x/moon/ulog"
 )
 
 type Client struct {
@@ -23,9 +22,9 @@ func NewClient() *Client {
 	return o
 }
 
-func (o *Client) Clone() *Client {
+func (o *Client) Copy() *Client {
 	r := new(Client)
-	r.c = o.c.Clone()
+	r.c = o.c.Copy()
 	r.s = o.s
 	r.referer = o.referer
 	r.onTransportError = o.onTransportError
@@ -61,8 +60,8 @@ func (o *Client) WithTimeout(timeout time.Duration) *Client {
 	return o
 }
 
-func (o *Client) WithTraceFormat(log *ulog.Log, f uhttp.Format) *Client {
-	o.c.WithTraceFormat(log, f)
+func (o *Client) WithTrace(trace func(uhttp.Responce)) *Client {
+	o.c.WithTrace(trace)
 	return o
 }
 
@@ -82,27 +81,27 @@ func (o *Client) WithOnTransportError(f OnTransportError) *Client {
 }
 
 func (o *Client) market() *Client {
-	return o.Clone().WithAppendPath("market")
+	return o.Copy().WithAppendPath("market")
 }
 
 func (o *Client) order() *Client {
-	return o.Clone().WithAppendPath("order")
+	return o.Copy().WithAppendPath("order")
 }
 
 func (o *Client) position() *Client {
-	return o.Clone().WithAppendPath("position")
+	return o.Copy().WithAppendPath("position")
 }
 
 func (o *Client) account() *Client {
-	return o.Clone().WithAppendPath("account")
+	return o.Copy().WithAppendPath("account")
 }
 
 func (o *Client) asset() *Client {
-	return o.Clone().WithAppendPath("asset")
+	return o.Copy().WithAppendPath("asset")
 }
 
 func (o *Client) user() *Client {
-	return o.Clone().WithAppendPath("user")
+	return o.Copy().WithAppendPath("user")
 }
 
 type OnTransportError func(err error, statusCode int, attempt int) bool
