@@ -1,6 +1,7 @@
 package bybitv5
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/msw-x/moon/uhttp"
@@ -47,6 +48,11 @@ func (o *Client) WithPath(path string) *Client {
 
 func (o *Client) WithAppendPath(path string) *Client {
 	o.c.WithAppendPath(path)
+	return o
+}
+
+func (o *Client) WithTransport(transport *http.Transport) *Client {
+	o.c.WithTransport(transport)
 	return o
 }
 
