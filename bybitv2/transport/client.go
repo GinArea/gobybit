@@ -27,6 +27,7 @@ type Client struct {
 	secret           string
 	proxy            *url.URL
 	client           *http.Client
+	transport        *http.Transport
 	logUri           bool
 	logRequest       bool
 	logResponse      bool
@@ -79,6 +80,10 @@ func (o *Client) WithProxy(proxy string) *Client {
 	return o
 }
 
+func (o *Client) WithTransport(transport *http.Transport) {
+	o.transport = transport
+}
+
 func (o *Client) WithTimeout(timeout time.Duration) *Client {
 	o.timeout = timeout
 	o.init()
@@ -112,10 +117,20 @@ func (o *Client) WithOnTransportError(f OnTransportError) *Client {
 
 func (o *Client) init() {
 	o.client = new(http.Client)
+	var transport *http.Transport
+	if o.transport != nil {
+		transport = o.transport
+	}
 	if o.proxy != nil {
-		o.client.Transport = &http.Transport{
-			Proxy: http.ProxyURL(o.proxy),
+		if transport == nil {
+			transport = new(http.Transport)
+		} else {
+			transport = transport.Clone()
 		}
+		transport.Proxy = http.ProxyURL(o.proxy)
+	}
+	if transport != nil {
+		o.client.Transport = transport
 	}
 	if o.timeout != 0 {
 		o.client.Timeout = o.timeout
