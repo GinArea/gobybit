@@ -81,6 +81,11 @@ func (o *Client) WithReferer(referer string) *Client {
 	return o
 }
 
+func (o *Client) WithOnReadBodyError(f uhttp.OnError) *Client {
+	o.c.WithOnReadBodyError(f)
+	return o
+}
+
 func (o *Client) WithOnTransportError(f OnTransportError) *Client {
 	o.onTransportError = f
 	return o

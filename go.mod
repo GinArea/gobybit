@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/gorilla/websocket v1.5.0
-	github.com/msw-x/moon v0.3.13
+	github.com/msw-x/moon v0.3.15
 )
 
 require (
