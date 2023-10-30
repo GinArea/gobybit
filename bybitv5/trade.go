@@ -9,30 +9,30 @@ type PlaceOrder struct {
 	Symbol           string
 	Side             Side
 	OrderType        OrderType
-	Qty              ujson.Float64 `json:",omitempty"`
-	Price            ujson.Float64 `json:",omitempty"`
-	IsLeverage       *int          `json:",omitempty"`
-	TriggerDirection *int          `json:",omitempty"`
-	OrderFilter      string        `json:",omitempty"`
-	TriggerPrice     ujson.Float64 `json:",omitempty"`
-	TriggerBy        TriggerBy     `json:",omitempty"`
-	OrderIv          ujson.Float64 `json:",omitempty"`
-	TimeInForce      TimeInForce   `json:",omitempty"`
-	PositionIdx      *PositionIdx  `json:",omitempty"`
-	OrderLinkId      string        `json:",omitempty"`
-	TakeProfit       ujson.Float64 `json:",omitempty"`
-	StopLoss         ujson.Float64 `json:",omitempty"`
-	TpTriggerBy      TriggerBy     `json:",omitempty"`
-	SlTriggerBy      TriggerBy     `json:",omitempty"`
-	ReduceOnly       *bool         `json:",omitempty"`
-	CloseOnTrigger   *bool         `json:",omitempty"`
-	SmpType          SmpType       `json:",omitempty"`
-	Mmp              *bool         `json:",omitempty"`
-	TpslMode         TpSlMode      `json:",omitempty"`
-	TpLimitPrice     ujson.Float64 `json:",omitempty"`
-	SlLimitPrice     ujson.Float64 `json:",omitempty"`
-	TpOrderType      OrderType     `json:",omitempty"`
-	SlOrderType      OrderType     `json:",omitempty"`
+	Qty              ujson.StringFloat64 `json:",omitempty"`
+	Price            ujson.Float64       `json:",omitempty"`
+	IsLeverage       *int                `json:",omitempty"`
+	TriggerDirection *int                `json:",omitempty"`
+	OrderFilter      string              `json:",omitempty"`
+	TriggerPrice     ujson.Float64       `json:",omitempty"`
+	TriggerBy        TriggerBy           `json:",omitempty"`
+	OrderIv          ujson.Float64       `json:",omitempty"`
+	TimeInForce      TimeInForce         `json:",omitempty"`
+	PositionIdx      *PositionIdx        `json:",omitempty"`
+	OrderLinkId      string              `json:",omitempty"`
+	TakeProfit       ujson.Float64       `json:",omitempty"`
+	StopLoss         ujson.Float64       `json:",omitempty"`
+	TpTriggerBy      TriggerBy           `json:",omitempty"`
+	SlTriggerBy      TriggerBy           `json:",omitempty"`
+	ReduceOnly       *bool               `json:",omitempty"`
+	CloseOnTrigger   *bool               `json:",omitempty"`
+	SmpType          SmpType             `json:",omitempty"`
+	Mmp              *bool               `json:",omitempty"`
+	TpslMode         TpSlMode            `json:",omitempty"`
+	TpLimitPrice     ujson.Float64       `json:",omitempty"`
+	SlLimitPrice     ujson.Float64       `json:",omitempty"`
+	TpOrderType      OrderType           `json:",omitempty"`
+	SlOrderType      OrderType           `json:",omitempty"`
 }
 
 type OrderId struct {
