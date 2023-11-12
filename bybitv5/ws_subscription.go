@@ -41,7 +41,7 @@ func (o *Subscriptions) unsubscribe(topic string) {
 func (o *Subscriptions) subscribeAll() {
 	o.mutex.Lock()
 	defer o.mutex.Unlock()
-	for topic, _ := range o.funcs {
+	for topic := range o.funcs {
 		o.c.subscribe(topic)
 	}
 }

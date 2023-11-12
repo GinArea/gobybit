@@ -9,11 +9,9 @@ import (
 )
 
 type WsClient struct {
-	c              *uws.Client
-	onConnected    func()
-	onDisconnected func()
-	onResponce     func(WsResponse) error
-	onTopic        func([]byte) error
+	c          *uws.Client
+	onResponce func(WsResponse) error
+	onTopic    func([]byte) error
 }
 
 func NewWsClient() *WsClient {
