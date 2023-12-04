@@ -94,3 +94,7 @@ func (o *Error) InsufficientBalance() bool {
 	}
 	return slices.Contains(codes, o.Code)
 }
+
+func (o *Error) OrderLinkedIdIsDuplicate() bool {
+	return o.Code == 110072
+}
