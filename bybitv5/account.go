@@ -63,6 +63,29 @@ func (o *Client) GetAccountWallatBalance(accountType AccountType) Response[[]Wal
 	return o.GetWallatBalance(GetWallatBalance{AccountType: accountType})
 }
 
+// Get Account Info
+// https://bybit-exchange.github.io/docs/v5/account/account-info
+type GetAccountInfo struct {
+}
+
+type AccountInfo struct {
+	MarginMode        string
+	DcpStatus         string
+	TimeWindow        int
+	SmpGroup          int
+	IsMasterTrader    bool
+	SpotHedgingStatus string
+	UpdatedTime       string
+}
+
+func (o GetAccountInfo) Do(c *Client) Response[AccountInfo] {
+	return Get(c.account(), "info", o, forward[AccountInfo])
+}
+
+func (o *Client) GetAccountInfo() Response[AccountInfo] {
+	return GetAccountInfo{}.Do(o)
+}
+
 // Get Transaction Log
 // https://bybit-exchange.github.io/docs/v5/account/transaction-log
 //
