@@ -31,6 +31,10 @@ type KeyInfo struct {
 	MktMakerLevel string
 	AffiliateID   int
 	RsaPublicKey  string
+	IsMaster      bool
+	ParentUid     string
+	KycLevel      string
+	KycRegion     string
 }
 
 type Permissions struct {
