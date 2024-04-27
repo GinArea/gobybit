@@ -187,6 +187,7 @@ type PriceFilter struct {
 
 type LotSizeFilter struct {
 	MaxOrderQty         ujson.Float64
+	MaxMktOrderQty      ujson.Float64
 	MinOrderQty         ujson.Float64
 	QtyStep             ujson.Float64
 	PostOnlyMaxOrderQty string
