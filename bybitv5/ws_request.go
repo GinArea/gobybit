@@ -1,7 +1,8 @@
 package bybitv5
 
-type WsRequest struct {
-	RequestId string   `json:"req_id,omitempty"`
-	Operation string   `json:"op"`
-	Args      []string `json:",omitempty"`
+type WsRequest[T any] struct {
+	RequestId string    `json:"req_id,omitempty"`
+	Header    *WsHeader `json:",omitempty"`
+	Operation string    `json:"op"`
+	Args      []T       `json:",omitempty"`
 }

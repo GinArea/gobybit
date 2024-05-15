@@ -10,27 +10,24 @@ import (
 	"net/url"
 	"sort"
 	"strconv"
-	"time"
 )
 
 type Sign struct {
-	key        string
-	secret     string
-	timeShift  int
-	recvWindow int
+	key    string
+	secret string
+	ts     *Timestamp
 }
 
 func NewSign(key, secret string) *Sign {
 	o := new(Sign)
 	o.key = key
 	o.secret = secret
-	o.timeShift = -10000
-	o.recvWindow = 20000
+	o.ts = NewTimestamp()
 	return o
 }
 
 func (o *Sign) Params(v url.Values) {
-	ts, window := o.timestamp()
+	ts, window := o.ts.Get()
 	if v == nil {
 		v = make(url.Values)
 	}
@@ -49,7 +46,7 @@ func (o *Sign) HeaderPost(h http.Header, body []byte) {
 }
 
 func (o *Sign) WebSocket() []string {
-	expires := nowUtcMs() + o.timeShift + o.recvWindow
+	expires := o.ts.Expires()
 	sign := signHmac(fmt.Sprintf("GET/realtime%d", expires), o.secret)
 	return []string{
 		o.key,
@@ -59,22 +56,11 @@ func (o *Sign) WebSocket() []string {
 }
 
 func (o *Sign) header(h http.Header, s string) {
-	ts, window := o.timestamp()
+	ts, window := o.ts.Get()
 	h.Set("X-BAPI-API-KEY", o.key)
 	h.Set("X-BAPI-TIMESTAMP", ts)
 	h.Set("X-BAPI-RECV-WINDOW", window)
 	h.Set("X-BAPI-SIGN", signHmac(ts+o.key+window+s, o.secret))
-}
-
-func (o *Sign) timestamp() (ts, window string) {
-	i := nowUtcMs() + o.timeShift
-	ts = strconv.Itoa(i)
-	window = strconv.Itoa(o.recvWindow)
-	return
-}
-
-func nowUtcMs() int {
-	return int(time.Now().UTC().UnixNano() / int64(time.Millisecond))
 }
 
 func signHmac(s, secret string) string {

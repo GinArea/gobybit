@@ -1,27 +1,27 @@
 package bybitv5
 
 import (
-	"github.com/msw-x/moon/ufmt"
 	"github.com/msw-x/moon/ulog"
 	"github.com/msw-x/moon/uws"
 )
 
 type WsPrivate struct {
-	c              *WsClient
-	s              *Sign
-	ready          bool
-	onReady        func()
-	onConnected    func()
-	onDisconnected func()
-	subscriptions  *Subscriptions
+	c             *WsAuthClient[WsBaseResponse]
+	onReady       func()
+	subscriptions *Subscriptions
 }
 
 func NewWsPrivate(key, secret string) *WsPrivate {
 	o := new(WsPrivate)
-	o.c = NewWsClient()
-	o.s = NewSign(key, secret)
+	o.c = NewWsAuthClient[WsBaseResponse]("private", key, secret)
 	o.subscriptions = NewSubscriptions(o)
-	o.c.WithPath("v5/private")
+	o.c.WithOnReady(func() {
+		o.subscriptions.subscribeAll()
+		if o.onReady != nil {
+			o.onReady()
+		}
+	})
+	o.c.SetOnTopic(o.subscriptions.processTopic)
 	return o
 }
 
@@ -44,7 +44,8 @@ func (o *WsPrivate) WithBaseUrl(url string) *WsPrivate {
 }
 
 func (o *WsPrivate) WithByTickUrl() *WsPrivate {
-	return o.WithBaseUrl(MainBaseByTickWsUrl)
+	o.c.WithByTickUrl()
+	return o
 }
 
 func (o *WsPrivate) WithProxy(proxy string) *WsPrivate {
@@ -73,30 +74,16 @@ func (o *WsPrivate) WithOnReady(f func()) *WsPrivate {
 }
 
 func (o *WsPrivate) WithOnConnected(f func()) *WsPrivate {
-	o.onConnected = f
+	o.c.WithOnConnected(f)
 	return o
 }
 
 func (o *WsPrivate) WithOnDisconnected(f func()) *WsPrivate {
-	o.onDisconnected = f
+	o.c.WithOnDisconnected(f)
 	return o
 }
 
 func (o *WsPrivate) Run() {
-	o.c.WithOnConnected(func() {
-		if o.onConnected != nil {
-			o.onConnected()
-		}
-		o.auth()
-	})
-	o.c.WithOnDisconnected(func() {
-		o.ready = false
-		if o.onDisconnected != nil {
-			o.onDisconnected()
-		}
-	})
-	o.c.WithOnResponse(o.onResponse)
-	o.c.WithOnTopic(o.onTopic)
 	o.c.Run()
 }
 
@@ -105,7 +92,7 @@ func (o *WsPrivate) Connected() bool {
 }
 
 func (o *WsPrivate) Ready() bool {
-	return o.ready
+	return o.c.Ready()
 }
 
 func (o *WsPrivate) Position() *Executor[[]PositionShot] {
@@ -128,38 +115,10 @@ func (o *WsPrivate) Greek() *Executor[[]GreekShot] {
 	return NewExecutor[[]GreekShot]("greeks", o.subscriptions)
 }
 
-func (o *WsPrivate) auth() {
-	o.c.Send(WsRequest{
-		Operation: "auth",
-		Args:      o.s.WebSocket(),
-	})
-}
-
 func (o *WsPrivate) subscribe(topic string) {
 	o.c.Subscribe(topic)
 }
 
 func (o *WsPrivate) unsubscribe(topic string) {
 	o.c.Unsubscribe(topic)
-}
-
-func (o *WsPrivate) onResponse(r WsResponse) error {
-	log := o.c.Log()
-	if r.Operation == "auth" {
-		log.Info("auth:", ufmt.SuccessFailure(r.Success))
-		if r.Success {
-			o.ready = true
-			if o.onReady != nil {
-				o.onReady()
-			}
-			o.subscriptions.subscribeAll()
-		}
-	} else {
-		r.Log(log)
-	}
-	return nil
-}
-
-func (o *WsPrivate) onTopic(data []byte) error {
-	return o.subscriptions.processTopic(data)
 }

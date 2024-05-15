@@ -8,7 +8,7 @@ import (
 )
 
 type WsPublic struct {
-	c             *WsClient
+	c             *WsClient[WsBaseResponse]
 	category      Category
 	onConnected   func()
 	subscriptions *Subscriptions
@@ -16,7 +16,7 @@ type WsPublic struct {
 
 func NewWsPublic() *WsPublic {
 	o := new(WsPublic)
-	o.c = NewWsClient()
+	o.c = NewWsClient[WsBaseResponse]()
 	o.subscriptions = NewSubscriptions(o)
 	return o
 }
@@ -163,7 +163,7 @@ func (o *WsPublic) unsubscribe(topic string) {
 	o.c.Unsubscribe(topic)
 }
 
-func (o *WsPublic) onResponse(r WsResponse) error {
+func (o *WsPublic) onResponse(r WsBaseResponse) error {
 	r.Log(o.c.Log())
 	return nil
 }
