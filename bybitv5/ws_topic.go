@@ -51,64 +51,64 @@ type TradeShot struct {
 type TickerShot struct {
 	Symbol            string
 	TickDirection     TickDirection
-	Price24HPcnt      ujson.Float64
-	LastPrice         ujson.Float64
-	PrevPrice24H      ujson.Float64
-	HighPrice24H      ujson.Float64
-	LowPrice24H       ujson.Float64
-	PrevPrice1H       ujson.Float64
-	MarkPrice         ujson.Float64
-	IndexPrice        ujson.Float64
-	OpenInterest      ujson.Float64
-	OpenInterestValue ujson.Float64
-	Turnover24H       ujson.Float64
-	Volume24H         ujson.Float64
-	NextFundingTime   ujson.Float64
-	FundingRate       ujson.Float64
-	Bid1Price         ujson.Float64
-	Bid1Size          ujson.Float64
-	Ask1Price         ujson.Float64
-	Ask1Size          ujson.Float64
+	Price24HPcnt      ujson.StringFloat64
+	LastPrice         ujson.StringFloat64
+	PrevPrice24H      ujson.StringFloat64
+	HighPrice24H      ujson.StringFloat64
+	LowPrice24H       ujson.StringFloat64
+	PrevPrice1H       ujson.StringFloat64
+	MarkPrice         ujson.StringFloat64
+	IndexPrice        ujson.StringFloat64
+	OpenInterest      ujson.StringFloat64
+	OpenInterestValue ujson.StringFloat64
+	Turnover24H       ujson.StringFloat64
+	Volume24H         ujson.StringFloat64
+	NextFundingTime   ujson.StringFloat64
+	FundingRate       ujson.StringFloat64
+	Bid1Price         ujson.StringFloat64
+	Bid1Size          ujson.StringFloat64
+	Ask1Price         ujson.StringFloat64
+	Ask1Size          ujson.StringFloat64
 }
 
 type TickerOptionShot struct {
 	Symbol                 string
-	BidPrice               ujson.Float64
-	BidSize                ujson.Float64
-	BidIv                  ujson.Float64
-	AskPrice               ujson.Float64
-	AskSize                ujson.Float64
-	AskIv                  ujson.Float64
-	LastPrice              ujson.Float64
-	HighPrice24H           ujson.Float64
-	LowPrice24H            ujson.Float64
-	MarkPrice              ujson.Float64
-	IndexPrice             ujson.Float64
-	MarkPriceIv            ujson.Float64
-	UnderlyingPrice        ujson.Float64
-	OpenInterest           ujson.Float64
-	Turnover24H            ujson.Float64
-	Volume24H              ujson.Float64
-	TotalVolume            ujson.Float64
-	TotalTurnover          ujson.Float64
-	Delta                  ujson.Float64
-	Gamma                  ujson.Float64
-	Vega                   ujson.Float64
-	Theta                  ujson.Float64
-	PredictedDeliveryPrice ujson.Float64
-	Change24H              ujson.Float64
+	BidPrice               ujson.StringFloat64
+	BidSize                ujson.StringFloat64
+	BidIv                  ujson.StringFloat64
+	AskPrice               ujson.StringFloat64
+	AskSize                ujson.StringFloat64
+	AskIv                  ujson.StringFloat64
+	LastPrice              ujson.StringFloat64
+	HighPrice24H           ujson.StringFloat64
+	LowPrice24H            ujson.StringFloat64
+	MarkPrice              ujson.StringFloat64
+	IndexPrice             ujson.StringFloat64
+	MarkPriceIv            ujson.StringFloat64
+	UnderlyingPrice        ujson.StringFloat64
+	OpenInterest           ujson.StringFloat64
+	Turnover24H            ujson.StringFloat64
+	Volume24H              ujson.StringFloat64
+	TotalVolume            ujson.StringFloat64
+	TotalTurnover          ujson.StringFloat64
+	Delta                  ujson.StringFloat64
+	Gamma                  ujson.StringFloat64
+	Vega                   ujson.StringFloat64
+	Theta                  ujson.StringFloat64
+	PredictedDeliveryPrice ujson.StringFloat64
+	Change24H              ujson.StringFloat64
 }
 
 type TickerSpotShot struct {
 	Symbol        string
-	LastPrice     ujson.Float64
-	HighPrice24H  ujson.Float64
-	LowPrice24H   ujson.Float64
-	PrevPrice24H  ujson.Float64
-	Volume24H     ujson.Float64
-	Turnover24H   ujson.Float64
-	Price24HPcnt  ujson.Float64
-	UsdIndexPrice ujson.Float64
+	LastPrice     ujson.StringFloat64
+	HighPrice24H  ujson.StringFloat64
+	LowPrice24H   ujson.StringFloat64
+	PrevPrice24H  ujson.StringFloat64
+	Volume24H     ujson.StringFloat64
+	Turnover24H   ujson.StringFloat64
+	Price24HPcnt  ujson.StringFloat64
+	UsdIndexPrice ujson.StringFloat64
 }
 
 type KlineShot struct {
