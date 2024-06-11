@@ -481,10 +481,10 @@ type GetPublicTradingHistory struct {
 type PublicTradingHistory struct {
 	ExecId       string
 	Symbol       string
-	Price        string
-	Size         string
-	Side         string
-	Time         string
+	Price        ujson.Float64
+	Size         ujson.Float64
+	Side         Side
+	Time         ujson.TimeMs
 	IsBlockTrade bool
 }
 
