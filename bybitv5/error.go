@@ -98,3 +98,7 @@ func (o *Error) InsufficientBalance() bool {
 func (o *Error) OrderLinkedIdIsDuplicate() bool {
 	return o.Code == 110072
 }
+
+func (o *Error) ReduceOnlyRuleNotSatisfied() bool {
+	return o.Code == 110017
+}
