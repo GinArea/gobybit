@@ -66,7 +66,7 @@ func (o *Client) WithTimeout(timeout time.Duration) *Client {
 	return o
 }
 
-func (o *Client) WithTrace(trace func(uhttp.Responce)) *Client {
+func (o *Client) WithTrace(trace func(uhttp.Response)) *Client {
 	o.c.WithTrace(trace)
 	return o
 }
