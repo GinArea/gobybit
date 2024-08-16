@@ -115,4 +115,4 @@ func (o *Client) user() *Client {
 	return o.Copy().WithAppendPath("user")
 }
 
-type OnTransportError func(err error, statusCode int, attempt int) bool
+type OnTransportError func(err error, method string, statusCode int, attempt int) bool

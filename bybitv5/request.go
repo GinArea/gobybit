@@ -66,7 +66,7 @@ func request[R, T any](c *Client, method string, path string, request any, trans
 	for {
 		r = req(c, method, path, request, transform, sign)
 		if r.StatusCode != http.StatusOK && c.onTransportError != nil {
-			if c.onTransportError(r.Error, r.StatusCode, attempt) {
+			if c.onTransportError(r.Error, method, r.StatusCode, attempt) {
 				attempt++
 				continue
 			}
