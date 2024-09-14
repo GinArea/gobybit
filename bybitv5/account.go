@@ -69,13 +69,14 @@ type GetAccountInfo struct {
 }
 
 type AccountInfo struct {
-	MarginMode        string
-	DcpStatus         string
-	TimeWindow        int
-	SmpGroup          int
-	IsMasterTrader    bool
-	SpotHedgingStatus string
-	UpdatedTime       string
+	MarginMode          string
+	DcpStatus           string
+	TimeWindow          int
+	SmpGroup            int
+	IsMasterTrader      bool
+	UnifiedMarginStatus int
+	SpotHedgingStatus   string
+	UpdatedTime         string
 }
 
 func (o GetAccountInfo) Do(c *Client) Response[AccountInfo] {
