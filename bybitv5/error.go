@@ -32,7 +32,7 @@ func (o *Error) RequestParameterError() bool {
 	return o.Code == 10001
 }
 
-func (o *Error) c() bool {
+func (o *Error) ServiceTemporarilyUnavailable() bool {
 	return o.Code == 50001 // with http 503
 }
 
