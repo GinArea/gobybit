@@ -32,6 +32,10 @@ func (o *Error) RequestParameterError() bool {
 	return o.Code == 10001
 }
 
+func (o *Error) c() bool {
+	return o.Code == 50001 // with http 503
+}
+
 func (o *Error) ApiKeyInvalid() bool {
 	codes := []int{
 		10003, // API key is invalid
