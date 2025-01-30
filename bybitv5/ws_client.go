@@ -2,6 +2,7 @@ package bybitv5
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/gorilla/websocket"
 	"github.com/msw-x/moon/ulog"
@@ -65,6 +66,11 @@ func (o *WsClient[T]) WithLogRequest(enable bool) *WsClient[T] {
 func (o *WsClient[T]) WithLogResponse(enable bool) *WsClient[T] {
 	o.Transport().LogRecv.Size = enable
 	o.Transport().LogRecv.Data = enable
+	return o
+}
+
+func (o *WsClient[T]) WithOnDialDelay(f func() time.Duration) *WsClient[T] {
+	o.c.WithOnDialDelay(f)
 	return o
 }
 

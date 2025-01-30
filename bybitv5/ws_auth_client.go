@@ -1,6 +1,8 @@
 package bybitv5
 
 import (
+	"time"
+
 	"github.com/msw-x/moon/ufmt"
 	"github.com/msw-x/moon/ulog"
 	"github.com/msw-x/moon/uws"
@@ -59,6 +61,11 @@ func (o *WsAuthClient[T]) WithLogRequest(enable bool) *WsAuthClient[T] {
 
 func (o *WsAuthClient[T]) WithLogResponse(enable bool) *WsAuthClient[T] {
 	o.c.WithLogResponse(enable)
+	return o
+}
+
+func (o *WsAuthClient[T]) WithOnDialDelay(f func() time.Duration) *WsAuthClient[T] {
+	o.c.WithOnDialDelay(f)
 	return o
 }
 
