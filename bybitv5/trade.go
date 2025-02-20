@@ -48,6 +48,46 @@ func (o *Client) PlaceOrder(v PlaceOrder) Response[OrderId] {
 	return v.Do(o)
 }
 
+// todo: change to PlaceOrder
+type PlaceOrder2 struct {
+	Category         Category
+	Symbol           string
+	Side             Side
+	OrderType        OrderType
+	Qty              ujson.StringFloat64 `json:",omitempty"`
+	Price            ujson.StringFloat64 `json:",omitempty"`
+	IsLeverage       *int                `json:",omitempty"`
+	TriggerDirection *int                `json:",omitempty"`
+	OrderFilter      string              `json:",omitempty"`
+	TriggerPrice     ujson.Float64       `json:",omitempty"`
+	TriggerBy        TriggerBy           `json:",omitempty"`
+	OrderIv          ujson.Float64       `json:",omitempty"`
+	TimeInForce      TimeInForce         `json:",omitempty"`
+	PositionIdx      *PositionIdx        `json:",omitempty"`
+	OrderLinkId      string              `json:",omitempty"`
+	TakeProfit       ujson.Float64       `json:",omitempty"`
+	StopLoss         ujson.Float64       `json:",omitempty"`
+	TpTriggerBy      TriggerBy           `json:",omitempty"`
+	SlTriggerBy      TriggerBy           `json:",omitempty"`
+	ReduceOnly       *bool               `json:",omitempty"`
+	CloseOnTrigger   *bool               `json:",omitempty"`
+	SmpType          SmpType             `json:",omitempty"`
+	Mmp              *bool               `json:",omitempty"`
+	TpslMode         TpSlMode            `json:",omitempty"`
+	TpLimitPrice     ujson.Float64       `json:",omitempty"`
+	SlLimitPrice     ujson.Float64       `json:",omitempty"`
+	TpOrderType      OrderType           `json:",omitempty"`
+	SlOrderType      OrderType           `json:",omitempty"`
+}
+
+func (o PlaceOrder2) Do(c *Client) Response[OrderId] {
+	return Post(c.order(), "create", o, forward[OrderId])
+}
+
+func (o *Client) PlaceOrder2(v PlaceOrder2) Response[OrderId] {
+	return v.Do(o)
+}
+
 // Amend Order
 // https://bybit-exchange.github.io/docs/v5/order/amend-order
 type AmendOrder struct {
