@@ -105,6 +105,10 @@ func (o *WsClient[T]) Run() {
 	o.c.Run()
 }
 
+func (o *WsClient[T]) Running() bool {
+	return o.c.Running()
+}
+
 func (o *WsClient[T]) Connected() bool {
 	return o.c.Connected()
 }

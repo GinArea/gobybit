@@ -107,6 +107,10 @@ func (o *WsAuthClient[T]) Run() {
 	o.c.Run()
 }
 
+func (o *WsAuthClient[T]) Running() bool {
+	return o.c.Running()
+}
+
 func (o *WsAuthClient[T]) Connected() bool {
 	return o.c.Connected()
 }
