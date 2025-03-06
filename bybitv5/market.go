@@ -3,6 +3,7 @@ package bybitv5
 import (
 	"fmt"
 
+	"github.com/msw-x/moon/parse"
 	"github.com/msw-x/moon/ujson"
 )
 
@@ -44,17 +45,17 @@ type GetKline struct {
 }
 
 type Kline struct {
-	StartTime  string
-	OpenPrice  string
-	HighPrice  string
-	LowPrice   string
-	ClosePrice string
+	Ts    int64
+	Open  float64
+	High  float64
+	Low   float64
+	Close float64
 }
 
 type KlineExt struct {
 	Kline
-	Volume   string
-	Turnover string
+	Volume   float64
+	Turnover float64
 }
 
 type klineResult struct {
@@ -73,11 +74,26 @@ func UnmarshalKline(s []string) (r Kline, err error) {
 	requiredLen := 5
 	currentLen := len(s)
 	if currentLen == requiredLen {
-		r.StartTime = s[0]
-		r.OpenPrice = s[1]
-		r.HighPrice = s[2]
-		r.LowPrice = s[3]
-		r.ClosePrice = s[4]
+		r.Ts, err = parse.Int64(s[0])
+		if err != nil {
+			return
+		}
+		r.Open, err = parse.Float64(s[1])
+		if err != nil {
+			return
+		}
+		r.High, err = parse.Float64(s[2])
+		if err != nil {
+			return
+		}
+		r.Low, err = parse.Float64(s[3])
+		if err != nil {
+			return
+		}
+		r.Close, err = parse.Float64(s[4])
+		if err != nil {
+			return
+		}
 	} else {
 		err = fmt.Errorf("kline list len is %d, but required %d", currentLen, requiredLen)
 	}
@@ -90,8 +106,14 @@ func UnmarshalKlineExt(s []string) (r KlineExt, err error) {
 	if currentLen == requiredLen {
 		r.Kline, err = UnmarshalKline(s[:5])
 		if err == nil {
-			r.Volume = s[5]
-			r.Turnover = s[6]
+			r.Volume, err = parse.Float64(s[5])
+			if err != nil {
+				return
+			}
+			r.Turnover, err = parse.Float64(s[6])
+			if err != nil {
+				return
+			}
 		}
 	} else {
 		err = fmt.Errorf("kline list len is %d, but required %d", currentLen, requiredLen)
