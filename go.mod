@@ -6,7 +6,7 @@ toolchain go1.21.3
 
 require (
 	github.com/gorilla/websocket v1.5.1
-	github.com/msw-x/moon v0.7.38
+	github.com/msw-x/moon v0.7.47
 )
 
 require (
