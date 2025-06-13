@@ -306,11 +306,11 @@ type GetOrderbook struct {
 }
 
 type Orderbook struct {
-	Symbol    string            `json:"s"`
-	Bid       [][]ujson.Float64 `json:"b"`
-	Ask       [][]ujson.Float64 `json:"a"`
-	Timestamp int               `json:"ts"`
-	UpdateId  int               `json:"u"`
+	Symbol        string            `json:"s"`
+	Bid           [][]ujson.Float64 `json:"b"`
+	Ask           [][]ujson.Float64 `json:"a"`
+	UpdateId      int               `json:"u"`
+	CrossSequence int               `json:"seq"`
 }
 
 func (o GetOrderbook) Do(c *Client) Response[Orderbook] {

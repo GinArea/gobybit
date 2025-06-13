@@ -9,6 +9,7 @@ import (
 type PublicHeader struct {
 	Ts   int64
 	Type string
+	Cts  int64
 }
 
 func (o PublicHeader) IsDelta() bool {
