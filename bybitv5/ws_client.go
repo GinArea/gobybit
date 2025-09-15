@@ -156,6 +156,7 @@ func (o *WsClient[T]) onMessage(messageType int, data []byte) {
 	}
 	var r T
 	err := json.Unmarshal(data, &r)
+	// fmt.Println(string(data))
 	if err == nil {
 		if r.IsOperateion() {
 			if o.onResponce != nil {

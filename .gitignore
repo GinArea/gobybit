@@ -1,0 +1,3 @@
+bin
+.vscode
+*_private_test.go

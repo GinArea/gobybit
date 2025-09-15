@@ -39,6 +39,7 @@ func req[R, T any](c *Client, method string, path string, request any, transform
 		r.StatusCode = h.StatusCode
 		if h.StatusCode == http.StatusOK {
 			if h.BodyExists() {
+				// fmt.Println(string(h.Body))
 				raw := new(response[R])
 				r.Time = raw.Time
 				r.Error = h.Json(raw)
