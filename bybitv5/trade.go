@@ -149,6 +149,37 @@ type GetOpenOrders struct {
 	Cursor      string `url:",omitempty"`
 }
 
+type Execution struct {
+	Symbol          string
+	OrderType       OrderType
+	UnderlyingPrice ujson.Float64
+	OrderLinkId     string
+	Side            Side
+	IndexPrice      ujson.Float64
+	OrderId         string
+	StopOrderType   StopOrderType
+	LeavesQty       ujson.Float64
+	ExecTime        ujson.TimeMs
+	FeeCurrency     string
+	IsMaker         bool
+	ExecFee         ujson.Float64
+	FeeRate         ujson.Float64
+	ExecId          string
+	BlockTradeId    string
+	MarkPrice       ujson.Float64
+	ExecPrice       ujson.Float64
+	OrderQty        ujson.Float64
+	OrderPrice      ujson.Float64
+	ExecValue       ujson.Float64
+	ExecType        string
+	ExecQty         ujson.Float64
+	ClosedSize      ujson.Float64
+	ExtraFees       string
+	Seq             int64
+	TradeIv         string
+	MarkIv          string
+}
+
 type Order struct {
 	OrderId            string
 	OrderLinkId        string
@@ -272,5 +303,34 @@ func (o GetOrderHistory) Do(c *Client) Response[[]Order] {
 }
 
 func (o *Client) GetOrderHistory(v GetOrderHistory) Response[[]Order] {
+	return v.Do(o)
+}
+
+// Get Trade History
+// https://bybit-exchange.github.io/docs/v5/order/execution
+type GetTradeHistory struct {
+	Category    Category
+	Symbol      string `url:",omitempty"`
+	OrderId     string `url:",omitempty"`
+	OrderLinkId string `url:",omitempty"`
+	BaseCoin    string `url:",omitempty"`
+	StartTime   int    `url:",omitempty"`
+	EndTime     int    `url:",omitempty"`
+	Limit       int    `url:",omitempty"`
+	Cursor      string `url:",omitempty"`
+}
+
+func (o GetTradeHistory) Do(c *Client) Response[[]Execution] {
+	type result struct {
+		Category       Category
+		NextPageCursor string
+		List           []Execution
+	}
+	return Get(c.execution(), "list", o, func(r result) ([]Execution, error) {
+		return r.List, nil
+	})
+}
+
+func (o *Client) GetTradeHistory(v GetTradeHistory) Response[[]Execution] {
 	return v.Do(o)
 }

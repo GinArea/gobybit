@@ -91,6 +91,10 @@ func (o *Client) WithOnTransportError(f OnTransportError) *Client {
 	return o
 }
 
+func (o *Client) execution() *Client {
+	return o.Copy().WithAppendPath("execution")
+}
+
 func (o *Client) market() *Client {
 	return o.Copy().WithAppendPath("market")
 }

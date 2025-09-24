@@ -236,13 +236,17 @@ const (
 type StopOrderType string
 
 const (
-	StopOrderTakeProfit        StopOrderType = "TakeProfit"
-	StopOrderStopLoss          StopOrderType = "StopLoss"
-	StopOrderTrailingStop      StopOrderType = "TrailingStop"
-	StopOrderStop              StopOrderType = "Stop"
-	StopOrderPartialTakeProfit StopOrderType = "PartialTakeProfit"
-	StopOrderPartialStopLoss   StopOrderType = "PartialStopLoss"
-	StopOrderTpslOrder         StopOrderType = "TpslOrder"
+	StopOrderTakeProfit             StopOrderType = "TakeProfit"
+	StopOrderStopLoss               StopOrderType = "StopLoss"
+	StopOrderTrailingStop           StopOrderType = "TrailingStop"
+	StopOrderStop                   StopOrderType = "Stop"
+	StopOrderPartialTakeProfit      StopOrderType = "PartialTakeProfit"
+	StopOrderPartialStopLoss        StopOrderType = "PartialStopLoss"
+	StopOrderTpslOrder              StopOrderType = "tpslOrder"
+	StopOrderOcoOrder               StopOrderType = "OcoOrder"
+	StopOrderMmRateClose            StopOrderType = "MmRateClose"
+	StopOrderBidirectionalTpslOrder StopOrderType = "BidirectionalTpslOrder"
+	StopOrderUnknown                StopOrderType = "UNKNOWN"
 )
 
 // positionStatus https://bybit-exchange.github.io/docs/v5/enum#positionstatus
