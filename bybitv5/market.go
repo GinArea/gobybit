@@ -240,12 +240,14 @@ type InstrumentSpot struct {
 }
 
 type LotSizeFilterSpot struct {
-	BasePrecision  ujson.Float64
-	QuotePrecision ujson.Float64
-	MaxOrderQty    ujson.Float64
-	MinOrderQty    ujson.Float64
-	MaxOrderAmt    ujson.Float64
-	MinOrderAmt    ujson.Float64
+	BasePrecision     ujson.Float64
+	QuotePrecision    ujson.Float64
+	MaxOrderQty       ujson.Float64
+	MinOrderQty       ujson.Float64
+	MaxOrderAmt       ujson.Float64
+	MinOrderAmt       ujson.Float64
+	MaxLimitOrderQty  ujson.Float64
+	MaxMarketOrderQty ujson.Float64
 }
 
 type PriceFilterSpot struct {
