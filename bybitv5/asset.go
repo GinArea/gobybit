@@ -290,3 +290,36 @@ func (o CreateInternalTransfer) Do(c *Client) Response[uuid.UUID] {
 func (o *Client) CreateInternalTransfer(v CreateInternalTransfer) Response[uuid.UUID] {
 	return v.Do(o)
 }
+
+// Get Master Deposit Address
+// https://bybit-exchange.github.io/docs/v5/asset/deposit/master-deposit-addr
+
+type MasterDepositAddressRequest struct {
+	Coin      string `url:"coin"` // required
+	ChainType string `url:",omitempty"`
+}
+
+type CoinDepositAddress struct {
+	ChainType         string
+	AddressDeposit    string
+	TagDeposit        string
+	Chain             string
+	BatchReleaseLimit string
+	ContractAddress   string
+}
+
+func (o *Client) GetMasterDepositAddress(v MasterDepositAddressRequest) Response[[]CoinDepositAddress] {
+	return v.Do(o)
+}
+
+func (o MasterDepositAddressRequest) Do(c *Client) Response[[]CoinDepositAddress] {
+
+	type result struct {
+		Coin   string
+		Chains []CoinDepositAddress
+	}
+
+	return Get(c.asset(), "deposit/query-address", o, func(r result) ([]CoinDepositAddress, error) {
+		return r.Chains, nil
+	})
+}
