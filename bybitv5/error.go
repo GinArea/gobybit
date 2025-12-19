@@ -100,7 +100,11 @@ func (o *Error) InsufficientBalance() bool {
 }
 
 func (o *Error) OrderLinkedIdIsDuplicate() bool {
-	return o.Code == 110072
+	codes := []int{
+		110072, // UTA - OrderLinkedID is duplicate
+		170141, // Spot Trade - Duplicate clientOrderId
+	}
+	return slices.Contains(codes, o.Code)
 }
 
 func (o *Error) ReduceOnlyRuleNotSatisfied() bool {
