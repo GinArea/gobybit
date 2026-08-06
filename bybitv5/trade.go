@@ -215,7 +215,7 @@ type Order struct {
 	ReduceOnly         bool
 	CloseOnTrigger     bool
 	SmpType            SmpType
-	SmpGroup           int
+	SmpGroup           string
 	SmpOrderId         string
 	TpslMode           TpSlMode
 	TpLimitPrice       ujson.StringFloat64
