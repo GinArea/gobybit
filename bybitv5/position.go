@@ -57,3 +57,23 @@ func (o GetPositions) Do(c *Client) Response[[]Position] {
 func (o *Client) GetPositions(v GetPositions) Response[[]Position] {
 	return v.Do(o)
 }
+
+// Switch Position Mode
+// https://bybit-exchange.github.io/docs/v5/position/position-mode
+type SwitchPositionMode struct {
+	Category Category
+	Symbol   string       `json:",omitempty"` // has priority over coin
+	Coin     string       `json:",omitempty"` // settle coin: batch switch of all symbols without position and open order
+	Mode     PositionMode // no omitempty: zero value means one-way
+}
+
+func (o SwitchPositionMode) Do(c *Client) Response[bool] {
+	// the endpoint returns an empty result object
+	return Post(c.position(), "switch-mode", o, func(struct{}) (bool, error) {
+		return true, nil
+	})
+}
+
+func (o *Client) SwitchPositionMode(v SwitchPositionMode) Response[bool] {
+	return v.Do(o)
+}

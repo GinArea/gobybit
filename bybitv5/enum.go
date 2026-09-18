@@ -162,6 +162,15 @@ const (
 	SellSideOfHedgeMode PositionIdx = 2
 )
 
+// mode of switch-mode endpoint, not to be confused with positionIdx
+// https://bybit-exchange.github.io/docs/v5/position/position-mode
+type PositionMode int
+
+const (
+	PositionModeOneWay PositionMode = 0 // merged single
+	PositionModeHedge  PositionMode = 3 // both sides
+)
+
 // orderStatus https://bybit-exchange.github.io/docs/v5/enum#orderstatus
 type OrderStatus string
 

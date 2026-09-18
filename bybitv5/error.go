@@ -110,3 +110,19 @@ func (o *Error) OrderLinkedIdIsDuplicate() bool {
 func (o *Error) ReduceOnlyRuleNotSatisfied() bool {
 	return o.Code == 110017
 }
+
+func (o *Error) PositionModeNotModified() bool {
+	return o.Code == 110025 // Position mode has not been modified
+}
+
+func (o *Error) PositionModeSwitchBlocked() bool {
+	codes := []int{
+		110024, // You have an existing position, so the position mode cannot be switched
+		110028, // You have existing open orders, so the position mode cannot be switched
+	}
+	return slices.Contains(codes, o.Code)
+}
+
+func (o *Error) HedgeModeNotSupported() bool {
+	return o.Code == 110029 // Hedge mode is not supported for this symbol
+}
