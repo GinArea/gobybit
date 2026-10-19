@@ -67,6 +67,7 @@ type WsResponseHeader struct {
 type WsTradeResponse struct {
 	Operation    string `json:"op"`
 	ConnectionId string `json:"connId"`
+	ReqId        string `json:"reqId,omitempty"`
 	Code         int    `json:"retCode"`
 	Message      string `json:"retMsg"`
 	Data         json.RawMessage
@@ -99,6 +100,18 @@ func (o WsTradeResponse) Log(log *ulog.Log) {
 			log.Info("order-create")
 		} else {
 			log.Error("order-create:", o.Message)
+		}
+	case "order.amend":
+		if o.Code == 0 {
+			log.Info("order-amend")
+		} else {
+			log.Error("order-amend:", o.Message)
+		}
+	case "order.cancel":
+		if o.Code == 0 {
+			log.Info("order-cancel")
+		} else {
+			log.Error("order-cancel:", o.Message)
 		}
 	default:
 		log.Error("invalid response:", o.Operation)

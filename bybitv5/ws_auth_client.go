@@ -1,6 +1,7 @@
 package bybitv5
 
 import (
+	"sync/atomic"
 	"time"
 
 	"github.com/msw-x/moon/ufmt"
@@ -11,7 +12,7 @@ import (
 type WsAuthClient[T WsResponse] struct {
 	c              *WsClient[T]
 	s              *Sign
-	ready          bool
+	ready          atomic.Bool
 	onReady        func()
 	onConnected    func()
 	onDisconnected func()
@@ -97,7 +98,7 @@ func (o *WsAuthClient[T]) Run() {
 		o.auth()
 	})
 	o.c.WithOnDisconnected(func() {
-		o.ready = false
+		o.ready.Store(false)
 		if o.onDisconnected != nil {
 			o.onDisconnected()
 		}
@@ -116,7 +117,7 @@ func (o *WsAuthClient[T]) Connected() bool {
 }
 
 func (o *WsAuthClient[T]) Ready() bool {
-	return o.ready
+	return o.ready.Load()
 }
 
 func (o *WsAuthClient[T]) SetOnTopic(f func([]byte) error) {
@@ -129,6 +130,12 @@ func (o *WsAuthClient[T]) SetOnOperation(f func(T) (bool, error)) {
 
 func (o *WsAuthClient[T]) SendOrder(r WsRequest[WsPlaceOrder]) {
 	o.c.SendOrder(r)
+}
+
+// SendJson proxies the underlying uws SendJson: arbitrary WsRequest
+// payloads with args of any type (order.amend / order.cancel etc.).
+func (o *WsAuthClient[T]) SendJson(v any) {
+	o.c.SendJson(v)
 }
 
 func (o *WsAuthClient[T]) Subscribe(topic string) {
@@ -151,19 +158,24 @@ func (o *WsAuthClient[T]) onResponse(r T) error {
 	if r.OperationIs("auth") {
 		log.Info("auth:", ufmt.SuccessFailure(r.Ok()))
 		if r.Ok() {
-			o.ready = true
+			o.ready.Store(true)
 			if o.onReady != nil {
 				o.onReady()
 			}
 		}
 	} else if !r.OperationIs("pong") {
-		if r.Ok() && o.onOperation != nil {
+		// Dispatch to onOperation regardless of Ok(): trade-WS order
+		// acks carry business rejections (retCode != 0) that the
+		// response handler must still correlate (e.g. by reqId).
+		if o.onOperation != nil {
 			ok, err := o.onOperation(r)
 			if ok || err != nil {
 				return err
 			}
 		}
-		r.Log(log)
+		if !r.Ok() {
+			r.Log(log)
+		}
 	}
 	return nil
 }

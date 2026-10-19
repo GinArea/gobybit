@@ -108,8 +108,26 @@ func (o *WsTrade) PlaceOrder(v WsPlaceOrder) {
 	})
 }
 
+// TradeRequest sends an arbitrary trade-WS operation
+// (order.create / order.amend / order.cancel) with an explicit reqId:
+// the API echoes it in the ack (<= 36 chars, must be unique — a
+// duplicate is rejected with code 20006).
+func (o *WsTrade) TradeRequest(op string, reqId string, arg any) {
+	ts, window := o.ts.Get()
+	o.c.SendJson(WsRequest[any]{
+		RequestId: reqId,
+		Header: &WsHeader{
+			Timestamp:  ts,
+			RecvWindow: window,
+			Referer:    o.referer,
+		},
+		Operation: op,
+		Args:      []any{arg},
+	})
+}
+
 func (o *WsTrade) onOperation(r WsTradeResponse) (ok bool, err error) {
-	if r.OperationIs("order.create") {
+	if r.OperationIs("order.create") || r.OperationIs("order.amend") || r.OperationIs("order.cancel") {
 		ok = true
 		if o.onResponse != nil {
 			o.onResponse(r)

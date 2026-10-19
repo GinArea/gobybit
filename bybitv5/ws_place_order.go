@@ -8,4 +8,6 @@ type WsPlaceOrder struct {
 	Qty         string
 	Price       string      `json:",omitempty"`
 	TimeInForce TimeInForce `json:",omitempty"`
+	OrderLinkId string      `json:",omitempty"`
+	ReduceOnly  *bool       `json:",omitempty"`
 }

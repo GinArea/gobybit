@@ -121,6 +121,12 @@ func (o *WsClient[T]) SendOrder(r WsRequest[WsPlaceOrder]) {
 	o.c.SendJson(r)
 }
 
+// SendJson sends an arbitrary JSON payload (e.g. a WsRequest with
+// non-WsPlaceOrder args such as order.amend/order.cancel).
+func (o *WsClient[T]) SendJson(v any) {
+	o.c.SendJson(v)
+}
+
 func (o *WsClient[T]) Subscribe(s string) {
 	o.SubscribeBatch([]string{s})
 }

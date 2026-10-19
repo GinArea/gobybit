@@ -141,6 +141,7 @@ const (
 	GoodTillCancel    TimeInForce = "GTC"
 	ImmediateOrCancel TimeInForce = "IOC"
 	FillOrKill        TimeInForce = "FOK"
+	PostOnly          TimeInForce = "PostOnly"
 )
 
 // smpType (https://bybit-exchange.github.io/docs/v5/enum#smptype)
