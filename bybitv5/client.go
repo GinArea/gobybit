@@ -119,4 +119,8 @@ func (o *Client) user() *Client {
 	return o.Copy().WithAppendPath("user")
 }
 
+func (o *Client) apilimit() *Client {
+	return o.Copy().WithAppendPath("apilimit")
+}
+
 type OnTransportError func(err error, method string, statusCode int, attempt int) bool
